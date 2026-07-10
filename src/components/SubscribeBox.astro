@@ -1,0 +1,38 @@
+---
+// "Stay in the know" — recreated from the subscribe widget on the original brainforest.org post pages.
+// TODO once ConvertKit is set up: replace the <form> action/method below with the ConvertKit form's
+// own action URL (Sasha will get this from her ConvertKit account — see
+// cockpit/Website/ConvertKit Setup Instructions.md). Until then this submits to Netlify Forms so it
+// is fully working and collecting emails today.
+---
+<section class="subscribe">
+  <div class="wrap narrow">
+    <h2>Stay in the know</h2>
+    <p>Join our mailing list to get exclusive early access to scientific news and health content.</p>
+    <form
+      class="form"
+      name="stay-in-the-know"
+      method="POST"
+      data-netlify="true"
+      netlify-honeypot="bot-field"
+      onsubmit="event.preventDefault(); this.style.display='none'; document.getElementById('sub-thanks').style.display='block';"
+    >
+      <input type="hidden" name="form-name" value="stay-in-the-know" />
+      <p hidden><label>Skip: <input name="bot-field" /></label></p>
+      <input name="email" type="email" placeholder="Enter your email here" required aria-label="Email address" />
+      <button type="submit" class="btn">Sign Up</button>
+    </form>
+    <div id="sub-thanks" class="thanks" style="display:none">Thanks for submitting!</div>
+  </div>
+</section>
+<style>
+  .subscribe { margin-top: 64px; padding: 56px 0; background: var(--cream-2); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); text-align: center; }
+  .subscribe h2 { font-size: 28px; margin-bottom: 12px; }
+  .subscribe p { color: var(--ink-soft); font-size: 16px; max-width: 46ch; margin: 0 auto 26px; }
+  .subscribe .form { display: flex; gap: 10px; justify-content: center; max-width: 440px; margin: 0 auto; }
+  .subscribe input { flex: 1; padding: 13px 16px; border-radius: 10px; border: 1px solid var(--line); font-size: 15px; font-family: var(--sans); background: var(--cream); }
+  .subscribe input:focus { outline: 2px solid var(--green-bright); }
+  .subscribe .btn { padding: 13px 24px; }
+  .subscribe .thanks { font-size: 15px; color: var(--green); font-weight: 600; }
+  @media (max-width: 520px){ .subscribe .form { flex-direction: column; } }
+</style>

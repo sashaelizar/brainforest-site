@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PostCard from '../../components/PostCard.astro';
 import CategoryNav from '../../components/CategoryNav.astro';
+import SubscribeBox from '../../components/SubscribeBox.astro';
 import { fmtDate, SITE, catSlug } from '../../site';
 
 export async function getStaticPaths() {
@@ -77,6 +78,8 @@ const jsonLd = {
         </div>
       </aside>
     )}
+
+    <SubscribeBox />
 
     <div class="wrap narrow">
       <footer class="post-foot"><a class="btn btn-ghost" href="/posts">← Back to all articles</a></footer>
