@@ -59,6 +59,39 @@ recreating that with **ConvertKit** (chosen 2026-07-09).
   - [ ] Choose one, create the account, set `PUBLIC_ANALYTICS_SRC` + `PUBLIC_ANALYTICS_DOMAIN`
   - [ ] Confirm data is flowing after launch
 
+## 8. Comments, likes, and live view counts (raised 2026-07-10, not started)
+Sasha wants to display, per article: carried-over historical comments/likes/views from Wix, plus
+a live, continuously-updating view counter going forward. Research so far:
+
+- **The Wix content backup has none of this data.** Checked `brainforest-backup/` and the raw HTML
+  page captures — comments/likes/views on Wix are loaded live via Wix's own app at page-view time,
+  not baked into the page, so the static export never captured actual numbers or comment text
+  (only found leftover CSS class names from Wix's comment widget, no real data). **To carry over
+  real historical numbers, someone needs to pull them from Wix directly** — either the Wix
+  dashboard's own analytics/comments panel (manual, per post) or Wix's API (needs Sasha's Wix
+  developer access) — before the Wix account is cancelled. Flag this urgently if she wants the old
+  numbers preserved, since they disappear once Wix is cancelled.
+- **Going forward, this is a static site with no built-in database**, so each piece needs its own
+  solution:
+  - **Live view counts**: realistic with **Umami** (the tool Sasha mentioned) — it's free
+    (self-hosted) or has a free-tier cloud option, privacy-friendly, no cookie banner. Showing a
+    *live number on the page itself* (not just in a private dashboard) needs one extra piece: a
+    small Netlify Function that asks Umami for the current count and hands it back to the page.
+    Buildable, not hard, but not yet started.
+  - **Likes**: needs somewhere to store the count (static sites don't have a database by default).
+    Realistic free option: a lightweight backend like Supabase (free tier) or a small Netlify
+    Function + Netlify Blobs. Buildable, medium effort.
+  - **Comments**: needs a commenting system since Wix's is Wix-only. Common free options: **Giscus**
+    (free, backed by GitHub Discussions, no ads) or **Disqus** (free tier, but shows ads). Giscus is
+    the better fit here given everything else is already on GitHub.
+- **What's needed:**
+  - [ ] Sasha decides whether pulling historical Wix numbers is worth the manual effort before
+        cancelling Wix (they cannot be recovered after)
+  - [ ] Pick a comments tool (Giscus recommended) and wire it into the per-article page only (not
+        thumbnails/cards, per Sasha's request)
+  - [ ] Pick a likes/storage approach and build the counter
+  - [ ] Wire up Umami + a small live-view-count display on each article
+
 ## 4. SEO — finish the job
 - [ ] After launch, submit `sitemap-index.xml` to **Google Search Console** (and Bing Webmaster)
 - [ ] Set up 301 **redirects** for any old Wix URLs that change (our slugs already mirror the originals,
@@ -67,9 +100,29 @@ recreating that with **ConvertKit** (chosen 2026-07-09).
 - [ ] Let Sasha edit each post's **excerpt** (the Google snippet) and **share image** easily
 
 ## 5. Hosting — Netlify (free)
-- [ ] Put this project on **GitHub** (see `FOR-SASHA.md`)
+- [x] **Netlify account created by Sasha** (2026-07-10) — not yet connected to the repo
+- [ ] Put this project on **GitHub** (see `FOR-SASHA.md`) — GitHub CLI authenticated, repos not yet
+      created/pushed
 - [ ] Connect the GitHub repo to **Netlify** — it auto-builds (`npm run build`) and deploys on every change
 - [ ] Verify the live preview URL looks right
+
+**Images/CDN question (raised 2026-07-10):** Sasha wants images NOT stored in the git repo, and
+asked about Netlify's CDN limits/cost. Findings:
+- Everything Netlify hosts (including anything in `public/`, where the article images already
+  live) is automatically served through Netlify's global CDN — this isn't a separate product to
+  set up, it's just how Netlify hosting works. No extra step needed for "images on a CDN."
+- Free tier is 100GB bandwidth/month, which is a lot of headroom for a blog like this one — very
+  unlikely to be exceeded or to incur a surprise charge. (Worth double-checking Netlify's current
+  published limits before launch, since these do shift over time.)
+- Current image folder is **108MB** — small by GitHub's standards (their soft guidance is to stay
+  under a few GB), so keeping images in this git repo is genuinely fine at this scale, not a real
+  risk.
+- If Sasha still prefers images fully out of git regardless: the cleaner alternative is a dedicated
+  image host like **Cloudinary** (free tier ~25GB storage/bandwidth, auto-optimizes images) —
+  upload images there instead of `public/images/`, reference them by URL. More moving parts (a
+  service to manage, images uploaded outside the normal publish flow), so worth a real decision
+  before switching off the current simple approach.
+- **Not yet decided** — needs Sasha's call next session.
 
 ## 6. Domain — point Bluehost at the new site
 Her domain lives at **Bluehost**. To make brainforest.org show the new site:
@@ -89,3 +142,26 @@ Her domain lives at **Bluehost**. To make brainforest.org show the new site:
 - [ ] Design direction — current cream/green look is our interpretation; refine toward her taste
 - [ ] Any **other lead magnets/freebies** beyond the leaky-gut ebook that need landing pages
 - [ ] Whether to *also* cross-post to Substack purely for distribution (optional, not required)
+
+## 9. Email list cleanup + import (2026-07-10)
+- [x] Sasha exported her Wix contacts to `~/Downloads/contacts.csv` (1,745 rows) and asked for a
+      bot pass before importing to ConvertKit
+- [x] Ran a bot-detection pass: **1,623 of 1,745 rows were spam/bot signups** (mostly an Indonesian
+      gambling-spam bot flood hitting Wix's public "site member" signup — very common on Wix
+      sites). Kept **122 likely-real contacts**. Two new files written, original untouched:
+      `~/Downloads/contacts-real-likely.csv` (keep) and `~/Downloads/contacts-flagged-as-bot.csv`
+      (for spot-checking, with a reason column)
+  - Worth a quick manual skim of `contacts-real-likely.csv` before import — heuristics, not
+    certainty
+  - **3 of the 122 are marked "Unsubscribed"** — real people, correctly not bots, but should be
+    excluded from any new ConvertKit import/email since they already opted out
+- [ ] Sasha imports `contacts-real-likely.csv` into ConvertKit herself (no ConvertKit MCP connector
+      exists yet — checked the registry 2026-07-10, came up empty — so this is manual for now, or
+      via a ConvertKit API key later, see `Reference/Glossary.md` in cockpit)
+
+## 10. Automation follow-ups (2026-07-10)
+- [ ] No MCP connector found for ConvertKit or Netlify (checked registry, empty results). Both
+      have plain APIs Sasha can generate a key for later, which her AI can then use directly — see
+      `Reference/Glossary.md` in cockpit for what an API key is and how that would work
+- [ ] Sasha created both her Netlify and ConvertKit accounts (2026-07-10) — forms/connection setup
+      still pending, see §2 and §5 above
