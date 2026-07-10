@@ -3,7 +3,7 @@ title: "A letter to my college freshman self"
 author: "Sasha Elizar, M.S."
 date: "2019-08-23T14:01:54.297Z"
 updated: "2022-01-30T00:46:16.809Z"
-description: "Dear 18-year-old me, These are the 14 most important lessons I learned in college, things I wish I knew before I started, before I graduated from a tiny high school to attend a massive university,  before I attended my first &quot;real party,&quot; before I figured out balance, and before I found my tribe. Culture shock imminent"
+description: "Follow your gut, keep an open mind, and love yourself."
 source_url: https://www.brainforest.org/post/letter-college-freshman-self
 readTime: "11 min read"
 hero: "/images/letter-college-freshman-self/00_cover_27fa249660f8.jpg"

@@ -3,7 +3,7 @@ title: "Modulate your frequency: A quick guide to brain frequencies"
 author: "Sasha Elizar, M.S."
 date: "2019-01-05T05:10:46.000Z"
 updated: "2023-07-19T06:10:06.327Z"
-description: "What causes the change in electrical charge in neurons? The changes in voltage are reflected by membrane ion channels or pumps opening, allowing the movement of ions into and out of neurons. Action potentials (neuron firing) result in calcium influx, which causes release of neurotransmitters, an activity that is involv"
+description: "Don't just elevate; modulate."
 source_url: https://www.brainforest.org/post/brain-frequencies
 readTime: "4 min read"
 hero: "/images/brain-frequencies/00_cover_b2bd1abcbcfe.jpg"
