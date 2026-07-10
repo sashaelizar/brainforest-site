@@ -6,8 +6,17 @@ import { PODCAST } from '../site';
   <section class="wrap narrow pod">
     <p class="eyebrow">Podcast</p>
     <h1>{PODCAST.name}</h1>
-    <p class="lead">Conversations at the roots of health, consciousness, and emergence.
-      Listen wherever you get your podcasts.</p>
+    <p class="lead">On Mind the Roots, we explore and discuss alternative health practices from a
+      scientific and natural perspective. Our mission is to help people understand the mind-body
+      connection, as well as the importance of nutrition, lifestyle, and the environment.</p>
+    <p class="lead">Through our podcast, blog, and social media, we share the latest peer-reviewed
+      research in neuroscience, functional nutrition, and gut microbiology. We invite you to join
+      us and learn science-based, actionable steps and strategies to transform your health and
+      life.</p>
+    <p class="sub">Mind the Roots is an alternative health podcast that shares the latest
+      nature-inspired, science-powered research. We discuss how to create brain health and fitness
+      by sharing research in neuroscience, nutrition, and aging, paving the way for healthier
+      humans, communities, and Earth.</p>
     <div class="links">
       <a href={PODCAST.spotify} target="_blank" rel="noopener" class="btn">Listen on Spotify</a>
       <a href={PODCAST.apple} target="_blank" rel="noopener" class="btn btn-ghost">Apple Podcasts</a>
@@ -17,7 +26,9 @@ import { PODCAST } from '../site';
   <style>
     .pod { padding: 72px 0; max-width: 720px; }
     .pod h1 { font-size: clamp(34px, 6vw, 52px); }
-    .pod .lead { font-size: 19px; color: var(--ink-soft); margin: 20px 0 30px; line-height: 1.7; }
+    .pod .lead { font-size: 19px; color: var(--ink-soft); margin: 20px 0 0; line-height: 1.7; }
+    .pod .lead + .lead { margin-top: 16px; }
+    .pod .sub { font-size: 14px; color: var(--ink-soft); margin: 16px 0 30px; line-height: 1.6; }
     .links { display: flex; gap: 12px; flex-wrap: wrap; }
   </style>
 </BaseLayout>
