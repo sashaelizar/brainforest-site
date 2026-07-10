@@ -1,8 +1,8 @@
 ---
 import { fmtDate } from '../site';
-interface Props { slug: string; title: string; date: string; readTime: string; hero: string; description: string; categories?: string[]; author?: string; }
-const { slug, title, date, readTime, hero, description, categories = [], author } = Astro.props;
-const cat = categories[0];
+interface Props { slug: string; title: string; date: string; readTime: string; hero: string; description: string; categories?: string[]; author?: string; showCategory?: boolean; }
+const { slug, title, date, readTime, hero, description, categories = [], author, showCategory = true } = Astro.props;
+const cat = showCategory ? categories[0] : undefined;
 ---
 <a class="pcard" href={`/post/${slug}`}>
   {hero && (

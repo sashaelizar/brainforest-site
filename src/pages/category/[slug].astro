@@ -47,7 +47,7 @@ const tabs = CATEGORY_ORDER.filter(c => present.has(c));
         {posts.map(p => (
           <PostCard slug={p.id} title={p.data.title} date={p.data.date}
             readTime={p.data.readTime} hero={p.data.hero} description={p.data.description}
-            categories={p.data.categories} author={p.data.author} />
+            categories={p.data.categories} author={p.data.author} showCategory={false} />
         ))}
       </div>
     </div>
