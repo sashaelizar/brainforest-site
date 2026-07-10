@@ -1,38 +1,58 @@
 ---
-// "Stay in the know" — recreated from the subscribe widget on the original brainforest.org post pages.
+// "Stay in the know" — recreated from the subscribe widget on the original brainforest.org site.
 // TODO once ConvertKit is set up: replace the <form> action/method below with the ConvertKit form's
 // own action URL (Sasha will get this from her ConvertKit account — see CONVERTKIT-SETUP.md in the
 // project root). Until then this submits to Netlify Forms so it is fully working and collecting
 // emails today.
+interface Props { variant?: 'band' | 'compact' }
+const { variant = 'band' } = Astro.props;
+const uid = Math.random().toString(36).slice(2, 9);
 ---
-<section class="subscribe">
-  <div class="wrap narrow">
-    <h2>Stay in the know</h2>
-    <p>Join our mailing list to get exclusive early access to scientific news and health content.</p>
-    <form
-      class="form"
-      name="stay-in-the-know"
-      method="POST"
-      data-netlify="true"
-      netlify-honeypot="bot-field"
-      onsubmit="event.preventDefault(); this.style.display='none'; document.getElementById('sub-thanks').style.display='block';"
-    >
-      <input type="hidden" name="form-name" value="stay-in-the-know" />
-      <p hidden><label>Skip: <input name="bot-field" /></label></p>
-      <input name="email" type="email" placeholder="Enter your email here" required aria-label="Email address" />
-      <button type="submit" class="btn">Sign Up</button>
-    </form>
-    <div id="sub-thanks" class="thanks" style="display:none">Thanks for submitting!</div>
+<section class={`subscribe ${variant}`}>
+  <div class={variant === 'band' ? 'wrap narrow' : ''}>
+    <div class="subscribe-inner">
+      <div class="subscribe-text">
+        <h2>Stay in the know</h2>
+        <p>Join our mailing list to get exclusive early access to scientific news and health content.</p>
+      </div>
+      <form
+        class="form"
+        name="stay-in-the-know"
+        method="POST"
+        data-netlify="true"
+        netlify-honeypot="bot-field"
+        onsubmit={`event.preventDefault(); this.style.display='none'; document.getElementById('sub-thanks-${uid}').style.display='block';`}
+      >
+        <input type="hidden" name="form-name" value="stay-in-the-know" />
+        <p hidden><label>Skip: <input name="bot-field" /></label></p>
+        <input name="email" type="email" placeholder="Enter your email here" required aria-label="Email address" />
+        <button type="submit" class="btn">Sign Up</button>
+      </form>
+    </div>
+    <div id={`sub-thanks-${uid}`} class="thanks" style="display:none">Thanks for submitting!</div>
   </div>
 </section>
 <style>
-  .subscribe { margin-top: 64px; padding: 56px 0; background: var(--cream-2); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); text-align: center; }
-  .subscribe h2 { font-size: 28px; margin-bottom: 12px; }
-  .subscribe p { color: var(--ink-soft); font-size: 16px; max-width: 46ch; margin: 0 auto 26px; }
-  .subscribe .form { display: flex; gap: 10px; justify-content: center; max-width: 440px; margin: 0 auto; }
+  .subscribe.band { margin-top: 64px; padding: 56px 0; background: var(--cream-2); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); text-align: center; }
+  .subscribe.band .subscribe-inner { flex-direction: column; align-items: center; max-width: 480px; margin: 0 auto; }
+  .subscribe.band h2 { font-size: 28px; margin-bottom: 12px; }
+  .subscribe.band p { color: var(--ink-soft); font-size: 16px; max-width: 46ch; margin: 0 auto 26px; }
+  .subscribe.band .form { display: flex; gap: 10px; justify-content: center; max-width: 440px; margin: 0 auto; width: 100%; }
+
+  .subscribe.compact { margin: 28px 0 40px; padding: 22px 26px; background: var(--cream-2); border: 1px solid var(--line); border-radius: 16px; text-align: left; }
+  .subscribe.compact .subscribe-inner { flex-direction: row; align-items: center; justify-content: space-between; flex-wrap: wrap; }
+  .subscribe.compact h2 { font-size: 17px; margin-bottom: 4px; }
+  .subscribe.compact p { color: var(--ink-soft); font-size: 13.5px; margin: 0; max-width: 40ch; }
+  .subscribe.compact .form { display: flex; gap: 8px; flex: 0 0 auto; }
+  .subscribe.compact input { padding: 10px 14px; font-size: 14px; width: 210px; }
+  .subscribe.compact .btn { padding: 10px 18px; font-size: 13px; }
+  .subscribe.compact .thanks { font-size: 14px; }
+  @media (max-width: 640px){ .subscribe.compact .subscribe-inner { flex-direction: column; align-items: stretch; text-align: center; } .subscribe.compact input { width: 100%; } }
+
+  .subscribe-inner { display: flex; gap: 16px; }
   .subscribe input { flex: 1; padding: 13px 16px; border-radius: 10px; border: 1px solid var(--line); font-size: 15px; font-family: var(--sans); background: var(--cream); }
   .subscribe input:focus { outline: 2px solid var(--green-bright); }
   .subscribe .btn { padding: 13px 24px; }
-  .subscribe .thanks { font-size: 15px; color: var(--green); font-weight: 600; }
-  @media (max-width: 520px){ .subscribe .form { flex-direction: column; } }
+  .subscribe .thanks { font-size: 15px; color: var(--green); font-weight: 600; margin-top: 14px; }
+  @media (max-width: 520px){ .subscribe.band .form { flex-direction: column; } }
 </style>

@@ -58,9 +58,29 @@ const ogImage = image ? new URL(image, Astro.site ?? `https://${SITE.domain}`).h
         {NAV.map(n => (
           <a href={n.href} class={path === n.href ? 'active' : ''}>{n.label}</a>
         ))}
+        <button type="button" class="btn nav-subscribe-btn" onclick="document.getElementById('nav-subscribe-dialog').showModal()">Subscribe</button>
       </div>
     </div>
   </nav>
+
+  <dialog id="nav-subscribe-dialog" class="subscribe-dialog">
+    <button type="button" class="dialog-close" aria-label="Close" onclick="this.closest('dialog').close()">&times;</button>
+    <h2>Stay in the know</h2>
+    <p>Join our mailing list to get exclusive early access to scientific news and health content.</p>
+    <form
+      name="stay-in-the-know"
+      method="POST"
+      data-netlify="true"
+      netlify-honeypot="bot-field"
+      onsubmit="event.preventDefault(); this.style.display='none'; document.getElementById('nav-sub-thanks').style.display='block';"
+    >
+      <input type="hidden" name="form-name" value="stay-in-the-know" />
+      <p hidden><label>Skip: <input name="bot-field" /></label></p>
+      <input name="email" type="email" placeholder="Enter your email here" required aria-label="Email address" />
+      <button type="submit" class="btn">Sign Up</button>
+    </form>
+    <div id="nav-sub-thanks" class="thanks" style="display:none">Thanks for submitting!</div>
+  </dialog>
 
   <main>
     <slot />
@@ -107,7 +127,19 @@ const ogImage = image ? new URL(image, Astro.site ?? `https://${SITE.domain}`).h
     .nav-links { display: flex; gap: 26px; align-items: center; }
     .nav-links a { color: var(--ink-soft); text-decoration: none; font-size: 14px; font-weight: 500; }
     .nav-links a:hover, .nav-links a.active { color: var(--green); }
-    @media (max-width: 620px){ .nav-links { gap: 16px; } .nav-links a { font-size: 13px; } .logo span { display:none; } }
+    .nav-subscribe-btn { padding: 8px 18px; font-size: 13px; }
+    @media (max-width: 620px){ .nav-links { gap: 16px; } .nav-links a { font-size: 13px; } .logo span { display:none; } .nav-subscribe-btn { padding: 7px 14px; } }
+
+    .subscribe-dialog { position: relative; border: 1px solid var(--line); border-radius: 18px; padding: 32px; max-width: 420px; width: calc(100% - 40px); background: var(--cream); color: var(--ink); box-shadow: 0 30px 60px -20px rgba(20,33,28,0.4); }
+    .subscribe-dialog::backdrop { background: rgba(20,33,28,0.45); backdrop-filter: blur(2px); }
+    .subscribe-dialog h2 { font-size: 22px; margin-bottom: 10px; }
+    .subscribe-dialog p { color: var(--ink-soft); font-size: 14.5px; margin-bottom: 20px; }
+    .subscribe-dialog form { display: flex; flex-direction: column; gap: 12px; }
+    .subscribe-dialog input { padding: 13px 16px; border-radius: 10px; border: 1px solid var(--line); font-size: 15px; font-family: var(--sans); background: var(--cream-2); }
+    .subscribe-dialog input:focus { outline: 2px solid var(--green-bright); }
+    .subscribe-dialog .thanks { font-size: 15px; color: var(--green); font-weight: 600; }
+    .dialog-close { position: absolute; top: 14px; right: 16px; background: none; border: none; font-size: 22px; line-height: 1; cursor: pointer; color: var(--ink-soft); }
+    .dialog-close:hover { color: var(--ink); }
 
     .btn { display: inline-block; background: var(--ink); color: var(--cream); padding: 11px 22px; border-radius: 100px; text-decoration: none; font-size: 14px; font-weight: 600; border: none; cursor: pointer; transition: transform .15s ease, background .15s ease; }
     .btn:hover { transform: translateY(-1px); background: var(--green); }

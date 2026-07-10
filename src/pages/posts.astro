@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PostCard from '../components/PostCard.astro';
+import SubscribeBox from '../components/SubscribeBox.astro';
 import { catSlug, CATEGORY_ORDER } from '../site';
 
 const posts = (await getCollection('posts')).sort(
@@ -25,6 +26,7 @@ const tabs = CATEGORY_ORDER.filter(c => present.has(c));
   </section>
   <section class="list-band">
     <div class="wrap">
+      <SubscribeBox variant="compact" />
       <div class="grid">
         {posts.map(p => (
           <PostCard slug={p.id} title={p.data.title} date={p.data.date}
