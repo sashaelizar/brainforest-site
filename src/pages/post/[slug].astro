@@ -55,6 +55,9 @@ const jsonLd = {
         <span class="sep">·</span>
         <span>{fmtDate(d.date)}</span>
         {d.readTime && <><span class="sep">·</span><span>{d.readTime}</span></>}
+        {d.updated && fmtDate(d.updated) !== fmtDate(d.date) && (
+          <><span class="sep">·</span><span class="updated">Updated: {fmtDate(d.updated)}</span></>
+        )}
       </div>
     </div>
 
