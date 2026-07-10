@@ -126,6 +126,10 @@ const jsonLd = {
     .prose img { border-radius: 12px; margin: 1.6em auto; display: block; border: 1px solid var(--line); max-width: 100%; height: auto; }
     .prose ul, .prose ol { padding-left: 1.5em; margin: 0 0 1.2em; }
     .prose li { margin-bottom: .5em; }
+    /* List item text reused the body-paragraph margin, which stacked with the list's own
+       spacing and made list items (including outline/jump-nav lists) look like they had a
+       blank line between each one. Paragraphs inside list items shouldn't add extra margin. */
+    .prose li p { margin-bottom: 0; }
     .prose blockquote { border-left: 3px solid var(--green-bright); padding-left: 20px; color: var(--ink-soft); font-style: italic; margin: 1.2em 0; }
     .prose hr { border: none; border-top: 1px solid var(--line); margin: 2em 0; }
     .prose table { width: 100%; border-collapse: collapse; font-size: 15px; display: block; overflow-x: auto; margin: 1.4em 0; }
