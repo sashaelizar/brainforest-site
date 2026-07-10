@@ -54,7 +54,9 @@ export const CATEGORY_ORDER = [
 // Format an ISO date string -> "Feb 7, 2026"
 export function fmtDate(iso: string): string {
   if (!iso) return '';
-  const d = new Date(iso);
+  // Date-only strings ("2026-06-09") parse as UTC midnight; appending a local time avoids the
+  // date shifting back a day in timezones behind UTC.
+  const d = new Date(/^\d{4}-\d{2}-\d{2}$/.test(iso) ? `${iso}T00:00:00` : iso);
   if (isNaN(+d)) return '';
   return d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
 }
