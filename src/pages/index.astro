@@ -27,6 +27,17 @@ const recent = posts.slice(0, 6);
     </div>
   </header>
 
+  <section class="band who-band">
+    <div class="wrap who-inner">
+      <p class="eyebrow">Who we are</p>
+      <h2>Scientists and practitioners, on a mission to help you thrive.</h2>
+      <p class="who-copy">We start from the premise that nature is intelligent — full of answers
+        we're only beginning to understand. Our expertise spans neuroscience, functional
+        nutrition, gut health and the microbiome, endocrinology, detoxification, and aging,
+        translated into strategies you can actually use.</p>
+    </div>
+  </section>
+
   <section class="band">
     <div class="wrap">
       <div class="section-head">
@@ -70,6 +81,10 @@ const recent = posts.slice(0, 6);
     .hero-note { font-size: 13px; color: var(--ink-soft); margin-top: 22px; display: flex; gap: 8px; align-items: center; }
     .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green-bright); display: inline-block; }
     .band { padding: 72px 0; border-top: 1px solid var(--line); }
+    .who-band { background: var(--cream-2); }
+    .who-inner { max-width: 62ch; }
+    .who-band h2 { font-size: clamp(28px, 4.2vw, 44px); margin-top: 10px; line-height: 1.2; }
+    .who-copy { color: var(--ink-soft); font-size: 18px; line-height: 1.7; margin-top: 20px; }
     .section-head { max-width: 60ch; margin-bottom: 40px; }
     .section-head h2 { font-size: clamp(28px, 4vw, 42px); margin-top: 10px; }
     .section-head p { color: var(--ink-soft); margin-top: 14px; font-size: 17px; }

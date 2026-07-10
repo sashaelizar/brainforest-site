@@ -1,31 +1,93 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { SITE, SOCIAL } from '../site';
+
+const areas = [
+  {
+    name: 'Neuroscience & Endocrinology',
+    href: '/category/neuroscience',
+    copy: 'Published topics include psychedelic pharmacology, the cell and molecular mechanisms of pineal gland calcification, and hypothalamic-pituitary signaling of estrogen, progesterone, testosterone, and thyroid hormones.',
+  },
+  {
+    name: 'Gut Health & Microbiome',
+    href: '/category/gut-microbiome',
+    copy: 'A wide range of educational articles using peer-reviewed research — including gastrointestinal layer anatomy and the role of gut microbiota in multiple sclerosis.',
+  },
+  {
+    name: 'Immunity, Aging, and Healthspan',
+    href: '/category/aging',
+    copy: 'A deep dive into the hallmarks of aging, including senescence and mitochondrial dysfunction, and an analysis of natural therapeutic compounds for their ability to slow aging and promote longevity.',
+  },
+  {
+    name: 'Neuroscience & Brain Health',
+    href: '/category/neuroscience',
+    copy: 'Research articles on current trends in neuroscience, summarizing key findings on promoting brain and neuronal health.',
+  },
+];
 ---
 <BaseLayout title="About" description="About Infinite Emergence and Sasha Elizar, M.S.">
   <section class="wrap narrow about">
     <p class="eyebrow">About</p>
     <h1>Infinite Emergence</h1>
-    <p class="lead">{SITE.tagline}. Translating neuroscience, functional nutrition, and
-      bioenergetic medicine into practical, evidence-based tools for real health.</p>
-    <p>Infinite Emergence is the work of <strong>{SITE.author}</strong> — spanning the
-      microbiome, gut-brain axis, detoxification, endocrinology, and aging. Every article
-      starts from the mechanism and the research, then works toward what you can actually do.</p>
+    <p class="lead">Precision nutrition for unprecedented performance.</p>
+
+    <p>Infinite Emergence is the work of <strong>{SITE.author}</strong>. Our mission is to make the
+      science of aging more widely accessible, to empower more people to take control of their
+      health, feel more energized, and live longer, more fulfilling lives. We discuss senescence,
+      biomarkers of cognition and aging, balancing hormones, improving mitochondrial function, gut
+      health and immunity, detoxification, and real-world strategies to instantly reduce
+      physiological stress.</p>
+
+    <p>By combining scientific expertise with clear-cut, concise explanations of technical
+      concepts, we bridge the gap between the scientific forefront and the widespread
+      translation and implementation of biomedical science knowledge for the public.</p>
+
     <p>The topics range from leaky gut and the microbiome to psychedelics, the pineal gland,
       and living with invisible illness. Explore the full body of work in the
       <a href="/posts">articles archive</a>, or listen to the <a href="/podcast">podcast</a>.</p>
+
     <div class="links">
       {SOCIAL.map(s => <a href={s.href} target="_blank" rel="noopener" class="btn btn-ghost">{s.label}</a>)}
     </div>
-    <p class="note">This is a first-draft preview rebuilt from the original brainforest.org
-      content. Copy and structure can be refined together.</p>
   </section>
+
+  <section class="band areas-band">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Therapeutic Areas</p>
+        <h2>Where we focus</h2>
+        <p>Our goal is to disseminate scientific findings and equip people with the best possible
+          information for better health-related decision-making.</p>
+      </div>
+      <div class="areas-grid">
+        {areas.map(a => (
+          <a class="area-card" href={a.href}>
+            <h3>{a.name}</h3>
+            <p>{a.copy}</p>
+            <span class="area-link">Explore →</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
   <style>
-    .about { padding: 72px 0; max-width: 720px; }
+    .about { padding: 72px 0 0; max-width: 720px; }
     .about h1 { font-size: clamp(36px, 6vw, 56px); }
-    .about .lead { font-size: 20px; color: var(--ink-soft); margin: 20px 0 24px; }
+    .about .lead { font-size: 20px; color: var(--green); font-weight: 600; margin: 20px 0 24px; }
     .about p { margin-bottom: 1.1em; font-size: 17px; line-height: 1.75; }
     .links { display: flex; gap: 12px; flex-wrap: wrap; margin: 28px 0; }
-    .note { font-size: 13px; color: var(--ink-soft); opacity: .8; }
+
+    .areas-band { padding: 64px 0 80px; }
+    .section-head { max-width: 60ch; margin-bottom: 40px; }
+    .section-head h2 { font-size: clamp(26px, 3.6vw, 38px); margin-top: 10px; }
+    .section-head p { color: var(--ink-soft); margin-top: 14px; font-size: 16px; }
+    .areas-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+    @media (max-width: 700px){ .areas-grid { grid-template-columns: 1fr; } }
+    .area-card { display: block; background: var(--cream-2); border: 1px solid var(--line); border-radius: 16px; padding: 26px 28px; text-decoration: none; color: inherit; transition: transform .15s ease, box-shadow .15s ease; }
+    .area-card:hover { transform: translateY(-2px); box-shadow: 0 16px 34px -20px rgba(20,33,28,0.4); }
+    .area-card h3 { font-size: 19px; margin-bottom: 10px; color: var(--ink); }
+    .area-card p { color: var(--ink-soft); font-size: 14.5px; line-height: 1.6; margin-bottom: 14px; }
+    .area-link { font-size: 13px; font-weight: 600; color: var(--green); }
   </style>
 </BaseLayout>
