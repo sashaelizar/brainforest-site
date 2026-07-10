@@ -1,0 +1,23 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { PODCAST } from '../site';
+---
+<BaseLayout title="Podcast" description="Mind the Roots: Infinite Emergence podcast.">
+  <section class="wrap narrow pod">
+    <p class="eyebrow">Podcast</p>
+    <h1>{PODCAST.name}</h1>
+    <p class="lead">Conversations at the roots of health, consciousness, and emergence.
+      Listen wherever you get your podcasts.</p>
+    <div class="links">
+      <a href={PODCAST.spotify} target="_blank" rel="noopener" class="btn">Listen on Spotify</a>
+      <a href={PODCAST.apple} target="_blank" rel="noopener" class="btn btn-ghost">Apple Podcasts</a>
+      <a href={PODCAST.youtube} target="_blank" rel="noopener" class="btn btn-ghost">YouTube</a>
+    </div>
+  </section>
+  <style>
+    .pod { padding: 72px 0; max-width: 720px; }
+    .pod h1 { font-size: clamp(34px, 6vw, 52px); }
+    .pod .lead { font-size: 19px; color: var(--ink-soft); margin: 20px 0 30px; line-height: 1.7; }
+    .links { display: flex; gap: 12px; flex-wrap: wrap; }
+  </style>
+</BaseLayout>

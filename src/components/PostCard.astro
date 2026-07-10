@@ -1,0 +1,32 @@
+---
+import { fmtDate } from '../site';
+interface Props { slug: string; title: string; date: string; readTime: string; hero: string; description: string; categories?: string[]; author?: string; }
+const { slug, title, date, readTime, hero, description, categories = [], author } = Astro.props;
+const cat = categories[0];
+---
+<a class="pcard" href={`/post/${slug}`}>
+  {hero && (
+    <div class="pcard-img">
+      <img src={hero} alt={title} loading="lazy" />
+      {cat && <span class="pcard-cat">{cat}</span>}
+    </div>
+  )}
+  <div class="pcard-body">
+    <div class="pcard-meta">{fmtDate(date)}{readTime ? ` · ${readTime}` : ''}</div>
+    <h3>{title}</h3>
+    {author && <p class="pcard-author">By {author}</p>}
+    {description && <p>{description}</p>}
+  </div>
+</a>
+<style>
+  .pcard { display: flex; flex-direction: column; background: var(--cream-2); border: 1px solid var(--line); border-radius: 16px; overflow: hidden; text-decoration: none; color: inherit; transition: transform .15s ease, box-shadow .15s ease; }
+  .pcard:hover { transform: translateY(-3px); box-shadow: 0 16px 34px -20px rgba(20,33,28,0.45); }
+  .pcard-img { position: relative; aspect-ratio: 16 / 10; overflow: hidden; background: var(--line); }
+  .pcard-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .pcard-cat { position: absolute; top: 12px; left: 12px; background: rgba(20,33,28,0.82); color: var(--cream); font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase; font-weight: 600; padding: 5px 11px; border-radius: 100px; backdrop-filter: blur(4px); }
+  .pcard-body { padding: 20px 22px 24px; }
+  .pcard-meta { font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--green); font-weight: 600; margin-bottom: 10px; }
+  .pcard h3 { font-size: 20px; line-height: 1.2; margin-bottom: 8px; }
+  .pcard-author { color: var(--green); font-size: 12.5px; font-weight: 600; margin-bottom: 8px; }
+  .pcard p:not(.pcard-author) { color: var(--ink-soft); font-size: 14px; line-height: 1.55; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+</style>

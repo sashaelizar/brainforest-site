@@ -1,0 +1,88 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PostCard from '../components/PostCard.astro';
+import { SITE, PODCAST } from '../site';
+
+const posts = (await getCollection('posts')).sort(
+  (a, b) => +new Date(b.data.date) - +new Date(a.data.date)
+);
+const recent = posts.slice(0, 6);
+---
+<BaseLayout>
+  <header class="hero">
+    <div class="wrap">
+      <p class="eyebrow">Neuroscience · Functional nutrition · Bioenergetics</p>
+      <h1>Root cause medicine, translated from the research to your life.</h1>
+      <p class="lead">
+        Infinite Emergence turns biomedical science — the microbiome, detoxification,
+        the gut-brain axis, aging — into practical ways to feel and function better.
+        Understand the mechanism first. Decide second.
+      </p>
+      <div class="hero-cta">
+        <a href="/posts" class="btn">Read the articles</a>
+        <a href="/podcast" class="btn btn-ghost">Listen to the podcast</a>
+      </div>
+      <p class="hero-note"><span class="dot"></span> {posts.length} evidence-based articles · written by {SITE.author}</p>
+    </div>
+  </header>
+
+  <section class="band">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Latest</p>
+        <h2>Enter the forest</h2>
+        <p>Long-form, sourced deep dives on how the body actually works.</p>
+      </div>
+      <div class="grid">
+        {recent.map(p => (
+          <PostCard slug={p.id} title={p.data.title} date={p.data.date}
+            readTime={p.data.readTime} hero={p.data.hero} description={p.data.description}
+            categories={p.data.categories} author={p.data.author} />
+        ))}
+      </div>
+      <div class="more"><a href="/posts" class="btn btn-ghost">See all {posts.length} articles →</a></div>
+    </div>
+  </section>
+
+  <section class="band podcast-strip">
+    <div class="wrap">
+      <div class="pod-inner">
+        <div>
+          <p class="eyebrow" style="color: var(--green-bright)">Podcast</p>
+          <h2>{PODCAST.name}</h2>
+          <p>Conversations at the roots of health, consciousness, and emergence.</p>
+        </div>
+        <div class="pod-links">
+          <a href={PODCAST.spotify} target="_blank" rel="noopener" class="btn">Spotify</a>
+          <a href={PODCAST.apple} target="_blank" rel="noopener" class="btn btn-ghost light">Apple Podcasts</a>
+          <a href={PODCAST.youtube} target="_blank" rel="noopener" class="btn btn-ghost light">YouTube</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <style>
+    .hero { padding: 84px 0 64px; }
+    .hero h1 { font-size: clamp(38px, 6.5vw, 66px); max-width: 18ch; }
+    .hero .lead { font-size: clamp(17px, 2.3vw, 21px); color: var(--ink-soft); max-width: 56ch; margin: 26px 0 34px; }
+    .hero-cta { display: flex; gap: 14px; flex-wrap: wrap; }
+    .hero-note { font-size: 13px; color: var(--ink-soft); margin-top: 22px; display: flex; gap: 8px; align-items: center; }
+    .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green-bright); display: inline-block; }
+    .band { padding: 72px 0; border-top: 1px solid var(--line); }
+    .section-head { max-width: 60ch; margin-bottom: 40px; }
+    .section-head h2 { font-size: clamp(28px, 4vw, 42px); margin-top: 10px; }
+    .section-head p { color: var(--ink-soft); margin-top: 14px; font-size: 17px; }
+    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+    @media (max-width: 860px){ .grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 560px){ .grid { grid-template-columns: 1fr; } }
+    .more { margin-top: 36px; }
+    .podcast-strip { background: var(--ink); color: var(--cream); border: none; }
+    .podcast-strip h2 { color: var(--cream); font-size: clamp(26px, 3.6vw, 38px); }
+    .podcast-strip p { color: #C9D3CD; margin-top: 12px; }
+    .pod-inner { display: flex; justify-content: space-between; align-items: center; gap: 32px; flex-wrap: wrap; }
+    .pod-links { display: flex; gap: 12px; flex-wrap: wrap; }
+    .podcast-strip .btn.light { color: var(--cream); border-color: rgba(255,255,255,0.4); }
+    .podcast-strip .btn.light:hover { background: var(--cream); color: var(--ink); }
+  </style>
+</BaseLayout>

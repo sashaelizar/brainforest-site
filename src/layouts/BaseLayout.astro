@@ -1,0 +1,126 @@
+---
+import { SITE, NAV, SOCIAL } from '../site';
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;          // og:image (absolute or root-relative)
+  type?: string;           // 'website' | 'article'
+  jsonLd?: object;         // structured data for this page
+}
+const { title, description, image, type = 'website', jsonLd } = Astro.props;
+const pageTitle = title ? `${title} · ${SITE.name}` : `${SITE.name} — ${SITE.tagline}`;
+const desc = description || SITE.tagline;
+const path = Astro.url.pathname;
+const canonical = new URL(path, Astro.site ?? `https://${SITE.domain}`).href;
+const ogImage = image ? new URL(image, Astro.site ?? `https://${SITE.domain}`).href : undefined;
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{pageTitle}</title>
+  <meta name="description" content={desc} />
+  <link rel="canonical" href={canonical} />
+  <meta name="author" content={SITE.author} />
+
+  <!-- Open Graph (Google, Facebook, LinkedIn preview snippet) -->
+  <meta property="og:site_name" content={SITE.name} />
+  <meta property="og:type" content={type} />
+  <meta property="og:title" content={title || SITE.name} />
+  <meta property="og:description" content={desc} />
+  <meta property="og:url" content={canonical} />
+  {ogImage && <meta property="og:image" content={ogImage} />}
+
+  <!-- Twitter card -->
+  <meta name="twitter:card" content={ogImage ? 'summary_large_image' : 'summary'} />
+  <meta name="twitter:title" content={title || SITE.name} />
+  <meta name="twitter:description" content={desc} />
+  {ogImage && <meta name="twitter:image" content={ogImage} />}
+
+  {jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <!-- Analytics: privacy-friendly, self-hostable. Enable by setting PUBLIC_ANALYTICS_SRC + PUBLIC_ANALYTICS_DOMAIN.
+       Placeholder wired now; final engine (Plausible/Umami/GA4) is a decision in BUILD-NOTES.md. -->
+  {import.meta.env.PUBLIC_ANALYTICS_SRC && (
+    <script defer data-domain={import.meta.env.PUBLIC_ANALYTICS_DOMAIN} src={import.meta.env.PUBLIC_ANALYTICS_SRC}></script>
+  )}
+</head>
+<body>
+  <nav>
+    <div class="wrap nav-inner">
+      <a href="/" class="logo">Infinite<span>&nbsp;Emergence</span></a>
+      <div class="nav-links">
+        {NAV.map(n => (
+          <a href={n.href} class={path === n.href ? 'active' : ''}>{n.label}</a>
+        ))}
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <slot />
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <div class="foot-inner">
+        <div>
+          <div class="logo">Infinite<span>&nbsp;Emergence</span></div>
+          <p class="foot-tag">{SITE.tagline}</p>
+        </div>
+        <div class="foot-social">
+          {SOCIAL.map(s => <a href={s.href} target="_blank" rel="noopener">{s.label}</a>)}
+        </div>
+      </div>
+      <p class="foot-note">
+        © {new Date().getFullYear()} {SITE.name}. Written by {SITE.author}.
+        Preview rebuild of brainforest.org — content preserved from the original site.
+      </p>
+    </div>
+  </footer>
+
+  <style is:global>
+    :root {
+      --cream: #FAF7F0; --cream-2: #F2EDE2; --ink: #14211C; --ink-soft: #41524A;
+      --green: #1F6E55; --green-bright: #3FA980; --line: #E2DBCB;
+      --serif: "Newsreader", Georgia, serif;
+      --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--sans); background: var(--cream); color: var(--ink); line-height: 1.65; -webkit-font-smoothing: antialiased; }
+    .wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+    h1, h2, h3, h4 { font-family: var(--serif); font-weight: 500; line-height: 1.15; letter-spacing: -0.01em; }
+    a { color: var(--green); }
+    img { max-width: 100%; height: auto; }
+    .eyebrow { font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--green); font-weight: 600; margin-bottom: 16px; }
+
+    nav { position: sticky; top: 0; z-index: 20; background: rgba(250,247,240,0.88); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+    .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+    .logo { font-family: var(--serif); font-size: 20px; font-weight: 600; letter-spacing: -0.02em; color: var(--ink); text-decoration: none; white-space: nowrap; }
+    .logo span { color: var(--green); }
+    .nav-links { display: flex; gap: 26px; align-items: center; }
+    .nav-links a { color: var(--ink-soft); text-decoration: none; font-size: 14px; font-weight: 500; }
+    .nav-links a:hover, .nav-links a.active { color: var(--green); }
+    @media (max-width: 620px){ .nav-links { gap: 16px; } .nav-links a { font-size: 13px; } .logo span { display:none; } }
+
+    .btn { display: inline-block; background: var(--ink); color: var(--cream); padding: 11px 22px; border-radius: 100px; text-decoration: none; font-size: 14px; font-weight: 600; border: none; cursor: pointer; transition: transform .15s ease, background .15s ease; }
+    .btn:hover { transform: translateY(-1px); background: var(--green); }
+    .btn-ghost { background: transparent; color: var(--ink); border: 1px solid var(--ink); }
+    .btn-ghost:hover { background: var(--ink); color: var(--cream); }
+
+    footer { border-top: 1px solid var(--line); padding: 48px 0; margin-top: 90px; background: var(--cream-2); }
+    .foot-inner { display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap; align-items: flex-start; }
+    .foot-tag { color: var(--ink-soft); font-size: 14px; margin-top: 8px; }
+    .foot-social { display: flex; gap: 20px; flex-wrap: wrap; }
+    .foot-social a { color: var(--ink-soft); font-size: 14px; text-decoration: none; font-weight: 500; }
+    .foot-social a:hover { color: var(--green); }
+    .foot-note { font-size: 12px; color: var(--ink-soft); margin-top: 26px; opacity: .85; max-width: 70ch; }
+  </style>
+</body>
+</html>

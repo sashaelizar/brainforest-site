@@ -1,0 +1,149 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PostCard from '../../components/PostCard.astro';
+import CategoryNav from '../../components/CategoryNav.astro';
+import { fmtDate, SITE, catSlug } from '../../site';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('posts');
+  return posts.map(p => ({ params: { slug: p.id }, props: { post: p, all: posts } }));
+}
+
+const { post, all } = Astro.props;
+// Body is faithful sanitized HTML from the original Wix DOM — render it directly
+// to preserve headings/ids, the outline jump-nav, ordered-list numbering, and citations.
+const bodyHtml = post.body ?? '';
+const d = post.data;
+
+// Related posts: share a category, most recent first, up to 3.
+const related = all
+  .filter(p => p.id !== post.id && p.data.categories.some(c => d.categories.includes(c)))
+  .sort((a, b) => +new Date(b.data.date) - +new Date(a.data.date))
+  .slice(0, 3);
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: d.title,
+  description: d.description,
+  image: d.hero ? new URL(d.hero, Astro.site).href : undefined,
+  datePublished: d.date,
+  dateModified: d.updated || d.date,
+  author: { '@type': 'Person', name: d.author || SITE.author },
+  publisher: { '@type': 'Organization', name: SITE.name },
+  articleSection: d.categories,
+  mainEntityOfPage: new URL(`/post/${post.id}`, Astro.site).href,
+};
+---
+<BaseLayout title={d.title} description={d.description} image={d.hero} type="article" jsonLd={jsonLd}>
+  <article>
+    <div class="wrap narrow">
+      <CategoryNav active={d.categories} />
+      <a class="back" href="/posts">← All articles</a>
+      {d.categories.length > 0 && (
+        <div class="cats">
+          {d.categories.map(c => <a class="cat" href={`/category/${catSlug(c)}`}>{c}</a>)}
+        </div>
+      )}
+      <h1>{d.title}</h1>
+      <div class="byline">
+        <span class="author">{d.author || SITE.author}</span>
+        <span class="sep">·</span>
+        <span>{fmtDate(d.date)}</span>
+        {d.readTime && <><span class="sep">·</span><span>{d.readTime}</span></>}
+      </div>
+    </div>
+
+    {d.hero && (
+      <div class="wrap"><div class="hero-img"><img src={d.hero} alt={d.title} /></div></div>
+    )}
+
+    <div class="wrap narrow">
+      <div class="prose" set:html={bodyHtml}></div>
+    </div>
+
+    {related.length > 0 && (
+      <aside class="related">
+        <div class="wrap">
+          <h2>Related reading</h2>
+          <div class="rel-grid">
+            {related.map(p => (
+              <PostCard slug={p.id} title={p.data.title} date={p.data.date}
+                readTime={p.data.readTime} hero={p.data.hero} description={p.data.description}
+                categories={p.data.categories} author={p.data.author} />
+            ))}
+          </div>
+        </div>
+      </aside>
+    )}
+
+    <div class="wrap narrow">
+      <footer class="post-foot"><a class="btn btn-ghost" href="/posts">← Back to all articles</a></footer>
+    </div>
+  </article>
+
+  <style>
+    article { padding-top: 28px; }
+    .narrow { max-width: 864px; }  /* widened ~10% each side from 720 */
+    .back { display: inline-block; font-size: 14px; color: var(--green); text-decoration: none; margin-bottom: 18px; font-weight: 500; }
+    .cats { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+    .cat { font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase; font-weight: 600; color: var(--green); background: var(--cream-2); border: 1px solid var(--line); padding: 5px 12px; border-radius: 100px; text-decoration: none; }
+    .cat:hover { border-color: var(--green); }
+    article h1 { font-size: clamp(30px, 5vw, 48px); line-height: 1.12; }
+    .byline { margin-top: 18px; color: var(--ink-soft); font-size: 15px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+    .byline .author { color: var(--green); font-weight: 600; }
+    .byline .sep { opacity: .5; }
+    .hero-img { margin: 36px 0 8px; border-radius: 18px; overflow: hidden; border: 1px solid var(--line); }
+    .hero-img img { width: 100%; display: block; }
+    .related { margin-top: 64px; padding: 56px 0; background: var(--cream-2); border-top: 1px solid var(--line); }
+    .related h2 { font-size: 28px; margin-bottom: 28px; }
+    .rel-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    @media (max-width: 760px){ .rel-grid { grid-template-columns: 1fr; } }
+    .post-foot { margin-top: 40px; padding-top: 28px; border-top: 1px solid var(--line); }
+  </style>
+
+  <style is:global>
+    .prose { font-size: 18px; line-height: 1.8; color: #23312b; margin-top: 40px; }
+    .prose p { margin-bottom: 1.5em; }
+    /* Author's empty paragraphs were intentional spacing — give them real height */
+    .prose p:empty { min-height: 1.1em; margin-bottom: 0; }
+    .prose br { line-height: 2.2; }
+    .prose h2 { font-size: 28px; margin: 1.6em 0 .5em; scroll-margin-top: 84px; }
+    .prose h3 { font-size: 22px; margin: 1.4em 0 .4em; scroll-margin-top: 84px; }
+    .prose h4 { font-size: 18px; margin: 1.3em 0 .3em; scroll-margin-top: 84px; }
+    .prose a { color: var(--green); text-underline-offset: 2px; }
+    .prose img { border-radius: 12px; margin: 1.6em auto; display: block; border: 1px solid var(--line); max-width: 100%; height: auto; }
+    .prose ul, .prose ol { padding-left: 1.5em; margin: 0 0 1.2em; }
+    .prose li { margin-bottom: .5em; }
+    .prose blockquote { border-left: 3px solid var(--green-bright); padding-left: 20px; color: var(--ink-soft); font-style: italic; margin: 1.2em 0; }
+    .prose hr { border: none; border-top: 1px solid var(--line); margin: 2em 0; }
+    .prose table { width: 100%; border-collapse: collapse; font-size: 15px; display: block; overflow-x: auto; margin: 1.4em 0; }
+    .prose th, .prose td { border: 1px solid var(--line); padding: 8px 12px; text-align: left; }
+    .prose code { background: var(--cream-2); padding: 2px 6px; border-radius: 5px; font-size: .9em; }
+
+    /* Numbered section lists: <ol><li><h2>…</h2>…</li></ol> — show the number beside the heading */
+    .prose ol > li::marker { color: var(--green); font-weight: 700; font-family: var(--serif); }
+    .prose ol > li > h2:first-child,
+    .prose ol > li > h3:first-child { display: inline-block; margin-top: 0; vertical-align: top; }
+    .prose ol > li { margin-bottom: 1.4em; }
+
+    /* Author's in-page Outline / jump-nav */
+    .prose h2 + ul a[href^="#"], .prose a[href^="#"] { font-weight: 500; }
+    .prose ul a[href^="#"] { text-decoration: none; }
+    .prose ul a[href^="#"]:hover { text-decoration: underline; }
+
+    /* Image captions */
+    .prose figure { margin: 1.8em 0; }
+    .prose figure img { margin: 0 auto .6em; }
+    .prose figcaption { font-size: 13.5px; line-height: 1.5; color: var(--ink-soft); font-style: italic; text-align: center; max-width: 90%; margin: 0 auto; }
+
+    /* References: clearly delineated, smaller, still readable — like the original */
+    .prose .references { margin-top: 3em; padding-top: 1.4em; border-top: 2px solid var(--line); font-size: 14px; line-height: 1.55; color: var(--ink-soft); }
+    .prose .references h2, .prose .references h3 { font-size: 20px; color: var(--ink); margin: 0 0 .6em; }
+    .prose .references ol, .prose .references ul { padding-left: 1.4em; }
+    .prose .references li { margin-bottom: .55em; }
+    .prose .references a { color: var(--green); word-break: break-word; }
+    .prose sup { font-size: .72em; }
+  </style>
+</BaseLayout>

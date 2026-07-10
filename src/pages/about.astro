@@ -1,0 +1,31 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE, SOCIAL } from '../site';
+---
+<BaseLayout title="About" description="About Infinite Emergence and Sasha Elizar, M.S.">
+  <section class="wrap narrow about">
+    <p class="eyebrow">About</p>
+    <h1>Infinite Emergence</h1>
+    <p class="lead">{SITE.tagline}. Translating neuroscience, functional nutrition, and
+      bioenergetic medicine into practical, evidence-based tools for real health.</p>
+    <p>Infinite Emergence is the work of <strong>{SITE.author}</strong> — spanning the
+      microbiome, gut-brain axis, detoxification, endocrinology, and aging. Every article
+      starts from the mechanism and the research, then works toward what you can actually do.</p>
+    <p>The topics range from leaky gut and the microbiome to psychedelics, the pineal gland,
+      and living with invisible illness. Explore the full body of work in the
+      <a href="/posts">articles archive</a>, or listen to the <a href="/podcast">podcast</a>.</p>
+    <div class="links">
+      {SOCIAL.map(s => <a href={s.href} target="_blank" rel="noopener" class="btn btn-ghost">{s.label}</a>)}
+    </div>
+    <p class="note">This is a first-draft preview rebuilt from the original brainforest.org
+      content. Copy and structure can be refined together.</p>
+  </section>
+  <style>
+    .about { padding: 72px 0; max-width: 720px; }
+    .about h1 { font-size: clamp(36px, 6vw, 56px); }
+    .about .lead { font-size: 20px; color: var(--ink-soft); margin: 20px 0 24px; }
+    .about p { margin-bottom: 1.1em; font-size: 17px; line-height: 1.75; }
+    .links { display: flex; gap: 12px; flex-wrap: wrap; margin: 28px 0; }
+    .note { font-size: 13px; color: var(--ink-soft); opacity: .8; }
+  </style>
+</BaseLayout>

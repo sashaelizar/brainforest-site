@@ -1,0 +1,68 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PostCard from '../../components/PostCard.astro';
+import { catSlug, CATEGORY_ORDER } from '../../site';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('posts');
+  const byCat = new Map<string, typeof posts>();
+  for (const p of posts) {
+    for (const c of p.data.categories) {
+      if (!byCat.has(c)) byCat.set(c, []);
+      byCat.get(c)!.push(p);
+    }
+  }
+  return [...byCat.entries()].map(([name, ps]) => ({
+    params: { slug: catSlug(name) },
+    props: {
+      name,
+      posts: ps.sort((a, b) => +new Date(b.data.date) - +new Date(a.data.date)),
+    },
+  }));
+}
+
+const { name, posts } = Astro.props;
+const allPosts = await getCollection('posts');
+const present = new Set(allPosts.flatMap(p => p.data.categories));
+const tabs = CATEGORY_ORDER.filter(c => present.has(c));
+---
+<BaseLayout title={name} description={`Articles on ${name} from Infinite Emergence.`}>
+  <section class="head-band">
+    <div class="wrap">
+      <p class="eyebrow">Category</p>
+      <h1>{name}</h1>
+      <p class="sub">{posts.length} article{posts.length === 1 ? '' : 's'} in {name}.</p>
+      <nav class="cat-tabs" aria-label="Categories">
+        <a href="/posts" class="tab">All</a>
+        {tabs.map(c => (
+          <a href={`/category/${catSlug(c)}`} class={`tab ${c === name ? 'active' : ''}`}>{c}</a>
+        ))}
+      </nav>
+    </div>
+  </section>
+  <section class="list-band">
+    <div class="wrap">
+      <div class="grid">
+        {posts.map(p => (
+          <PostCard slug={p.id} title={p.data.title} date={p.data.date}
+            readTime={p.data.readTime} hero={p.data.hero} description={p.data.description}
+            categories={p.data.categories} author={p.data.author} />
+        ))}
+      </div>
+    </div>
+  </section>
+  <style>
+    .head-band { padding: 72px 0 8px; }
+    .head-band h1 { font-size: clamp(40px, 7vw, 60px); }
+    .head-band .sub { color: var(--ink-soft); font-size: 18px; margin-top: 14px; }
+    .cat-tabs { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
+    .tab { font-size: 13px; font-weight: 600; padding: 8px 16px; border-radius: 100px; border: 1px solid var(--line); color: var(--ink-soft); text-decoration: none; background: var(--cream-2); transition: all .15s ease; }
+    .tab:hover { border-color: var(--green); color: var(--green); }
+    .tab.active { background: var(--ink); color: var(--cream); border-color: var(--ink); }
+    .list-band { padding: 40px 0; }
+    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+    @media (max-width: 860px){ .grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 560px){ .grid { grid-template-columns: 1fr; } }
+  </style>
+</BaseLayout>

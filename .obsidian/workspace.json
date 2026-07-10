@@ -1,0 +1,196 @@
+{
+  "main": {
+    "id": "ad9f90fc152946d2",
+    "type": "split",
+    "children": [
+      {
+        "id": "f6c86c2e20676fc0",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "a053ce6ff4082579",
+            "type": "leaf",
+            "state": {
+              "type": "image",
+              "state": {
+                "file": "public/images/costa-rica/09_fa29ad-7db656a4b50048798dff8de81ef9d7c5-.jpg"
+              },
+              "icon": "lucide-image",
+              "title": "09_fa29ad-7db656a4b50048798dff8de81ef9d7c5-"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "4bec699a929ceeb2",
+    "type": "split",
+    "children": [
+      {
+        "id": "295a6778f2469d19",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "0bb145a89ee1b2f5",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "2af8c1d7e5b8be42",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "823bfa3727668f26",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "2bdde0ad6bfcb2ec",
+    "type": "split",
+    "children": [
+      {
+        "id": "95b58c9138a82ca8",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "450d552cde48c90c",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "public/images/costa-rica/09_fa29ad-7db656a4b50048798dff8de81ef9d7c5-.jpg",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks for 09_fa29ad-7db656a4b50048798dff8de81ef9d7c5-"
+            }
+          },
+          {
+            "id": "ee2eaef605acaaf6",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "public/images/costa-rica/09_fa29ad-7db656a4b50048798dff8de81ef9d7c5-.jpg",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links from 09_fa29ad-7db656a4b50048798dff8de81ef9d7c5-"
+            }
+          },
+          {
+            "id": "fbcbf788ea7acb48",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "1d505a772760f320",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "All properties"
+            }
+          },
+          {
+            "id": "3f5ee9fcad71af71",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "public/images/costa-rica/09_fa29ad-7db656a4b50048798dff8de81ef9d7c5-.jpg",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline of 09_fa29ad-7db656a4b50048798dff8de81ef9d7c5-"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
+      "bases:Create new base": false
+    }
+  },
+  "active": "a053ce6ff4082579",
+  "lastOpenFiles": [
+    "public/images/costa-rica/07_fa29ad-6ba6abedeb4048df9f4023eb6868345f-.jpg",
+    "public/images/costa-rica/04_fa29ad-3cbb10f75c1a4ba088cbd2ca02df75e0-.jpg",
+    "public/images/costa-rica/01_fa29ad-1bb975391a7d448aae94fd256c31f0d3-.jpg",
+    "public/images/9-curcumin-benefits/05_fa29ad-80e92660c33f452c9a4b865f733723b0-.jpg",
+    "public/images/9-curcumin-benefits/04_fa29ad-78adab1904e8419cbebe233c040f99de-.jpg",
+    "public/images/9-curcumin-benefits/02_fa29ad-27852566b5504722afa57777a3680b68-.jpg",
+    "public/images/9-curcumin-benefits/00_cover_80e92660c33f.jpg",
+    "src/content/posts/exercise-gut-health.md",
+    "src/content/posts/biodegradable-bioplastics.md"
+  ]
+}
