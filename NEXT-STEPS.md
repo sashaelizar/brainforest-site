@@ -59,38 +59,35 @@ recreating that with **ConvertKit** (chosen 2026-07-09).
   - [ ] Choose one, create the account, set `PUBLIC_ANALYTICS_SRC` + `PUBLIC_ANALYTICS_DOMAIN`
   - [ ] Confirm data is flowing after launch
 
-## 8. Comments, likes, and live view counts (raised 2026-07-10, not started)
-Sasha wants to display, per article: carried-over historical comments/likes/views from Wix, plus
-a live, continuously-updating view counter going forward. Research so far:
+## 8. Comments, likes, and live view counts (raised 2026-07-10)
 
-- **The Wix content backup has none of this data.** Checked `brainforest-backup/` and the raw HTML
-  page captures — comments/likes/views on Wix are loaded live via Wix's own app at page-view time,
-  not baked into the page, so the static export never captured actual numbers or comment text
-  (only found leftover CSS class names from Wix's comment widget, no real data). **To carry over
-  real historical numbers, someone needs to pull them from Wix directly** — either the Wix
-  dashboard's own analytics/comments panel (manual, per post) or Wix's API (needs Sasha's Wix
-  developer access) — before the Wix account is cancelled. Flag this urgently if she wants the old
-  numbers preserved, since they disappear once Wix is cancelled.
-- **Going forward, this is a static site with no built-in database**, so each piece needs its own
-  solution:
-  - **Live view counts**: realistic with **Umami** (the tool Sasha mentioned) — it's free
-    (self-hosted) or has a free-tier cloud option, privacy-friendly, no cookie banner. Showing a
-    *live number on the page itself* (not just in a private dashboard) needs one extra piece: a
-    small Netlify Function that asks Umami for the current count and hands it back to the page.
-    Buildable, not hard, but not yet started.
-  - **Likes**: needs somewhere to store the count (static sites don't have a database by default).
-    Realistic free option: a lightweight backend like Supabase (free tier) or a small Netlify
-    Function + Netlify Blobs. Buildable, medium effort.
-  - **Comments**: needs a commenting system since Wix's is Wix-only. Common free options: **Giscus**
-    (free, backed by GitHub Discussions, no ads) or **Disqus** (free tier, but shows ads). Giscus is
-    the better fit here given everything else is already on GitHub.
-- **What's needed:**
-  - [ ] Sasha decides whether pulling historical Wix numbers is worth the manual effort before
-        cancelling Wix (they cannot be recovered after)
-  - [ ] Pick a comments tool (Giscus recommended) and wire it into the per-article page only (not
-        thumbnails/cards, per Sasha's request)
-  - [ ] Pick a likes/storage approach and build the counter
-  - [ ] Wire up Umami + a small live-view-count display on each article
+**Views — done.** Turns out the historical numbers *were* recoverable: Wix's raw page source
+never has them (loaded in by their app after the page loads), but a real browser rendering the
+live page shows them in plain text. Visited all 42 live posts on brainforest.org with a real
+browser and read off the actual view/comment/like numbers for each — saved to
+`src/data/legacy-stats.json`. Built `ArticleStats.astro`, shown at the bottom of every article,
+displaying that legacy number. Added `netlify/functions/track-view.js`, a Netlify Function using
+**Netlify Blobs** (built into Netlify — no extra account/service) that counts new views going
+forward; the displayed total is legacy + live, added together client-side.
+- [x] Legacy views/comments/likes pulled from the live site for all 42 posts (2026-07-10)
+- [x] Stats display built and verified locally (shows the correct legacy numbers, e.g. 409 for
+      the leaky-gut-symptoms post, matching the live site exactly)
+- [x] Live-counter function written (`netlify/functions/track-view.js`)
+- [ ] **Needs Netlify actually connected/deployed to work** — the live half of the counter can't
+      run locally (`astro dev` has no Netlify Functions runtime), so right now every article
+      correctly shows its legacy number and silently stays there. Once deployed, new visits will
+      start adding to it automatically, no further action needed.
+
+**Comments — not started.** The legacy *counts* are captured above, but not the actual comment
+text/authors (would need scraping each post's comment thread specifically, not done). For a live
+commenting system going forward: **Giscus** (free, backed by GitHub Discussions, no ads) is the
+best fit here since everything else is already on GitHub. Not built yet — needs a scope decision
+first: do we want the old comment text migrated too, or just start fresh with Giscus going
+forward and let the historical comment *count* (already captured) stand as the record?
+
+**Likes — legacy count captured, no live "like" button built.** Sasha didn't ask for a live like
+button this round, just the historical number, which is already showing. If a live like button is
+wanted later, same pattern as views: a small Netlify Function + Blobs.
 
 ## 4. SEO — finish the job
 - [ ] After launch, submit `sitemap-index.xml` to **Google Search Console** (and Bing Webmaster)
