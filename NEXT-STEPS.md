@@ -78,12 +78,16 @@ forward; the displayed total is legacy + live, added together client-side.
       correctly shows its legacy number and silently stays there. Once deployed, new visits will
       start adding to it automatically, no further action needed.
 
-**Comments — not started.** The legacy *counts* are captured above, but not the actual comment
-text/authors (would need scraping each post's comment thread specifically, not done). For a live
-commenting system going forward: **Giscus** (free, backed by GitHub Discussions, no ads) is the
-best fit here since everything else is already on GitHub. Not built yet — needs a scope decision
-first: do we want the old comment text migrated too, or just start fresh with Giscus going
-forward and let the historical comment *count* (already captured) stand as the record?
+**Comments — legacy text mostly done, live system not started.** The public Wix page never
+actually rendered the comment thread widget (just the count), even scrolling/waiting — so Sasha
+pulled the real text/author/date/likes herself from the Wix Comments moderation dashboard
+(2026-07-10). 7 of 9 known comments captured and now displaying at the bottom of their articles
+(`src/data/legacy-comments.json`, rendered by `CommentsList.astro`).
+- [ ] **2 comments still missing** on `fecal-microbiota-transplants-healthspan` — the counter
+      shows 2 comments but none were retrieved yet; check the Wix dashboard for that post
+- [ ] No live commenting system yet for new comments going forward — **Giscus** (free, backed by
+      GitHub Discussions, no ads) is the recommended fit since everything else is already on
+      GitHub. Not built.
 
 **Likes — legacy count captured, no live "like" button built.** Sasha didn't ask for a live like
 button this round, just the historical number, which is already showing. If a live like button is
