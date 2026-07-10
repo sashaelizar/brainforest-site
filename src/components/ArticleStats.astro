@@ -1,0 +1,44 @@
+---
+// Shows view/comment/like stats at the bottom of an article: the historical number from the
+// original Wix site (src/data/legacy-stats.json), plus a live count of views since this counter
+// went live on the new site, added together. The live count only works once the site is deployed
+// to Netlify (it calls a Netlify Function) — locally, or before that's connected, it just shows
+// the legacy number with no error.
+import legacyStats from '../data/legacy-stats.json';
+
+interface Props { slug: string }
+const { slug } = Astro.props;
+const stats = (legacyStats as Record<string, { views: number; comments: number; likes: number }>)[slug]
+  ?? { views: 0, comments: 0, likes: 0 };
+---
+<div class="article-stats" data-slug={slug} data-legacy-views={stats.views}>
+  <span class="stat views">
+    <span class="stat-num" data-role="views">{stats.views.toLocaleString()}</span> views
+  </span>
+  <span class="stat">{stats.comments.toLocaleString()} comment{stats.comments === 1 ? '' : 's'}</span>
+  <span class="stat">{stats.likes.toLocaleString()} like{stats.likes === 1 ? '' : 's'}</span>
+</div>
+
+<script>
+  // Fires once per page load. Calls the live counter; if it's unreachable (local dev, or Netlify
+  // not connected yet) this just quietly does nothing and the legacy number stands as-is.
+  const el = document.currentScript?.previousElementSibling as HTMLElement | null;
+  if (el) {
+    const slug = el.dataset.slug;
+    const legacyViews = Number(el.dataset.legacyViews || 0);
+    fetch(`/api/track-view?slug=${encodeURIComponent(slug ?? '')}`)
+      .then((r) => (r.ok ? r.json() : null))
+      .then((data) => {
+        if (data && typeof data.newSiteViews === 'number') {
+          const numEl = el.querySelector('[data-role="views"]');
+          if (numEl) numEl.textContent = (legacyViews + data.newSiteViews).toLocaleString();
+        }
+      })
+      .catch(() => {});
+  }
+</script>
+
+<style>
+  .article-stats { display: flex; gap: 18px; flex-wrap: wrap; margin-top: 40px; padding-top: 24px; border-top: 1px solid var(--line); font-size: 14px; color: var(--ink-soft); }
+  .article-stats .stat-num { font-weight: 600; color: var(--ink); }
+</style>
