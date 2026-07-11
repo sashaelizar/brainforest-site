@@ -130,6 +130,11 @@ const jsonLd = {
        spacing and made list items (including outline/jump-nav lists) look like they had a
        blank line between each one. Paragraphs inside list items shouldn't add extra margin. */
     .prose li p { margin-bottom: 0; }
+    /* A lead-in paragraph immediately followed by a list (e.g. "4. Immunity: ..." followed by
+       its own sub-bullets) still got the normal paragraph gap before the list, which reads as
+       an unwanted blank line. Original site keeps these tight together. */
+    .prose div[type="paragraph"]:has(+ div > ul),
+    .prose div[type="paragraph"]:has(+ div > ol) { margin-bottom: -1.2em; }
     .prose blockquote { border-left: 3px solid var(--green-bright); padding-left: 20px; color: var(--ink-soft); font-style: italic; margin: 1.2em 0; }
     .prose hr { border: none; border-top: 1px solid var(--line); margin: 2em 0; }
     .prose table { width: 100%; border-collapse: collapse; font-size: 15px; display: block; overflow-x: auto; margin: 1.4em 0; }
@@ -146,6 +151,12 @@ const jsonLd = {
     .prose h2 + ul a[href^="#"], .prose a[href^="#"] { font-weight: 500; }
     .prose ul a[href^="#"] { text-decoration: none; }
     .prose ul a[href^="#"]:hover { text-decoration: underline; }
+
+    /* Wix "Pro Gallery" widget: on the original site these photos sit side by side. Ours just
+       had plain stacked <img> tags with no gallery layout, so lay the items out as a row. */
+    .prose [id^="pro-gallery-margin-container-"] { display: flex; gap: 14px; flex-wrap: wrap; margin: 1.6em 0; }
+    .prose [id^="pro-gallery-margin-container-"] > div { flex: 1 1 240px; }
+    .prose [id^="pro-gallery-margin-container-"] img { margin: 0; width: 100%; height: auto; display: block; border-radius: 12px; border: 1px solid var(--line); }
 
     /* Image captions */
     .prose figure { margin: 1.8em 0; }
