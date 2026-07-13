@@ -3,7 +3,7 @@ title: "Solo Traveling to Costa Rica: Lessons from the Earth Mother"
 author: "Sasha Elizar, M.S."
 date: "2022-01-17T07:18:40.143Z"
 updated: "2022-01-17T07:34:41.125Z"
-description: "Miles and miles of pure, untouched, mountainous rainforest beauty. Walls of ferns, the ancestors of the forest. Non-existent Wi-Fi. The sun, blazing hot and intense. Rocky roads. This is how I started the New Year.  Solo traveling to Costa Rica as a female American tourist (during a pandemic, to boot), I'll admit had a certain amount of stress tied to it. I almost didn't go out of concern for my safety. A housemate of mine lovingly and only half jokingly said, &quot;Don't get trafficked!&quot; My dad offe"
+description: "Miles and miles of pure, untouched, mountainous rainforest beauty. Walls of ferns, the ancestors of the forest. Non-existent Wi-Fi. The sun, blazing hot and intense. Rocky roads. This is how I started the New Year.  Solo traveling to Costa Rica as a female American tourist (during a pandemic, to boot), I'll admit had a certain amount of stress tied to it. I almost didn't go out of concern for my safety. A housemate of mine lovingly and only half jokingly said, “Don't get trafficked!” My dad offe"
 source_url: https://www.brainforest.org/post/costa-rica
 readTime: "8 min read"
 hero: "/images/costa-rica/00_cover_cc2405de6c64.jpg"

@@ -1,5 +1,5 @@
 ---
-title: "Living life with an &quot;invisible illness&quot;"
+title: "Living life with an “invisible illness”"
 author: "Alyssa Alfinito"
 date: "2019-05-31T00:55:21.000Z"
 updated: "2023-07-18T23:26:12.721Z"

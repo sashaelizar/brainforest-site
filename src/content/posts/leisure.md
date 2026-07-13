@@ -3,7 +3,7 @@ title: "How Leisure Rewires the Body for Healing"
 author: "Sasha Elizar, M.S."
 date: "2018-11-25T01:33:13.000Z"
 updated: "2023-07-29T22:50:20.365Z"
-description: "It seems there's this pressure to be &quot;always on,&quot; but leisure is critial for health and well-being. Taking breaks to focus on meditation, purpose, and hobbies remodels the brain, body, and spirit."
+description: "It seems there's this pressure to be “always on,” but leisure is critial for health and well-being. Taking breaks to focus on meditation, purpose, and hobbies remodels the brain, body, and spirit."
 source_url: https://www.brainforest.org/post/leisure
 readTime: "3 min read"
 hero: "/images/leisure/00_cover_8328e7a763fb.jpg"

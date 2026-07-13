@@ -3,7 +3,7 @@ title: "7 Remedies for Seasonal Affective Disorder"
 author: "Alyssa Alfinito"
 date: "2019-12-13T14:06:57.389Z"
 updated: "2022-01-30T05:57:18.283Z"
-description: "The &quot;winter blues&quot; aren't just in your head. Short days and lack of sunlight affects the release of serotonin, dopamine, and oxytocin. Around 10 million Americans are affected by SAD. We share effective self-care practices to boost mood, motivation, and well-being."
+description: "The “winter blues” aren't just in your head. Short days and lack of sunlight affects the release of serotonin, dopamine, and oxytocin. Around 10 million Americans are affected by SAD. We share effective self-care practices to boost mood, motivation, and well-being."
 source_url: https://www.brainforest.org/post/seasonal-affective-disorder
 readTime: "4 min read"
 hero: "/images/seasonal-affective-disorder/00_cover_1791f8c9dc41.jpg"

@@ -3,7 +3,7 @@ title: "3 Best Water Purification Methods"
 author: "Sasha Elizar, M.S."
 date: "2020-04-03T13:07:59.835Z"
 updated: "2023-06-27T20:46:07.857Z"
-description: "In the words of Mick Jenkins, &quot;Drink more water, or you might die.&quot; Our podcast, Mind the Roots, is out on Spotify! Last week, Shealynn and I talked about the history of water purification, interesting facts about New Jersey water, green infrastructure, rain gardens..."
+description: "In the words of Mick Jenkins, “Drink more water, or you might die.” Our podcast, Mind the Roots, is out on Spotify! Last week, Shealynn and I talked about the history of water purification, interesting facts about New Jersey water, green infrastructure, rain gardens..."
 source_url: https://www.brainforest.org/post/we-are-water
 readTime: "3 min read"
 hero: "/images/we-are-water/00_cover_fcd26b74d420.jpg"
