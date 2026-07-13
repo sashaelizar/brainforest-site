@@ -51,6 +51,25 @@ export const CATEGORY_ORDER = [
   'Aging and Lifespan', 'Hormones', 'Immunity', 'Detoxification', 'Environment',
 ];
 
+// Writer profiles. Brought back from the original brainforest.org, which linked each byline to a
+// Wix member-profile page (e.g. /profile/aalfi182/profile). Those pages only ever held a name and
+// a join date - no written bio or photo existed there for Alyssa or Medina, so `bio` is left unset
+// for them rather than inventing one. Sasha's bio is adapted from the About page.
+export interface Author { slug: string; name: string; bio?: string }
+export const AUTHORS: Record<string, Author> = {
+  'Sasha Elizar, M.S.': {
+    slug: 'sasha-elizar',
+    name: 'Sasha Elizar, M.S.',
+    bio: 'Sasha Elizar, M.S. is the writer behind Infinite Emergence, covering the microbiome, gut-brain axis, detoxification, endocrinology, and aging. Every article starts from the mechanism and the research, then works toward what you can actually do.',
+  },
+  'Alyssa Alfinito': { slug: 'alyssa-alfinito', name: 'Alyssa Alfinito' },
+  'Medina Demiri': { slug: 'medina-demiri', name: 'Medina Demiri' },
+};
+
+export function authorSlug(name: string): string {
+  return AUTHORS[name]?.slug ?? name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+}
+
 // Format an ISO date string -> "Feb 7, 2026"
 export function fmtDate(iso: string): string {
   if (!iso) return '';

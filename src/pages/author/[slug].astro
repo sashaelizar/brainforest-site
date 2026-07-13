@@ -1,0 +1,64 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PostCard from '../../components/PostCard.astro';
+import { AUTHORS, authorSlug } from '../../site';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('posts');
+  const bySlug = new Map<string, typeof posts>();
+  for (const p of posts) {
+    const name = p.data.author;
+    if (!name) continue;
+    const slug = authorSlug(name);
+    if (!bySlug.has(slug)) bySlug.set(slug, []);
+    bySlug.get(slug)!.push(p);
+  }
+  return [...bySlug.entries()].map(([slug, ps]) => ({
+    params: { slug },
+    props: {
+      name: ps[0].data.author,
+      posts: ps.sort((a, b) => +new Date(b.data.date) - +new Date(a.data.date)),
+    },
+  }));
+}
+
+const { name, posts } = Astro.props;
+const author = AUTHORS[name] ?? { slug: authorSlug(name), name };
+---
+<BaseLayout title={author.name} description={`Articles by ${author.name} on Infinite Emergence.`}>
+  <section class="head-band">
+    <div class="wrap">
+      <p class="eyebrow">Writer</p>
+      <h1>{author.name}</h1>
+      {author.bio ? (
+        <p class="bio">{author.bio}</p>
+      ) : (
+        <p class="bio no-bio">No bio on file yet for {author.name} — check back soon.</p>
+      )}
+      <p class="sub">{posts.length} article{posts.length === 1 ? '' : 's'}</p>
+    </div>
+  </section>
+  <section class="list-band">
+    <div class="wrap">
+      <div class="grid">
+        {posts.map(p => (
+          <PostCard slug={p.id} title={p.data.title} date={p.data.date}
+            readTime={p.data.readTime} hero={p.data.hero} description={p.data.description}
+            categories={p.data.categories} author={p.data.author} />
+        ))}
+      </div>
+    </div>
+  </section>
+  <style>
+    .head-band { padding: 72px 0 8px; }
+    .head-band h1 { font-size: clamp(36px, 6vw, 52px); margin-top: 10px; }
+    .head-band .bio { color: var(--ink-soft); font-size: 18px; margin-top: 18px; max-width: 64ch; line-height: 1.7; }
+    .head-band .bio.no-bio { font-style: italic; opacity: .8; }
+    .head-band .sub { color: var(--ink-soft); font-size: 14px; margin-top: 18px; }
+    .list-band { padding: 40px 0 60px; }
+    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+    @media (max-width: 860px){ .grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 560px){ .grid { grid-template-columns: 1fr; } }
+  </style>
+</BaseLayout>

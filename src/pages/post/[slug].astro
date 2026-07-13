@@ -6,7 +6,7 @@ import CategoryNav from '../../components/CategoryNav.astro';
 import SubscribeBox from '../../components/SubscribeBox.astro';
 import ArticleStats from '../../components/ArticleStats.astro';
 import CommentsList from '../../components/CommentsList.astro';
-import { fmtDate, SITE, catSlug } from '../../site';
+import { fmtDate, SITE, catSlug, authorSlug } from '../../site';
 
 export async function getStaticPaths() {
   const posts = await getCollection('posts');
@@ -51,7 +51,7 @@ const jsonLd = {
       )}
       <h1>{d.title}</h1>
       <div class="byline">
-        <span class="author">{d.author || SITE.author}</span>
+        <a class="author" href={`/author/${authorSlug(d.author || SITE.author)}`}>{d.author || SITE.author}</a>
         <span class="sep">·</span>
         <span>{fmtDate(d.date)}</span>
         {d.readTime && <><span class="sep">·</span><span>{d.readTime}</span></>}
@@ -102,7 +102,8 @@ const jsonLd = {
     .cat:hover { border-color: var(--green); }
     article h1 { font-size: clamp(30px, 5vw, 48px); line-height: 1.12; }
     .byline { margin-top: 18px; color: var(--ink-soft); font-size: 15px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
-    .byline .author { color: var(--green); font-weight: 600; }
+    .byline .author { color: var(--green); font-weight: 600; text-decoration: none; }
+    .byline .author:hover { text-decoration: underline; }
     .byline .sep { opacity: .5; }
     .hero-img { margin: 36px 0 8px; border-radius: 18px; overflow: hidden; border: 1px solid var(--line); }
     .hero-img img { width: 100%; display: block; }
