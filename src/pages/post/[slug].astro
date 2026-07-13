@@ -145,7 +145,11 @@ const jsonLd = {
     .prose ol > li::marker { color: var(--green); font-weight: 700; font-family: var(--serif); }
     .prose ol > li > h2:first-child,
     .prose ol > li > h3:first-child { display: inline-block; margin-top: 0; vertical-align: top; }
-    .prose ol > li { margin-bottom: 1.4em; }
+    /* Only widen the gap for actual numbered-section items (heading inside the li) - a plain
+       numbered/outline list (e.g. a jump-nav list of links) should use the normal .5em list
+       spacing, not this wider one. */
+    .prose ol > li:has(> h2:first-child),
+    .prose ol > li:has(> h3:first-child) { margin-bottom: 1.4em; }
 
     /* Author's in-page Outline / jump-nav */
     .prose h2 + ul a[href^="#"], .prose a[href^="#"] { font-weight: 500; }
