@@ -127,6 +127,10 @@ const jsonLd = {
     .prose img { border-radius: 12px; margin: 1.6em auto; display: block; border: 1px solid var(--line); max-width: 100%; height: auto; }
     .prose ul, .prose ol { padding-left: 1.5em; margin: 0 0 1.2em; }
     .prose li { margin-bottom: .5em; }
+    /* A nested sub-list (e.g. an outline item with sub-items under it) carried its own bottom
+       margin on top of the parent item's spacing, so items with sub-items had a visibly bigger
+       gap after them than plain items. Keep every outline item single-spaced regardless. */
+    .prose li > ul, .prose li > ol { margin-bottom: 0; }
     /* List item text reused the body-paragraph margin, which stacked with the list's own
        spacing and made list items (including outline/jump-nav lists) look like they had a
        blank line between each one. Paragraphs inside list items shouldn't add extra margin. */
