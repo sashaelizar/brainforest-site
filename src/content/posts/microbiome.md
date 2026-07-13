@@ -3,7 +3,7 @@ title: "You are an ecosystem: How gut microbiota impact human health"
 author: "Sasha Elizar, M.S."
 date: "2019-03-01T01:49:26.000Z"
 updated: "2023-07-29T22:49:45.415Z"
-description: "Who are you? I mean, who were you before your family, culture, and society inscribed on your slate with their unsolicited opinions about your passions, goals, dreams, and visions? Who says others’ perceptions have to define your reality? Return to those feelings of childlike limitlessness."
+description: "Healing begins in the gut. How gut microbiota shape immunity, mood, and the gut-brain axis, and what the research says about supporting a healthy microbiome."
 source_url: https://www.brainforest.org/post/microbiome
 readTime: "5 min read"
 hero: "/images/microbiome/00_cover_88c1be580d24.png"
