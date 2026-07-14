@@ -16,12 +16,12 @@ const uid = Math.random().toString(36).slice(2, 9);
         <p>Join our mailing list to get exclusive early access to scientific news and health content.</p>
       </div>
       <form
+        id={`sub-form-${uid}`}
         class="form"
         name="stay-in-the-know"
         method="POST"
         data-netlify="true"
         netlify-honeypot="bot-field"
-        onsubmit={`event.preventDefault(); this.style.display='none'; document.getElementById('sub-thanks-${uid}').style.display='block';`}
       >
         <input type="hidden" name="form-name" value="stay-in-the-know" />
         <p hidden><label>Skip: <input name="bot-field" /></label></p>
@@ -30,8 +30,29 @@ const uid = Math.random().toString(36).slice(2, 9);
       </form>
     </div>
     <div id={`sub-thanks-${uid}`} class="thanks" style="display:none">Thanks for submitting!</div>
+    <p id={`sub-error-${uid}`} class="sub-error" style="display:none">Something went wrong — mind trying again?</p>
   </div>
 </section>
+<script define:vars={{ uid }}>
+  const form = document.getElementById(`sub-form-${uid}`);
+  form?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const body = new URLSearchParams(new FormData(form)).toString();
+    fetch('/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body,
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error(String(res.status));
+        form.style.display = 'none';
+        document.getElementById(`sub-thanks-${uid}`).style.display = 'block';
+      })
+      .catch(() => {
+        document.getElementById(`sub-error-${uid}`).style.display = 'block';
+      });
+  });
+</script>
 <style>
   .subscribe.band { margin-top: 64px; padding: 56px 0; background: var(--cream-2); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); text-align: center; }
   .subscribe.band .subscribe-inner { flex-direction: column; align-items: center; max-width: 480px; margin: 0 auto; }
@@ -54,5 +75,6 @@ const uid = Math.random().toString(36).slice(2, 9);
   .subscribe input:focus { outline: 2px solid var(--green-bright); }
   .subscribe .btn { padding: 13px 24px; }
   .subscribe .thanks { font-size: 15px; color: var(--green); font-weight: 600; margin-top: 14px; }
+  .subscribe .sub-error { font-size: 14px; color: #b3453a; margin-top: 14px; }
   @media (max-width: 520px){ .subscribe.band .form { flex-direction: column; } }
 </style>
