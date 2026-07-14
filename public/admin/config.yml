@@ -1,0 +1,51 @@
+backend:
+  name: git-gateway
+  branch: main
+
+# Netlify Identity (invite-only) gates who can log in at /admin — see CMS-SETUP.md.
+local_backend: true
+
+media_folder: "public/images/_cms-uploads"
+public_folder: "/images/_cms-uploads"
+
+collections:
+  - name: "posts"
+    label: "Articles"
+    folder: "src/content/posts"
+    create: true
+    delete: false
+    slug: "{{slug}}"
+    identifier_field: title
+    summary: "{{title}} — {{date}}"
+    sortable_fields: ["date", "title"]
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - label: "Author"
+        name: "author"
+        widget: "select"
+        options: ["Sasha Elizar, M.S.", "Alyssa Alfinito", "Medina Demiri"]
+        default: "Sasha Elizar, M.S."
+      - { label: "Published date", name: "date", widget: "datetime" }
+      - { label: "Last updated", name: "updated", widget: "datetime", required: false }
+      - { label: "Description (Google snippet + card text)", name: "description", widget: "text" }
+      - { label: "Read time (e.g. '8 min read')", name: "readTime", widget: "string", required: false }
+      - label: "Categories"
+        name: "categories"
+        widget: "select"
+        multiple: true
+        options:
+          [
+            "Neuroscience", "Gut Microbiome", "Functional Nutrition", "Mental Health",
+            "Aging and Lifespan", "Hormones", "Immunity", "Detoxification", "Environment",
+          ]
+      - { label: "Hero image", name: "hero", widget: "image", required: false }
+      - { label: "Hero image caption (optional)", name: "heroCaption", widget: "string", required: false }
+      - { label: "Original Wix URL (leave as-is, do not edit)", name: "source_url", widget: "string", required: false }
+      - label: "Article body"
+        name: "body"
+        widget: "text"
+        hint: >
+          This is raw HTML, not plain markdown — it's exactly how the article was exported from
+          Wix. Edit the text directly (fix typos, swap a sentence, add a paragraph by copying the
+          pattern of an existing one). Avoid using a rich-text/WYSIWYG editor here, since it could
+          reformat the HTML and break the article's layout.
