@@ -67,20 +67,37 @@ const ogImage = image ? new URL(image, Astro.site ?? `https://${SITE.domain}`).h
     <button type="button" class="dialog-close" aria-label="Close" onclick="this.closest('dialog').close()">&times;</button>
     <h2>Stay in the know</h2>
     <p>Join our mailing list to get exclusive early access to scientific news and health content.</p>
-    <form
-      name="stay-in-the-know"
-      method="POST"
-      data-netlify="true"
-      netlify-honeypot="bot-field"
-      onsubmit="event.preventDefault(); this.style.display='none'; document.getElementById('nav-sub-thanks').style.display='block';"
-    >
+    <form id="nav-sub-form" name="stay-in-the-know" method="POST" data-netlify="true" netlify-honeypot="bot-field">
       <input type="hidden" name="form-name" value="stay-in-the-know" />
       <p hidden><label>Skip: <input name="bot-field" /></label></p>
+      <input name="name" type="text" placeholder="Your name" required aria-label="Name" />
       <input name="email" type="email" placeholder="Enter your email here" required aria-label="Email address" />
       <button type="submit" class="btn">Sign Up</button>
     </form>
     <div id="nav-sub-thanks" class="thanks" style="display:none">Thanks for submitting!</div>
+    <p id="nav-sub-error" class="nav-sub-error" style="display:none">Something went wrong — mind trying again?</p>
   </dialog>
+
+  <script>
+    const navSubForm = document.getElementById('nav-sub-form') as HTMLFormElement | null;
+    navSubForm?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const body = new URLSearchParams(new FormData(navSubForm) as unknown as Record<string, string>).toString();
+      fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body,
+      })
+        .then((res) => {
+          if (!res.ok) throw new Error(String(res.status));
+          navSubForm.style.display = 'none';
+          document.getElementById('nav-sub-thanks')!.style.display = 'block';
+        })
+        .catch(() => {
+          document.getElementById('nav-sub-error')!.style.display = 'block';
+        });
+    });
+  </script>
 
   <main>
     <slot />
@@ -145,6 +162,7 @@ const ogImage = image ? new URL(image, Astro.site ?? `https://${SITE.domain}`).h
     .subscribe-dialog input { padding: 13px 16px; border-radius: 10px; border: 1px solid var(--line); font-size: 15px; font-family: var(--sans); background: var(--cream-2); }
     .subscribe-dialog input:focus { outline: 2px solid var(--green-bright); }
     .subscribe-dialog .thanks { font-size: 15px; color: var(--green); font-weight: 600; }
+    .subscribe-dialog .nav-sub-error { font-size: 14px; color: #b3453a; }
     .dialog-close { position: absolute; top: 14px; right: 16px; background: none; border: none; font-size: 22px; line-height: 1; cursor: pointer; color: var(--ink-soft); }
     .dialog-close:hover { color: var(--ink); }
 
