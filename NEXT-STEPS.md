@@ -166,3 +166,25 @@ Her domain lives at **Bluehost**. To make brainforest.org show the new site:
       `Reference/Glossary.md` in cockpit for what an API key is and how that would work
 - [ ] Sasha created both her Netlify and ConvertKit accounts (2026-07-10) — forms/connection setup
       still pending, see §2 and §5 above
+
+## 11. Content/formatting cleanup pass (2026-07-13 – 2026-07-14)
+- [x] Fixed the outline/jump-nav underline bug at its real root cause (the `<a>` tag's own default
+      underline, not the nested `<u>` — site-wide fix, applies to every article automatically)
+- [x] Found and fixed 13 articles where the cover photo was duplicated as an inline body image —
+      5 had a meaningful alt/caption, which is now preserved as a `heroCaption` frontmatter field
+      shown under the hero image (see `content.config.ts` + `post/[slug].astro`)
+- [x] Made References/Resources/Further Reading headings H1-sized site-wide, enlarged + realigned
+      the collapse caret
+- [x] Rewrote the citation-jump-to-reference JS to manually control scroll timing (open the
+      `<details>`, force a layout recalc, then scroll) instead of relying on the browser's default
+      anchor behavior, which can race with the details still expanding
+- [x] Embedded real players: Spotify episode on we-are-water, Spotify episode on
+      sars-cov-2-nutrition (swapped to the specific episode Sasha provided), YouTube video on
+      leaky-gut-anatomy (ID recovered from a thumbnail URL — not present in any other source)
+- [ ] **Verify in a real browser**: citation-jump scroll alignment and the caret/heading alignment
+      couldn't be visually confirmed this session — the sandboxed preview tool had a scroll
+      rendering bug unrelated to the code (confirmed via `window.scrollTo()` doing nothing even
+      outside any of this feature's code). Structurally everything checks out (scroll-margin-top,
+      JS logic) but wants a real look.
+- [ ] `fecal-microbiota-transplants-healthspan` is still missing 2 of its historical Wix comments
+      (flagged back on 2026-07-10, never retrieved)
