@@ -93,6 +93,19 @@ const jsonLd = {
     </div>
   </article>
 
+  <script>
+    // Bracketed citations like [2] link to their entry in the References list. Since that list
+    // now lives inside a collapsible <details>, clicking a citation needs to open it first (some
+    // browsers do this natively for :target, but not all) before the normal anchor jump happens.
+    document.addEventListener('click', (e) => {
+      const link = (e.target as HTMLElement)?.closest('a[href^="#ref-"]') as HTMLAnchorElement | null;
+      if (!link) return;
+      const target = document.querySelector(link.getAttribute('href')!);
+      const details = target?.closest('details');
+      if (details && !details.open) details.open = true;
+    });
+  </script>
+
   <style>
     article { padding-top: 28px; }
     .narrow { max-width: 864px; }  /* widened ~10% each side from 720 */
