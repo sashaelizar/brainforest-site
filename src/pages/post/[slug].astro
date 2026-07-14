@@ -135,6 +135,10 @@ const jsonLd = {
        spacing and made list items (including outline/jump-nav lists) look like they had a
        blank line between each one. Paragraphs inside list items shouldn't add extra margin. */
     .prose li p { margin-bottom: 0; }
+    /* Outline/jump-nav links: underline only on hover instead of always-on. Every other link on
+       the site (body citations, etc.) keeps its normal static underline. */
+    .prose .outline u { text-decoration: none; }
+    .prose .outline a:hover u { text-decoration: underline; }
     /* A lead-in paragraph immediately followed by a list (e.g. "4. Immunity: ..." followed by
        its own sub-bullets) still got the normal paragraph gap before the list, which reads as
        an unwanted blank line. Original site keeps these tight together. */
