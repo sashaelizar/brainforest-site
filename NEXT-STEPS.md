@@ -275,3 +275,37 @@ commit messages (`git log`) — summarized here for the running record.
       the email prefix with no last name), so both went into `contacts-flagged-as-bot.csv` and
       `contacts.csv` (total list), not `contacts-real-likely.csv` (genuine). Genuine-contact count
       unchanged at 122.
+
+## 14. Subscribe forms, CTA buttons, card heights, Wix content audit (2026-07-14, third round)
+
+- [x] **Name field added to every subscribe surface**, not just contact: the nav "Subscribe"
+      modal, and `SubscribeBox` (top of `/posts` and every category page, bottom of every article).
+      The nav modal had its own hand-rolled copy of the preventDefault()-with-no-fetch bug fixed
+      last round elsewhere — missed it then since it doesn't reuse `SubscribeBox`. Fixed the same
+      way.
+- [x] **Comments confirmed staying on Giscus** (Sasha's call, after flagging that it requires a
+      GitHub account to comment — real friction for this audience, but she wants to keep it).
+      Already fully built (§8) — still just needs Sasha to connect Netlify and install the giscus
+      app per `GISCUS-SETUP.md`. No code changes needed this round.
+- [x] **Embedded CTA buttons restyled**: 4 articles (`detox`, `fecal-microbiota-transplants-
+      healthspan`, `leaky-gut-symptoms-biomarkers`, `leaky-gut-causes`) had a Wix button widget
+      that *was* captured during export but rendered as a bare unstyled link (no CSS matched its
+      shape). Added a `.cta-btn` class matching the site's pill-button look, and relativized the
+      hardcoded `https://www.brainforest.org/contact` hrefs. Verified against live Wix (label +
+      position both match) for 2 of the 4; confirmed via a background crawl of the other 40 live
+      articles that no other article has one — these 4 are the complete set.
+- [x] **Post-card heights now consistent**: title clamped to 2 lines, description to 3, both with
+      matching min-height. Descriptions ranged 29-500 characters, which was producing wildly
+      different card heights. All 42 cards now measure exactly 430px.
+- [ ] **Author photo — not found anywhere.** Checked the About page, podcast page, and Sasha's own
+      Wix member profile page (`/profile/sashaelizar/profile`) — all three have empty avatar slots,
+      no photo set. Her Google Drive has plenty of personal photos but nothing labeled as a
+      headshot/profile photo, so didn't guess-pick one. **Needs Sasha to point to or upload a
+      specific photo.**
+- [ ] **Wix content audit found 2 unmigrated pages, need a decision:**
+      - `/book-online` — a live Wix Bookings page offering a free 15-min consultation
+      - `/plans-pricing` — a live pricing page offering "Health Coaching" at $500/month (4 months
+        of weekly calls + personalized guidance), with a working "Buy Now" checkout
+      - Both use Wix's built-in booking/payment infrastructure, which has no static-site
+        equivalent — recreating them needs a real decision (e.g. Calendly for booking, Stripe/
+        similar for payment) not just a content copy. Flagged for Sasha, not built yet.
