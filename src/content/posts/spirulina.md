@@ -7,6 +7,7 @@ description: "Unearth ancient spirulina's vitality - a nutrient-packed superfood
 source_url: https://www.brainforest.org/post/spirulina
 readTime: "15 min read"
 hero: "/images/spirulina/00_cover_9573754d1611.jpg"
+heroCaption: "This smoothie is alive."
 categories: ["Functional Nutrition"]
 ---
 

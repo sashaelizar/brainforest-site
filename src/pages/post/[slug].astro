@@ -62,7 +62,10 @@ const jsonLd = {
     </div>
 
     {d.hero && (
-      <div class="wrap"><div class="hero-img"><img src={d.hero} alt={d.title} /></div></div>
+      <div class="wrap">
+        <div class="hero-img"><img src={d.hero} alt={d.heroCaption || d.title} /></div>
+        {d.heroCaption && <p class="hero-caption">{d.heroCaption}</p>}
+      </div>
     )}
 
     <div class="wrap narrow">
@@ -128,6 +131,7 @@ const jsonLd = {
     .byline .sep { opacity: .5; }
     .hero-img { margin: 36px 0 8px; border-radius: 18px; overflow: hidden; border: 1px solid var(--line); }
     .hero-img img { width: 100%; display: block; }
+    .hero-caption { font-size: 13.5px; color: var(--ink-soft); font-style: italic; text-align: center; margin-top: 8px; }
     .related { margin-top: 64px; padding: 56px 0; background: var(--cream-2); border-top: 1px solid var(--line); }
     .related h2 { font-size: 28px; margin-bottom: 28px; }
     .rel-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }

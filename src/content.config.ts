@@ -12,6 +12,7 @@ const posts = defineCollection({
     source_url: z.string().optional().default(''),
     readTime: z.string().optional().default(''),
     hero: z.string().optional().default(''),
+    heroCaption: z.string().optional().default(''),
     categories: z.array(z.string()).optional().default([]),
   }),
 });

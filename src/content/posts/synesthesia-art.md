@@ -7,6 +7,7 @@ description: "Analyzing common elements of synesthesia, hallucination, and schiz
 source_url: https://www.brainforest.org/post/synesthesia-art
 readTime: "11 min read"
 hero: "/images/synesthesia-art/00_cover_f98aeddc1b9a.jpg"
+heroCaption: "Rainbow eye, by Harry Quan via Unsplash"
 categories: ["Mental Health"]
 ---
 
