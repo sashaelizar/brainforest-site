@@ -179,5 +179,17 @@ const jsonLd = {
     .prose .references li { margin-bottom: .55em; }
     .prose .references a { color: var(--green); word-break: break-word; }
     .prose sup { font-size: .72em; }
+
+    /* Collapsible references (prototype - exercise-gut-health only for now). Native <details>/
+       <summary> so it works with no JS; a custom chevron replaces the browser's default marker. */
+    .prose details.references summary { cursor: pointer; list-style: none; display: flex; align-items: center; gap: 10px; user-select: none; }
+    .prose details.references summary::-webkit-details-marker { display: none; }
+    .prose details.references summary h2 { margin: 0; }
+    .prose details.references .ref-caret {
+      flex-shrink: 0; width: 8px; height: 8px;
+      border-right: 2px solid var(--green); border-bottom: 2px solid var(--green);
+      transform: rotate(-45deg); transition: transform .2s ease;
+    }
+    .prose details.references[open] .ref-caret { transform: rotate(45deg); }
   </style>
 </BaseLayout>
