@@ -1,45 +1,213 @@
 {
-  "_note": "Views/comments/likes as displayed on the live brainforest.org (Wix) on 2026-07-10, pulled with a real browser since Wix loads these numbers client-side and they don't exist in the static content export. This is the historical baseline the new site's live counter adds on top of.",
-  "9-curcumin-benefits": { "views": 68, "comments": 0, "likes": 3 },
-  "biodegradable-bioplastics": { "views": 125, "comments": 1, "likes": 1 },
-  "brain-frequencies": { "views": 184, "comments": 0, "likes": 4 },
-  "business-and-pleasure": { "views": 92, "comments": 0, "likes": 1 },
-  "costa-rica": { "views": 53, "comments": 0, "likes": 3 },
-  "detox": { "views": 51, "comments": 1, "likes": 0 },
-  "digital-minimalist-challenge": { "views": 225, "comments": 0, "likes": 4 },
-  "ergothioneine": { "views": 637, "comments": 0, "likes": 2 },
-  "exercise-gut-health": { "views": 160, "comments": 0, "likes": 1 },
-  "fecal-microbiota-transplants-healthspan": { "views": 254, "comments": 2, "likes": 2 },
-  "holistic-healthcare": { "views": 73, "comments": 0, "likes": 1 },
-  "invisible-illness": { "views": 80, "comments": 0, "likes": 3 },
-  "leaky-gut-anatomy": { "views": 292, "comments": 0, "likes": 2 },
-  "leaky-gut-causes": { "views": 679, "comments": 1, "likes": 1 },
-  "leaky-gut-symptoms-biomarkers": { "views": 409, "comments": 1, "likes": 0 },
-  "leisure": { "views": 32, "comments": 0, "likes": 1 },
-  "letter-college-freshman-self": { "views": 147, "comments": 0, "likes": 4 },
-  "lions-mane-mushroom": { "views": 149, "comments": 0, "likes": 2 },
-  "lyme-disease-and-natural-tick-repellents": { "views": 100, "comments": 0, "likes": 1 },
-  "made-to-heal": { "views": 134, "comments": 0, "likes": 4 },
-  "microbiome": { "views": 90, "comments": 0, "likes": 2 },
-  "mindset": { "views": 102, "comments": 0, "likes": 1 },
-  "moringa-tree-10-benefits": { "views": 59, "comments": 0, "likes": 1 },
-  "new-years-reflections-visions": { "views": 57, "comments": 0, "likes": 1 },
-  "personalize-your-diet": { "views": 114, "comments": 0, "likes": 2 },
-  "pineal-calcification": { "views": 792, "comments": 0, "likes": 4 },
-  "pineal-gland-development": { "views": 225, "comments": 0, "likes": 2 },
-  "plastic-free-alternatives": { "views": 52, "comments": 1, "likes": 1 },
-  "plastic-free-challenge": { "views": 85, "comments": 0, "likes": 2 },
-  "psychedelic-therapies": { "views": 369, "comments": 0, "likes": 5 },
-  "relieve-back-pain": { "views": 67, "comments": 0, "likes": 1 },
-  "reprogram-your-subconscious": { "views": 84, "comments": 0, "likes": 2 },
-  "sars-cov-2-nutrition": { "views": 112, "comments": 1, "likes": 1 },
-  "science-pineal-gland": { "views": 846, "comments": 0, "likes": 2 },
-  "seasonal-affective-disorder": { "views": 82, "comments": 0, "likes": 1 },
-  "senolytics-alzheimers": { "views": 159, "comments": 0, "likes": 1 },
-  "spirulina": { "views": 167, "comments": 1, "likes": 1 },
-  "synesthesia-art": { "views": 296, "comments": 0, "likes": 0 },
-  "there-is-no-one-diet": { "views": 71, "comments": 0, "likes": 2 },
-  "we-are-water": { "views": 198, "comments": 0, "likes": 2 },
-  "whats-your-story": { "views": 69, "comments": 0, "likes": 2 },
-  "why-i-write": { "views": 65, "comments": 0, "likes": 1 }
+  "_note": "Views: refreshed 2026-07-14 from the live brainforest.org (Wix) with a real browser (numbers load client-side, not in raw HTML). Comments/likes are still the 2026-07-10 capture. Three articles (pineal-calcification, pineal-gland-development, letter-college-freshman-self) had massively stale view counts on the 07-10 snapshot (off by 1,000-4,000+) relative to the other 39, which only drifted by their normal few-views-a-day trickle -- almost certainly a scrape bug on those three specific posts during the original capture, not real overnight virality. This is the historical baseline the new site's live counter adds on top of once deployed.",
+  "9-curcumin-benefits": {
+    "views": 70,
+    "comments": 0,
+    "likes": 3
+  },
+  "biodegradable-bioplastics": {
+    "views": 128,
+    "comments": 1,
+    "likes": 1
+  },
+  "brain-frequencies": {
+    "views": 186,
+    "comments": 0,
+    "likes": 4
+  },
+  "business-and-pleasure": {
+    "views": 94,
+    "comments": 0,
+    "likes": 1
+  },
+  "costa-rica": {
+    "views": 55,
+    "comments": 0,
+    "likes": 3
+  },
+  "detox": {
+    "views": 54,
+    "comments": 1,
+    "likes": 0
+  },
+  "digital-minimalist-challenge": {
+    "views": 227,
+    "comments": 0,
+    "likes": 4
+  },
+  "ergothioneine": {
+    "views": 639,
+    "comments": 0,
+    "likes": 2
+  },
+  "exercise-gut-health": {
+    "views": 162,
+    "comments": 0,
+    "likes": 1
+  },
+  "fecal-microbiota-transplants-healthspan": {
+    "views": 256,
+    "comments": 2,
+    "likes": 2
+  },
+  "holistic-healthcare": {
+    "views": 75,
+    "comments": 0,
+    "likes": 1
+  },
+  "invisible-illness": {
+    "views": 83,
+    "comments": 0,
+    "likes": 3
+  },
+  "leaky-gut-anatomy": {
+    "views": 296,
+    "comments": 0,
+    "likes": 2
+  },
+  "leaky-gut-causes": {
+    "views": 687,
+    "comments": 1,
+    "likes": 1
+  },
+  "leaky-gut-symptoms-biomarkers": {
+    "views": 412,
+    "comments": 1,
+    "likes": 0
+  },
+  "leisure": {
+    "views": 35,
+    "comments": 0,
+    "likes": 1
+  },
+  "letter-college-freshman-self": {
+    "views": 1149,
+    "comments": 0,
+    "likes": 4
+  },
+  "lions-mane-mushroom": {
+    "views": 153,
+    "comments": 0,
+    "likes": 2
+  },
+  "lyme-disease-and-natural-tick-repellents": {
+    "views": 102,
+    "comments": 0,
+    "likes": 1
+  },
+  "made-to-heal": {
+    "views": 136,
+    "comments": 0,
+    "likes": 4
+  },
+  "microbiome": {
+    "views": 93,
+    "comments": 0,
+    "likes": 2
+  },
+  "mindset": {
+    "views": 105,
+    "comments": 0,
+    "likes": 1
+  },
+  "moringa-tree-10-benefits": {
+    "views": 61,
+    "comments": 0,
+    "likes": 1
+  },
+  "new-years-reflections-visions": {
+    "views": 59,
+    "comments": 0,
+    "likes": 1
+  },
+  "personalize-your-diet": {
+    "views": 117,
+    "comments": 0,
+    "likes": 2
+  },
+  "pineal-calcification": {
+    "views": 4801,
+    "comments": 0,
+    "likes": 4
+  },
+  "pineal-gland-development": {
+    "views": 1231,
+    "comments": 0,
+    "likes": 2
+  },
+  "plastic-free-alternatives": {
+    "views": 54,
+    "comments": 1,
+    "likes": 1
+  },
+  "plastic-free-challenge": {
+    "views": 87,
+    "comments": 0,
+    "likes": 2
+  },
+  "psychedelic-therapies": {
+    "views": 371,
+    "comments": 0,
+    "likes": 5
+  },
+  "relieve-back-pain": {
+    "views": 69,
+    "comments": 0,
+    "likes": 1
+  },
+  "reprogram-your-subconscious": {
+    "views": 86,
+    "comments": 0,
+    "likes": 2
+  },
+  "sars-cov-2-nutrition": {
+    "views": 115,
+    "comments": 1,
+    "likes": 1
+  },
+  "science-pineal-gland": {
+    "views": 851,
+    "comments": 0,
+    "likes": 2
+  },
+  "seasonal-affective-disorder": {
+    "views": 84,
+    "comments": 0,
+    "likes": 1
+  },
+  "senolytics-alzheimers": {
+    "views": 161,
+    "comments": 0,
+    "likes": 1
+  },
+  "spirulina": {
+    "views": 168,
+    "comments": 1,
+    "likes": 1
+  },
+  "synesthesia-art": {
+    "views": 298,
+    "comments": 0,
+    "likes": 0
+  },
+  "there-is-no-one-diet": {
+    "views": 73,
+    "comments": 0,
+    "likes": 2
+  },
+  "we-are-water": {
+    "views": 203,
+    "comments": 0,
+    "likes": 2
+  },
+  "whats-your-story": {
+    "views": 72,
+    "comments": 0,
+    "likes": 2
+  },
+  "why-i-write": {
+    "views": 67,
+    "comments": 0,
+    "likes": 1
+  }
 }
