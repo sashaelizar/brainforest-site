@@ -4,7 +4,7 @@ interface Props { slug: string; title: string; date: string; readTime: string; h
 const { slug, title, date, readTime, hero, description, categories = [], author, showCategory = true } = Astro.props;
 const cat = showCategory ? categories[0] : undefined;
 ---
-<a class="pcard" href={`/post/${slug}`}>
+<a class="pcard" href={`/post/${slug}`} data-title={title.toLowerCase()}>
   {hero && (
     <div class="pcard-img">
       <img src={hero} alt={title} loading="lazy" />

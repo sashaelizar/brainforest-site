@@ -22,12 +22,20 @@ const tabs = CATEGORY_ORDER.filter(c => present.has(c));
         <a href="/posts" class="tab active">All</a>
         {tabs.map(c => <a href={`/category/${catSlug(c)}`} class="tab">{c}</a>)}
       </nav>
+      <div class="search">
+        <svg class="search-icon" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+          <circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2" />
+          <line x1="21" y1="21" x2="16.65" y2="16.65" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+        </svg>
+        <input type="search" id="post-search" placeholder="Search articles by title…" aria-label="Search articles by title" />
+      </div>
     </div>
   </section>
   <section class="list-band">
     <div class="wrap">
       <SubscribeBox variant="compact" />
-      <div class="grid">
+      <p id="search-empty" class="search-empty" style="display:none">No articles match that search.</p>
+      <div class="grid" id="post-grid">
         {posts.map(p => (
           <PostCard slug={p.id} title={p.data.title} date={p.data.date}
             readTime={p.data.readTime} hero={p.data.hero} description={p.data.description}
@@ -36,6 +44,24 @@ const tabs = CATEGORY_ORDER.filter(c => present.has(c));
       </div>
     </div>
   </section>
+  <script>
+    const input = document.getElementById('post-search') as HTMLInputElement | null;
+    const grid = document.getElementById('post-grid');
+    const empty = document.getElementById('search-empty');
+    const cards = Array.from(grid?.querySelectorAll<HTMLElement>('.pcard') ?? []);
+
+    input?.addEventListener('input', () => {
+      const keywords = input.value.trim().toLowerCase().split(/\s+/).filter(Boolean);
+      let visibleCount = 0;
+      for (const card of cards) {
+        const title = card.dataset.title ?? '';
+        const matches = keywords.every((kw) => title.includes(kw));
+        card.style.display = matches ? '' : 'none';
+        if (matches) visibleCount++;
+      }
+      if (empty) empty.style.display = keywords.length && visibleCount === 0 ? 'block' : 'none';
+    });
+  </script>
   <style>
     .head-band { padding: 72px 0 8px; }
     .head-band h1 { font-size: clamp(40px, 7vw, 64px); }
@@ -44,6 +70,12 @@ const tabs = CATEGORY_ORDER.filter(c => present.has(c));
     .tab { font-size: 13px; font-weight: 600; padding: 8px 16px; border-radius: 100px; border: 1px solid var(--line); color: var(--ink-soft); text-decoration: none; background: var(--cream-2); transition: all .15s ease; }
     .tab:hover { border-color: var(--green); color: var(--green); }
     .tab.active { background: var(--ink); color: var(--cream); border-color: var(--ink); }
+    .search { position: relative; max-width: 420px; margin-top: 20px; }
+    .search-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--ink-soft); pointer-events: none; }
+    .search input { width: 100%; padding: 12px 16px 12px 40px; border-radius: 10px; border: 1px solid var(--line); font-size: 15px; font-family: var(--sans); background: var(--cream); }
+    .search input:focus { outline: 2px solid var(--green-bright); }
+    .search input::-webkit-search-cancel-button { cursor: pointer; }
+    .search-empty { color: var(--ink-soft); font-size: 15px; padding: 20px 0; }
     .list-band { padding: 40px 0; }
     .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
     @media (max-width: 860px){ .grid { grid-template-columns: repeat(2, 1fr); } }
