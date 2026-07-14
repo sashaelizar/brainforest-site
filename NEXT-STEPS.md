@@ -309,3 +309,19 @@ commit messages (`git log`) — summarized here for the running record.
       - Both use Wix's built-in booking/payment infrastructure, which has no static-site
         equivalent — recreating them needs a real decision (e.g. Calendly for booking, Stripe/
         similar for payment) not just a content copy. Flagged for Sasha, not built yet.
+
+## 15. Citation link styling, subscribe form layout, author photo (2026-07-14, fourth round)
+
+- [x] **Citation links un-underlined.** `.prose sup a` now has `text-decoration: none`. Checked
+      thoroughly for the "spacing anomalies around em-dashes/semicolons" Sasha flagged: zero
+      semicolon-adjacent citations exist anywhere in the corpus, and the one em-dash case
+      (`leaky-gut-symptoms-biomarkers`) was already tight/correct — the underline was very likely
+      the actual anomaly she was seeing.
+- [x] **Subscribe forms back to a low profile.** Adding the name field last round made every
+      subscribe form (nav modal, top-of-page box, bottom-of-article band) stack into a tall
+      3-row column. Switched to a horizontal row (wraps on narrow widths) — same font sizes/
+      padding as before. Two of the three surfaces fit name+email+button on one line; the nav
+      modal (fixed ~480px) wraps to two rows.
+- [x] **Author photo done** — Sasha sent one directly in chat. Cropped to a 4:5 professional
+      headshot ratio centered on her face (`public/images/author/sasha-elizar.jpg`), added an
+      optional `photo` field to the `Author` type, wired into both the author page and About page.
