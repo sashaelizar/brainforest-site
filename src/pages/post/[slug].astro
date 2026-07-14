@@ -6,6 +6,7 @@ import CategoryNav from '../../components/CategoryNav.astro';
 import SubscribeBox from '../../components/SubscribeBox.astro';
 import ArticleStats from '../../components/ArticleStats.astro';
 import CommentsList from '../../components/CommentsList.astro';
+import GiscusComments from '../../components/GiscusComments.astro';
 import { fmtDate, SITE, catSlug, authorSlug } from '../../site';
 
 export async function getStaticPaths() {
@@ -72,6 +73,7 @@ const jsonLd = {
       <div class="prose" set:html={bodyHtml}></div>
       <ArticleStats slug={post.id} />
       <CommentsList slug={post.id} />
+      <GiscusComments />
     </div>
 
     {related.length > 0 && (
