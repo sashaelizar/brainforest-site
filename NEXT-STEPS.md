@@ -25,7 +25,8 @@ Wix handled form submissions for her. A static site needs a form handler.
 - **What's needed:**
   - [ ] Deploy to Netlify (see §5) so the forms go live
   - [ ] Turn on form notifications (email her on each submission)
-  - [ ] Wire the **contact page** to a real form (currently links only)
+  - [x] **Contact page wired to a real form** (2026-07-14) — name, email, message, same Netlify
+        Forms pattern as the other forms
   - [x] **Ebook PDF found** (`Leaky Gut Causes EBook.pdf` in Downloads) and copied into the project
         at `public/downloads/leaky-gut-causes-ebook.pdf`
   - [ ] **Ebook delivery**: wire the opt-in to actually send the PDF automatically once ConvertKit
@@ -78,16 +79,20 @@ forward; the displayed total is legacy + live, added together client-side.
       correctly shows its legacy number and silently stays there. Once deployed, new visits will
       start adding to it automatically, no further action needed.
 
-**Comments — legacy text mostly done, live system not started.** The public Wix page never
-actually rendered the comment thread widget (just the count), even scrolling/waiting — so Sasha
-pulled the real text/author/date/likes herself from the Wix Comments moderation dashboard
-(2026-07-10). 7 of 9 known comments captured and now displaying at the bottom of their articles
-(`src/data/legacy-comments.json`, rendered by `CommentsList.astro`).
+**Comments — legacy text mostly done, live system built and waiting on Sasha's GitHub App
+install.** The public Wix page never actually rendered the comment thread widget (just the
+count), even scrolling/waiting — so Sasha pulled the real text/author/date/likes herself from the
+Wix Comments moderation dashboard (2026-07-10). 7 of 9 known comments captured and now displaying
+at the bottom of their articles (`src/data/legacy-comments.json`, rendered by `CommentsList.astro`).
 - [ ] **2 comments still missing** on `fecal-microbiota-transplants-healthspan` — the counter
       shows 2 comments but none were retrieved yet; check the Wix dashboard for that post
-- [ ] No live commenting system yet for new comments going forward — **Giscus** (free, backed by
-      GitHub Discussions, no ads) is the recommended fit since everything else is already on
-      GitHub. Not built.
+- [x] **Live commenting built (2026-07-14): Giscus**, confirmed with Sasha as the pick (free,
+      GitHub Discussions-backed, no ads). GitHub Discussions turned on for the repo.
+      `GiscusComments.astro` added below the legacy comments on every article — stays invisible
+      until `PUBLIC_GISCUS_REPO_ID` + `PUBLIC_GISCUS_CATEGORY_ID` are set, so it shipped safely
+      with zero visible change today.
+  - [ ] Sasha: install the giscus GitHub App, create the "Comments" discussion category, grab the
+        two IDs from giscus.app, set them in Netlify — full steps in `GISCUS-SETUP.md`
 
 **Likes — legacy count captured, no live "like" button built.** Sasha didn't ask for a live like
 button this round, just the historical number, which is already showing. If a live like button is
@@ -102,9 +107,13 @@ wanted later, same pattern as views: a small Netlify Function + Blobs.
 
 ## 5. Hosting — Netlify (free)
 - [x] **Netlify account created by Sasha** (2026-07-10) — not yet connected to the repo
-- [ ] Put this project on **GitHub** (see `FOR-SASHA.md`) — GitHub CLI authenticated, repos not yet
-      created/pushed
-- [ ] Connect the GitHub repo to **Netlify** — it auto-builds (`npm run build`) and deploys on every change
+- [x] **Project pushed to GitHub** (2026-07-14) — public repo at
+      `github.com/sashaelizar/brainforest-site`. Public was a deliberate choice: giscus (see §8)
+      needs it.
+- [ ] **Connect the GitHub repo to Netlify** — needs Sasha's own login (Netlify dashboard → Add
+      new site → Import from GitHub → pick `brainforest-site`). Auto-builds (`npm run build`) and
+      deploys on every push after that. **This one click unblocks the CMS (§7) and live comments
+      (§8) below** — both are built and waiting on it.
 - [ ] Verify the live preview URL looks right
 
 **Images/CDN question (raised 2026-07-10):** Sasha wants images NOT stored in the git repo, and
@@ -138,6 +147,13 @@ Her domain lives at **Bluehost**. To make brainforest.org show the new site:
       exactly where she wants them; her AI converts the doc into the site's format, places images,
       and shows a preview before publishing. Full steps in `HOW-TO-PUBLISH-ARTICLES.md`.
 - [ ] Run one real article through the pipeline to confirm it feels right end to end
+- [x] **Self-serve editor added (2026-07-14), requested so minor edits don't need an AI session.**
+      Decap CMS at `/admin`, git-gateway backend, fields matching the post schema. Article body is
+      a raw-text field on purpose (Wix-exported HTML, risk of corruption under a WYSIWYG editor).
+      Config verified locally (loads, parses, shows login screen); full login needs Netlify
+      Identity + Git Gateway turned on, which needs Sasha's login — see `CMS-SETUP.md`.
+      This is now a second option alongside the Word-doc handoff above: Word/AI for new articles
+      with careful image placement, the editor for quick text-only fixes to existing ones.
 
 ## Open decisions
 - [ ] Design direction — current cream/green look is our interpretation; refine toward her taste
@@ -188,3 +204,42 @@ Her domain lives at **Bluehost**. To make brainforest.org show the new site:
       JS logic) but wants a real look.
 - [ ] `fecal-microbiota-transplants-healthspan` is still missing 2 of its historical Wix comments
       (flagged back on 2026-07-10, never retrieved)
+
+## 12. Link audit, contact form, self-serve editor, live comments (2026-07-14)
+
+Sasha's five asks this session, worked in dependency order: link/URL audit first (no
+dependencies), then the contact form (buildable now, works once deployed), then — after
+confirming with Sasha — pushed to GitHub to unblock the CMS and comments, both of which needed it.
+
+- [x] **URL mapping verified**: all 42 posts' `source_url` (old Wix path) match their new
+      `/post/<slug>` 1:1 — zero mismatches.
+- [x] **Full site link crawl** (339 pages, 396 unique external links). Found and fixed 8 in-article
+      links hardcoded to the old `www.infiniteemergence.com` domain instead of a relative path —
+      they were leaving the new site entirely. Also fixed `personalize-your-diet.md` linking to a
+      stale slug (`no-one-diet` → `there-is-no-one-diet`).
+  - [ ] **Still unresolved, needs Sasha's call**: `there-is-no-one-diet.md` links to
+        `/post/ecosystem-gut-microbiota` — that post was never exported from Wix (not among the
+        42), so there's nothing to point it at. Decide: remove the link, or was this article meant
+        to exist?
+  - [ ] **Still unresolved**: two links in `we-are-water.md` ("listen through Spotify") point to
+        specific old podcast-episode pages that don't have routes on this site. One specific
+        Spotify episode is already embedded elsewhere in that article
+        (`open.spotify.com/episode/3eAp0aHOXmiNchiODCd0xq`) but it's not confirmed which of the
+        two named episodes ("Shealynn O'Toole..." vs. "11 water purification methods") that is —
+        didn't want to guess-link. Sasha: confirm which episode(s) these should point to.
+  - Most external 403s (research journals, EWG, CDC, etc.) are very likely bot-blocking on
+    automated requests, not real breakage — didn't chase those down individually. Real dead links
+    (404/410/no response) were mostly old news articles/blog posts that genuinely no longer exist;
+    not fixed since replacing a citation is an editorial call, not a mechanical one.
+- [x] **Contact page built** — was previously just social links with a "to be wired up" note.
+- [x] **Bug found + fixed while building the contact form**: `SubscribeBox.astro` and the ebook
+      opt-in form both called `event.preventDefault()` with no actual submit logic behind it — they
+      showed a fake "Thanks!" message but never sent data anywhere, even once deployed. All three
+      forms (subscribe, ebook opt-in, contact) now do a real `fetch()` POST to Netlify Forms, with
+      an error message on failure. This means the §2 subscribe box wasn't actually collecting
+      emails despite earlier notes saying it was — good thing it's caught before launch.
+- [x] **Repo pushed to GitHub** (public — `sashaelizar/brainforest-site`), confirmed with Sasha
+      first since it unblocks both the CMS and comments below. Netlify connection itself still
+      needs Sasha's own login (see §5).
+- [x] **Self-serve editor (Decap CMS)** — see §7.
+- [x] **Live comments (Giscus)** — see §8.
