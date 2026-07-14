@@ -243,3 +243,35 @@ confirming with Sasha — pushed to GitHub to unblock the CMS and comments, both
       needs Sasha's own login (see §5).
 - [x] **Self-serve editor (Decap CMS)** — see §7.
 - [x] **Live comments (Giscus)** — see §8.
+
+## 13. Citation restyle, view-count fix, article search, contacts CSV (2026-07-14, later same day)
+
+Four more asks, same session. Citations and the view-count fix are described in full in their own
+commit messages (`git log`) — summarized here for the running record.
+
+- [x] **Citations restyled**: 462 in-line citations across 15 articles converted from plain
+      `[1]`-style bracketed links to `<sup>` superscript, repositioned to sit after a period/comma
+      and before a semicolon/em-dash per Sasha's spec. All `#ref-N` hyperlinks into the References
+      dropdown preserved. Only repositioned where the punctuation was directly adjacent (no tag in
+      between) to avoid risking the HTML structure — see the commit for the full breakdown.
+- [x] **View counts fixed**: Sasha flagged the pineal gland article as showing over 1,000 views
+      when it shouldn't. Rechecked all 42 live Wix view counts — 39 had drifted normally (+1 to +8
+      over 4 days), but 3 were wildly stale: `pineal-calcification` (792 → 4,801),
+      `pineal-gland-development` (225 → 1,231), `letter-college-freshman-self` (147 → 1,149).
+      Almost certainly a scrape bug on those 3 specific posts during the original 2026-07-10
+      capture, not real overnight virality — the jump size and pattern (isolated, unrelated
+      topics) doesn't fit organic growth. Refreshed all 42 to today's live numbers in
+      `legacy-stats.json` while verifying anyway.
+- [x] **Search bar added** to `/posts` — client-side, filters the 42-post grid by title keywords
+      only (not description/body), space-separated keywords all must match.
+- [x] **July 13 ebook-leads CSV reconciled** against the contacts master (not a code change — see
+      `~/Downloads/`). Every lead in `Ebook gut causes.csv` was already in both the master sheet and
+      the genuine-contact list (it's a full historical export, not new signups) — one row
+      (Anita Grantham, 2025-10-10) has no email at all, so nothing could be done with it; flagged
+      for Sasha in case she has another way to reach her. Separately, comparing Sasha's fresh master
+      export (`~/Desktop/contacts (1).csv`, 1,747 rows) against last week's `contacts.csv` turned up
+      2 new contacts from 2026-07-10 that hadn't been synced yet — both matched the same bot-signup
+      pattern as last week's spam wave (one disposable email domain, one where the "name" is just
+      the email prefix with no last name), so both went into `contacts-flagged-as-bot.csv` and
+      `contacts.csv` (total list), not `contacts-real-likely.csv` (genuine). Genuine-contact count
+      unchanged at 122.
