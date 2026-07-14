@@ -28,15 +28,20 @@ const author = AUTHORS[name] ?? { slug: authorSlug(name), name };
 ---
 <BaseLayout title={author.name} description={`Articles by ${author.name} on Infinite Emergence.`}>
   <section class="head-band">
-    <div class="wrap">
-      <p class="eyebrow">Writer</p>
-      <h1>{author.name}</h1>
-      {author.bio ? (
-        <p class="bio">{author.bio}</p>
-      ) : (
-        <p class="bio no-bio">No bio on file yet for {author.name} — check back soon.</p>
+    <div class="wrap head-inner">
+      {author.photo && (
+        <img class="author-photo" src={author.photo} alt={author.name} width="200" height="250" />
       )}
-      <p class="sub">{posts.length} article{posts.length === 1 ? '' : 's'}</p>
+      <div>
+        <p class="eyebrow">Writer</p>
+        <h1>{author.name}</h1>
+        {author.bio ? (
+          <p class="bio">{author.bio}</p>
+        ) : (
+          <p class="bio no-bio">No bio on file yet for {author.name} — check back soon.</p>
+        )}
+        <p class="sub">{posts.length} article{posts.length === 1 ? '' : 's'}</p>
+      </div>
     </div>
   </section>
   <section class="list-band">
@@ -52,6 +57,9 @@ const author = AUTHORS[name] ?? { slug: authorSlug(name), name };
   </section>
   <style>
     .head-band { padding: 72px 0 8px; }
+    .head-inner { display: flex; gap: 32px; align-items: flex-start; }
+    .author-photo { width: 160px; height: 200px; object-fit: cover; border-radius: 16px; border: 1px solid var(--line); flex-shrink: 0; }
+    @media (max-width: 560px){ .head-inner { flex-direction: column; align-items: center; text-align: center; } }
     .head-band h1 { font-size: clamp(36px, 6vw, 52px); margin-top: 10px; }
     .head-band .bio { color: var(--ink-soft); font-size: 18px; margin-top: 18px; max-width: 64ch; line-height: 1.7; }
     .head-band .bio.no-bio { font-style: italic; opacity: .8; }
