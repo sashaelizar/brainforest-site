@@ -95,14 +95,22 @@ const jsonLd = {
 
   <script>
     // Bracketed citations like [2] link to their entry in the References list. Since that list
-    // now lives inside a collapsible <details>, clicking a citation needs to open it first (some
-    // browsers do this natively for :target, but not all) before the normal anchor jump happens.
+    // now lives inside a collapsible <details>, the browser's automatic scroll-to-fragment can
+    // fire before the <details> finishes expanding (its layout hasn't settled yet), landing the
+    // page in the wrong spot. Take full manual control: open it, wait a frame for layout to
+    // settle, then scroll ourselves.
     document.addEventListener('click', (e) => {
       const link = (e.target as HTMLElement)?.closest('a[href^="#ref-"]') as HTMLAnchorElement | null;
       if (!link) return;
-      const target = document.querySelector(link.getAttribute('href')!);
-      const details = target?.closest('details');
+      const href = link.getAttribute('href')!;
+      const target = document.querySelector(href) as HTMLElement | null;
+      if (!target) return;
+      e.preventDefault();
+      const details = target.closest('details');
       if (details && !details.open) details.open = true;
+      target.getBoundingClientRect(); // force layout to recompute now that details is open
+      target.scrollIntoView({ block: 'start' });
+      history.pushState(null, '', href);
     });
   </script>
 
@@ -195,7 +203,7 @@ const jsonLd = {
 
     /* References: clearly delineated, smaller, still readable — like the original */
     .prose .references { margin-top: 3em; padding-top: 1.4em; border-top: 2px solid var(--line); font-size: 14px; line-height: 1.55; color: var(--ink-soft); }
-    .prose .references h2, .prose .references h3 { font-size: 20px; color: var(--ink); margin: 0 0 .6em; }
+    .prose .references h2, .prose .references h3 { font-size: clamp(30px, 5vw, 48px); line-height: 1.12; color: var(--ink); margin: 0 0 .6em; }
     .prose .references ol, .prose .references ul { padding-left: 1.4em; }
     .prose .references li { margin-bottom: .55em; scroll-margin-top: 84px; }
     .prose .references a { color: var(--green); word-break: break-word; }
@@ -203,12 +211,12 @@ const jsonLd = {
 
     /* Collapsible references (prototype - exercise-gut-health only for now). Native <details>/
        <summary> so it works with no JS; a custom chevron replaces the browser's default marker. */
-    .prose details.references summary { cursor: pointer; list-style: none; display: flex; align-items: center; gap: 10px; user-select: none; }
+    .prose details.references summary { cursor: pointer; list-style: none; display: flex; align-items: center; gap: 14px; user-select: none; }
     .prose details.references summary::-webkit-details-marker { display: none; }
-    .prose details.references summary h2 { margin: 0; }
+    .prose details.references summary h2, .prose details.references summary h3 { margin: 0; line-height: 1; }
     .prose details.references .ref-caret {
-      flex-shrink: 0; width: 8px; height: 8px;
-      border-right: 2px solid var(--green); border-bottom: 2px solid var(--green);
+      flex-shrink: 0; width: 16px; height: 16px; margin-top: 0.2em;
+      border-right: 3px solid var(--green); border-bottom: 3px solid var(--green);
       transform: rotate(-45deg); transition: transform .2s ease;
     }
     .prose details.references[open] .ref-caret { transform: rotate(45deg); }
