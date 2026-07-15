@@ -152,10 +152,8 @@ Her domain lives at **Bluehost**. To make brainforest.org show the new site:
       and shows a preview before publishing. Full steps in `HOW-TO-PUBLISH-ARTICLES.md`.
 - [ ] Run one real article through the pipeline to confirm it feels right end to end
 - [x] **Self-serve editor added (2026-07-14), requested so minor edits don't need an AI session.**
-      Decap CMS at `/admin`, git-gateway backend, fields matching the post schema. Article body is
-      a raw-text field on purpose (Wix-exported HTML, risk of corruption under a WYSIWYG editor).
-      Config verified locally (loads, parses, shows login screen); full login needs Netlify
-      Identity + Git Gateway turned on, which needs Sasha's login — see `CMS-SETUP.md`.
+      Decap CMS at `/admin`, fields matching the post schema. Article body is a raw-text field on
+      purpose (Wix-exported HTML, risk of corruption under a WYSIWYG editor).
       This is now a second option alongside the Word-doc handoff above: Word/AI for new articles
       with careful image placement, the editor for quick text-only fixes to existing ones.
 
@@ -407,3 +405,37 @@ classifier unavailability, not a site issue) before the caret and click-target f
 final live visual pass. Both are build-verified (correct CSS shipped, confirmed via curl against
 the built HTML) and reasoned from first principles, but want a real look next session to confirm
 they read right.
+
+## 18. Netlify actually connected, real deploy debugging, Identity deprecated, email decided (2026-07-15)
+
+- [x] **Netlify connected — for real this time, with a real bug caught along the way.** First
+      attempt was a manual drag-and-drop upload (looked live, but was a frozen snapshot — none of
+      this week's fixes were on it, confirmed by diffing specific known changes against the live
+      HTML). Second attempt genuinely linked GitHub ("Deploys from GitHub with Astro" confirmed in
+      Netlify's own UI) but hadn't rebuilt since the initial connection. A manual "Trigger deploy"
+      fixed it — confirmed every fix from this week is now live at
+      `brainforestbiosciences.netlify.app` (checked the compiled CSS and HTML directly, not just
+      that the page loads).
+- [x] **Form notifications set up.** Netlify's Forms page shows generic help content instead of a
+      form list until there's at least one real submission — not a bug, just how the UI behaves
+      pre-submission. The actual notification setting lives under
+      `Project configuration → Notifications → Add notification → Email notification`, with
+      "Event to listen for" = "New form submission" and "Form" = "Any form" (covers subscribe,
+      contact, and the ebook opt-in with one rule). Sasha hit a paywall first by landing on a
+      *deploy*-triggered notification (genuinely Pro-only) instead of a form one — different
+      event type, easy to mix up in Netlify's UI.
+- [ ] **Netlify Identity is deprecated — confirmed gone from the dashboard entirely** (not in
+      Sasha's "Project navigation" menu at all). This breaks the self-serve editor's login, which
+      was built on Identity + Git Gateway. Researched current alternatives; picked **DecapBridge**
+      (free tier: 3 sites/10 collaborators, more than enough) as the replacement — purpose-built
+      for exactly this Decap CMS + Netlify Identity gap, per
+      [the decap-cms GitHub discussion on the deprecation](https://github.com/decaporg/decap-cms/discussions/7419)
+      and [DecapBridge's own site](https://decapbridge.com). Sasha is signing up; once she sends
+      the generated config snippet, swap it into `public/admin/config.yml` in place of the old
+      `git-gateway` backend.
+- [x] **Email decided: Zoho Mail (free) + Gmail integration**, not Google Workspace. Zoho hosts
+      `sasha@brainforest.org` for free (real two-way mail, not just forwarding); Gmail's "Check
+      mail from other accounts" (POP) and "Send mail as" (SMTP) pull it into her existing Gmail so
+      she never has to leave that interface. Needs 2 DNS record additions at Bluehost (TXT to
+      verify the domain, MX to route mail) — same place the domain migration (§6) already needs
+      DNS changes, worth doing together when she gets to that step.
