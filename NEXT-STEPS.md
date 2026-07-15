@@ -368,3 +368,42 @@ outright. Worked around it by leaning on non-visual DOM assertions and opening f
 given tab degraded. Real site bugs (the header stacking issue) were still findable and fixable
 this way — but it's why the citation-jump behavioral bug couldn't be conclusively reproduced live
 even though the underlying data and code were both audited clean.
+
+## 17. Real fix for citation clicks, double-encoded &, more reference polish (2026-07-14, sixth round)
+
+Sasha gave a concrete repro this round (senolytics-alzheimers, citation "1"), which led to finding
+the actual likely cause of the wrong-jump bug from last round:
+
+- [x] **Citation click target measured at ~5px wide.** That's almost certainly the real
+      explanation for "clicking the reference number goes to a random part of the article" — a
+      slightly-off click misses the tiny target and lands on whatever link happens to be adjacent
+      instead. Enlarged the hit area (padding + matching negative margin, no visual change) rather
+      than continuing to chase the scroll-timing theory.
+- [x] **Reverted the double-requestAnimationFrame scroll timing from last round back to a
+      synchronous forced-reflow read.** Confirmed directly this session that rAF callbacks can be
+      throttled/never fire in some contexts, while `getBoundingClientRect()` forcing a synchronous
+      layout is spec-guaranteed regardless of frame timing — the "harder" fix from last round was
+      actually a regression.
+- [x] **Scroll-margin-top corrected 76px → 69px.** Nav is exactly 65px; the math on the "half line
+      above" complaint: 76px left an ~11px residual gap after last round's partial fix from 84px.
+      69px (65px nav + 4px breathing room) should close it.
+- [x] **Caret nudged 3px up** — flexbox `align-items:center` centers against the heading's full
+      line-box, but "References" has no descenders, so its actual ink sits higher than the line
+      box's geometric center. Reasoned from font-metrics principles since live pixel verification
+      wasn't available this session (browser tool access went down mid-session — see below).
+- [x] **Found and fixed the real `&amp;` bug**: two post descriptions
+      (`leaky-gut-causes`, `fecal-microbiota-transplants-healthspan`) had literal `&amp;` typed
+      into the frontmatter `description` field. Astro auto-escapes that field on render (unlike the
+      article body, which uses `set:html` and isn't re-escaped), so the literal `&amp;` became
+      `&amp;amp;` in the shipped HTML — visible as literal "&amp;" text wherever that description
+      shows (meta tags, card previews). Fixed both; confirmed clean everywhere else.
+- [x] **Line-space added after the button** in `fecal-microbiota-transplants-healthspan`
+      specifically — it's the only cta-btn followed by a plain paragraph instead of a heading, and
+      paragraphs don't carry their own top margin the way headings do, so it was the one button
+      missing breathing room after it.
+
+**Tooling note:** `mcp__Claude_Browser__*` tool access went down mid-session (temporary model/
+classifier unavailability, not a site issue) before the caret and click-target fixes could get a
+final live visual pass. Both are build-verified (correct CSS shipped, confirmed via curl against
+the built HTML) and reasoned from first principles, but want a real look next session to confirm
+they read right.
