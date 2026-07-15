@@ -137,7 +137,12 @@ const jsonLd = {
     .hero-caption { font-size: 13.5px; color: var(--ink-soft); font-style: italic; text-align: center; margin-top: 8px; }
     .related { margin-top: 64px; padding: 56px 0; background: var(--cream-2); border-top: 1px solid var(--line); }
     .related h2 { font-size: 28px; margin-bottom: 28px; }
-    .rel-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    /* auto-fit + minmax instead of a fixed repeat(3, 1fr): when a post has fewer than 3 related
+       matches (some categories only overlap with 1-2 other posts), the grid still reserved 3
+       equal-width tracks, so a lone card sat in the first third of the row with two blank
+       columns beside it -- looking like the other cards had vanished. This makes each present
+       card stretch to fill the row instead. */
+    .rel-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
     @media (max-width: 760px){ .rel-grid { grid-template-columns: 1fr; } }
     .post-foot { margin-top: 40px; padding-top: 28px; border-top: 1px solid var(--line); }
   </style>
@@ -148,6 +153,9 @@ const jsonLd = {
     /* Author's empty paragraphs were intentional spacing — give them real height */
     .prose p:empty { min-height: 1.1em; margin-bottom: 0; }
     .prose br { line-height: 2.2; }
+    /* A tight run of short standalone lines (e.g. a list of one-line italicized thoughts) wants
+       a plain single line break with no added gap -- opt out of the 2.2 line-height above. */
+    .prose .tight-lines br { line-height: inherit; }
     .prose h2 { font-size: 30px; margin: 1.6em 0 .5em; scroll-margin-top: 84px; }
     .prose h3 { font-size: 24px; margin: 1.4em 0 .4em; scroll-margin-top: 84px; }
     .prose h4 { font-size: 20px; margin: 1.3em 0 .3em; scroll-margin-top: 84px; }
@@ -169,6 +177,8 @@ const jsonLd = {
     .prose .podcast-embed iframe { display: block; width: 100%; border-radius: 12px; }
     .prose .video-embed { margin: 1.6em 0; position: relative; aspect-ratio: 16 / 9; }
     .prose .video-embed iframe { position: absolute; inset: 0; width: 100%; height: 100%; border-radius: 12px; border: 1px solid var(--line); }
+    /* Native <video> clips (Wix-hosted mp4s, not YouTube iframes) reuse the same wrapper */
+    .prose .video-embed video { position: absolute; inset: 0; width: 100%; height: 100%; border-radius: 12px; border: 1px solid var(--line); background: #000; object-fit: contain; }
     .prose ul, .prose ol { padding-left: 1.5em; margin: 0 0 1.2em; }
     .prose li { margin-bottom: .5em; }
     /* A nested sub-list (e.g. an outline item with sub-items under it) carried its own bottom
@@ -200,9 +210,14 @@ const jsonLd = {
     .prose ol > li > h3:first-child { display: inline-block; margin-top: 0; vertical-align: top; }
     /* Only widen the gap for actual numbered-section items (heading inside the li) - a plain
        numbered/outline list (e.g. a jump-nav list of links) should use the normal .5em list
-       spacing, not this wider one. */
+       spacing, not this wider one. margin-top gives breathing room before the number, matching
+       the gap every other heading in the article already gets. */
     .prose ol > li:has(> h2:first-child),
-    .prose ol > li:has(> h3:first-child) { margin-bottom: 1.4em; }
+    .prose ol > li:has(> h3:first-child) { margin-top: 1.6em; margin-bottom: 1.4em; }
+    /* The marker (the number itself) otherwise renders at body-text size (18px) next to a
+       30px/24px heading, making it look mismatched and small. Match it to its heading. */
+    .prose ol > li:has(> h2:first-child)::marker { font-size: 30px; }
+    .prose ol > li:has(> h3:first-child)::marker { font-size: 24px; }
 
     /* Author's in-page Outline / jump-nav */
     .prose h2 + ul a[href^="#"], .prose a[href^="#"] { font-weight: 500; }
@@ -239,5 +254,19 @@ const jsonLd = {
       transform: rotate(-45deg); transition: transform .2s ease;
     }
     .prose details.references[open] .ref-caret { transform: rotate(45deg); }
+
+    /* Strength-of-evidence shadow box: replaces the old plain "Prevention: X / Treatment: Y"
+       bullets with a boxed callout using symbols (? unknown, ◐ maybe, ● probably, 💡 potential)
+       so the verdict reads at a glance instead of as prose. */
+    .prose .evidence-box { margin: 1.8em 0; padding: 18px 22px; background: var(--cream-2); border: 1px solid var(--line); border-radius: 14px; box-shadow: 0 8px 20px -12px rgba(20,33,28,0.25); }
+    .prose .evidence-box-title { margin: 0 0 12px; font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--green); }
+    .prose .evidence-list { list-style: none; margin: 0; padding: 0; }
+    .prose .evidence-list li { display: flex; align-items: baseline; gap: 10px; font-size: 15.5px; margin-bottom: 8px; }
+    .prose .evidence-list li:last-child { margin-bottom: 0; }
+    .prose .evidence-list li p { margin: 0; }
+    .prose .evidence-symbol { flex-shrink: 0; width: 1.4em; text-align: center; font-size: 16px; }
+    .prose .evidence-detail { color: var(--ink-soft); }
+    .prose .evidence-legend { background: transparent; border-style: dashed; }
+    .prose .evidence-legend .evidence-list li { font-size: 14.5px; color: var(--ink-soft); }
   </style>
 </BaseLayout>
