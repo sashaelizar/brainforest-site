@@ -3,7 +3,7 @@ title: "Rejuvenating the microbiome: Fecal microbiota transplants, probiotics, a
 author: "Sasha Elizar, M.S."
 date: "2024-04-21T13:27:02.317Z"
 updated: "2024-04-21T14:27:12.925Z"
-description: "Discover how FMT and leaky gut impact aging &amp; health. Can a fecal microbiota transplant maximize healthspan? Learn how to slow down the aging process with foods, herbs, &amp; nutrients."
+description: "Discover how FMT and leaky gut impact aging & health. Can a fecal microbiota transplant maximize healthspan? Learn how to slow down the aging process with foods, herbs, & nutrients."
 source_url: https://www.brainforest.org/post/fecal-microbiota-transplants-healthspan
 readTime: "18 min read"
 hero: "/images/fecal-microbiota-transplants-healthspan/00_cover_41c3bcafb7ee.png"

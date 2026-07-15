@@ -102,8 +102,9 @@ const jsonLd = {
     // Bracketed citations like [2] link to their entry in the References list. Since that list
     // now lives inside a collapsible <details>, the browser's automatic scroll-to-fragment can
     // fire before the <details> finishes expanding (its layout hasn't settled yet), landing the
-    // page in the wrong spot. Take full manual control: open it, wait a frame for layout to
-    // settle, then scroll ourselves.
+    // page in the wrong spot. Take full manual control: open it, force a synchronous layout
+    // recompute (reading getBoundingClientRect guarantees this, unlike requestAnimationFrame
+    // which can be throttled), then scroll ourselves.
     document.addEventListener('click', (e) => {
       const link = (e.target as HTMLElement)?.closest('a[href^="#ref-"]') as HTMLAnchorElement | null;
       if (!link) return;
@@ -113,14 +114,8 @@ const jsonLd = {
       e.preventDefault();
       const details = target.closest('details');
       if (details && !details.open) details.open = true;
-      // Two animation frames (not just a synchronous reflow read) so the <details> expansion has
-      // fully painted before we measure where to scroll -- a single forced reflow was sometimes
-      // still catching the layout mid-transition, landing the scroll on the wrong element.
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          target.scrollIntoView({ block: 'start' });
-        });
-      });
+      target.getBoundingClientRect(); // force layout to recompute now that details is open
+      target.scrollIntoView({ block: 'start' });
       history.pushState(null, '', href);
     });
   </script>
@@ -157,10 +152,18 @@ const jsonLd = {
     .prose h3 { font-size: 24px; margin: 1.4em 0 .4em; scroll-margin-top: 84px; }
     .prose h4 { font-size: 20px; margin: 1.3em 0 .3em; scroll-margin-top: 84px; }
     .prose a { color: var(--green); text-underline-offset: 2px; }
-    .prose sup a { text-decoration: none; }
+    /* Citation numbers render tiny (~5px wide) at superscript size, which made them an easy miss
+       -- padding+matching negative margin enlarges the actual click/tap target without shifting
+       surrounding text or changing how the number looks. */
+    .prose sup a { text-decoration: none; padding: 6px 5px; margin: -6px -5px; display: inline-block; }
     .prose a.cta-btn { display: block; width: fit-content; background: var(--ink); color: var(--cream); padding: 13px 26px; border-radius: 100px; text-decoration: none; font-size: 15px; font-weight: 600; margin: 0 auto; transition: transform .15s ease, background .15s ease; }
     .prose a.cta-btn:hover { transform: translateY(-1px); background: var(--green); }
     .prose a.cta-btn div { display: inline; }
+    /* This button is followed by a plain paragraph, not a heading -- paragraphs have no top
+       margin of their own, so without this the button sits flush against the next line. Every
+       other cta-btn is followed by a heading (which already has its own top margin), so this is
+       scoped to just this one rather than added to .cta-btn generally. */
+    #viewer-5ibgz59289 { margin-bottom: 1.5em; }
     .prose img { border-radius: 12px; margin: 1.6em auto; display: block; border: 1px solid var(--line); max-width: 100%; height: auto; }
     .prose .podcast-embed { margin: 1.6em 0; }
     .prose .podcast-embed iframe { display: block; width: 100%; border-radius: 12px; }
@@ -221,7 +224,7 @@ const jsonLd = {
     .prose .references { margin-top: 3em; padding-top: 1.4em; border-top: 2px solid var(--line); font-size: 14px; line-height: 1.55; color: var(--ink-soft); }
     .prose .references h2, .prose .references h3 { font-size: 30px; line-height: 1.15; color: var(--ink); margin: 0; }
     .prose .references ol, .prose .references ul { padding-left: 1.4em; }
-    .prose .references li { margin-bottom: .55em; scroll-margin-top: 76px; }
+    .prose .references li { margin-bottom: .55em; scroll-margin-top: 69px; }
     .prose .references a { color: var(--green); word-break: break-word; }
     .prose sup { font-size: .72em; }
 
@@ -231,7 +234,7 @@ const jsonLd = {
     .prose details.references summary::-webkit-details-marker { display: none; }
     .prose details.references summary h2, .prose details.references summary h3 { margin: 0; line-height: 1; }
     .prose details.references .ref-caret {
-      flex-shrink: 0; width: 11px; height: 11px;
+      flex-shrink: 0; width: 11px; height: 11px; margin-top: -3px;
       border-right: 2px solid var(--green); border-bottom: 2px solid var(--green);
       transform: rotate(-45deg); transition: transform .2s ease;
     }

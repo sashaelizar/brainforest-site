@@ -3,7 +3,7 @@ title: "Top 10 Causes of Leaky Gut (And How to Avoid Them): An Evidence-Based Gu
 author: "Sasha Elizar, M.S."
 date: "2025-04-17T20:25:16.826Z"
 updated: "2026-02-11T00:04:56.831Z"
-description: "Uncover the dietary, biological, chemical, environmental, lifestyle, &amp; iatrogenic root causes of leaky gut and learn how to avoid them in this evidence-based guide. "
+description: "Uncover the dietary, biological, chemical, environmental, lifestyle, & iatrogenic root causes of leaky gut and learn how to avoid them in this evidence-based guide. "
 source_url: https://www.brainforest.org/post/leaky-gut-causes
 readTime: "21 min read"
 hero: "/images/leaky-gut-causes/00_cover_25f1b00ace5d.jpg"
