@@ -26,7 +26,7 @@ export async function getStaticPaths() {
 const { name, posts } = Astro.props;
 const author = AUTHORS[name] ?? { slug: authorSlug(name), name };
 ---
-<BaseLayout title={author.name} description={`Articles by ${author.name} on Infinite Emergence.`}>
+<BaseLayout title={author.name} description={`Articles by ${author.name} on Brainforest Biosciences.`}>
   <section class="head-band">
     <div class="wrap head-inner">
       {author.photo && (

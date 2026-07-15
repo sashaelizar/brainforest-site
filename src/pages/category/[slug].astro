@@ -28,7 +28,7 @@ const allPosts = await getCollection('posts');
 const present = new Set(allPosts.flatMap(p => p.data.categories));
 const tabs = CATEGORY_ORDER.filter(c => present.has(c));
 ---
-<BaseLayout title={name} description={`Articles on ${name} from Infinite Emergence.`}>
+<BaseLayout title={name} description={`Articles on ${name} from Brainforest Biosciences.`}>
   <section class="head-band">
     <div class="wrap">
       <p class="eyebrow">Category</p>

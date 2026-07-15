@@ -1,6 +1,6 @@
 // Central config recreated from the live brainforest.org / Infinite Emergence site.
 export const SITE = {
-  name: 'Infinite Emergence',
+  name: 'Brainforest Biosciences',
   tagline: 'Root cause bioenergetic medicine',
   author: 'Sasha Elizar, M.S.',
   domain: 'brainforest.org',
@@ -60,7 +60,7 @@ export const AUTHORS: Record<string, Author> = {
   'Sasha Elizar, M.S.': {
     slug: 'sasha-elizar',
     name: 'Sasha Elizar, M.S.',
-    bio: 'Sasha Elizar, M.S. is the writer behind Infinite Emergence, covering the microbiome, gut-brain axis, detoxification, endocrinology, and aging. Every article starts from the mechanism and the research, then works toward what you can actually do.',
+    bio: 'Sasha Elizar, M.S. is the writer behind Brainforest Biosciences, covering the microbiome, gut-brain axis, detoxification, endocrinology, and aging. Every article starts from the mechanism and the research, then works toward what you can actually do.',
     photo: '/images/author/sasha-elizar.jpg',
   },
   'Alyssa Alfinito': { slug: 'alyssa-alfinito', name: 'Alyssa Alfinito' },

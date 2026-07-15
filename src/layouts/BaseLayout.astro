@@ -53,7 +53,7 @@ const ogImage = image ? new URL(image, Astro.site ?? `https://${SITE.domain}`).h
 <body>
   <nav class="site-nav">
     <div class="wrap nav-inner">
-      <a href="/" class="logo">Infinite<span>&nbsp;Emergence</span></a>
+      <a href="/" class="logo">Brainforest<span>&nbsp;Biosciences</span></a>
       <div class="nav-links">
         {NAV.map(n => (
           <a href={n.href} class={path === n.href ? 'active' : ''}>{n.label}</a>
@@ -107,7 +107,7 @@ const ogImage = image ? new URL(image, Astro.site ?? `https://${SITE.domain}`).h
     <div class="wrap">
       <div class="foot-inner">
         <div>
-          <div class="logo">Infinite<span>&nbsp;Emergence</span></div>
+          <div class="logo">Brainforest<span>&nbsp;Biosciences</span></div>
           <p class="foot-tag">{SITE.tagline}</p>
         </div>
         <div class="foot-social">
@@ -115,7 +115,7 @@ const ogImage = image ? new URL(image, Astro.site ?? `https://${SITE.domain}`).h
         </div>
       </div>
       <p class="foot-note">
-        © {new Date().getFullYear()} {SITE.name}. Written by {SITE.author}.
+        © {new Date().getFullYear()} {SITE.name}. Created by {SITE.author}.
         Preview rebuild of brainforest.org — content preserved from the original site.
       </p>
       <p class="foot-disclaimer">
@@ -152,7 +152,7 @@ const ogImage = image ? new URL(image, Astro.site ?? `https://${SITE.domain}`).h
     .nav-links a { color: var(--ink-soft); text-decoration: none; font-size: 14px; font-weight: 500; }
     .nav-links a:hover, .nav-links a.active { color: var(--green); }
     .nav-subscribe-btn { padding: 8px 18px; font-size: 13px; }
-    @media (max-width: 620px){ .nav-links { gap: 16px; } .nav-links a { font-size: 13px; } .logo span { display:none; } .nav-subscribe-btn { padding: 7px 14px; } }
+    @media (max-width: 720px){ .nav-links { gap: 16px; } .nav-links a { font-size: 13px; } .logo span { display:none; } .nav-subscribe-btn { padding: 7px 14px; } }
 
     .subscribe-dialog { position: relative; border: 1px solid var(--line); border-radius: 18px; padding: 32px; max-width: 480px; width: calc(100% - 40px); background: var(--cream); color: var(--ink); box-shadow: 0 30px 60px -20px rgba(20,33,28,0.4); }
     .subscribe-dialog::backdrop { background: rgba(20,33,28,0.45); backdrop-filter: blur(2px); }
