@@ -439,3 +439,12 @@ they read right.
       she never has to leave that interface. Needs 2 DNS record additions at Bluehost (TXT to
       verify the domain, MX to route mail) — same place the domain migration (§6) already needs
       DNS changes, worth doing together when she gets to that step.
+- [x] **Giscus live comments turned on** — Sasha created the "Comments" discussion category
+      (Announcement format), fixed a couple of setup snags along the way (a typo in the repo name
+      on giscus.app, confusion between GitHub's per-repo vs. global Discussions pages), and sent
+      the repo-id/category-id. Set both as `[build.environment]` in `netlify.toml` instead of
+      Netlify dashboard env vars — they're public GitHub metadata, not secrets, so committing them
+      is fine and means Sasha never had to touch the Netlify dashboard for this one.
+- [x] **Confirmed Netlify auto-deploys on every push** — no manual deploy step needed, this session
+      or any future one. Sasha asked directly; verified true given the site picked up the
+      DecapBridge config swap and the giscus env vars automatically after each push.
