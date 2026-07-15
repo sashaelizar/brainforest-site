@@ -52,12 +52,16 @@ recreating that with **ConvertKit** (chosen 2026-07-09).
         no export existed in the local backup, Sasha needs to pull it from the Wix dashboard herself
 
 ## 3. Analytics (replace her Wix analytics)
-- **Pick an engine** (a placeholder is already wired in the code — set two env vars and it turns on):
-  - **Plausible / Umami** — privacy-friendly, lightweight, no cookie banner *(recommended)*
-  - **Google Analytics 4** — free, most familiar, but heavier + needs a cookie-consent banner
-  - **Netlify Analytics** — server-side, no script, ~$9/mo, no cookie banner
+- **Recommendation given 2026-07-15: Umami Cloud** over Plausible. Both are privacy-friendly, tiny
+  script, no cookie banner needed, similar dashboards — Umami Cloud's free tier (100k events/mo)
+  is the deciding factor for a blog at this traffic scale, where Plausible's hosted version is
+  paid-only (~$9/mo minimum; self-hosting free but adds server upkeep Sasha doesn't want). Ruled
+  out: Google Analytics 4 (heavier, needs a cookie-consent banner) and Netlify Analytics
+  (~$9/mo, no real advantage over the free option here).
 - **What's needed:**
-  - [ ] Choose one, create the account, set `PUBLIC_ANALYTICS_SRC` + `PUBLIC_ANALYTICS_DOMAIN`
+  - [ ] Sasha creates a free Umami Cloud account, adds the site, sets `PUBLIC_ANALYTICS_SRC` +
+        `PUBLIC_ANALYTICS_DOMAIN` in Netlify (placeholder already wired in the code — these two
+        env vars are all it takes to turn tracking on)
   - [ ] Confirm data is flowing after launch
 
 ## 8. Comments, likes, and live view counts (raised 2026-07-10)
@@ -132,7 +136,7 @@ asked about Netlify's CDN limits/cost. Findings:
   upload images there instead of `public/images/`, reference them by URL. More moving parts (a
   service to manage, images uploaded outside the normal publish flow), so worth a real decision
   before switching off the current simple approach.
-- **Not yet decided** — needs Sasha's call next session.
+- [x] **Decided (2026-07-15): keeping images in git**, current simple approach. No change needed.
 
 ## 6. Domain — point Bluehost at the new site
 Her domain lives at **Bluehost**. To make brainforest.org show the new site:
@@ -156,7 +160,8 @@ Her domain lives at **Bluehost**. To make brainforest.org show the new site:
       with careful image placement, the editor for quick text-only fixes to existing ones.
 
 ## Open decisions
-- [ ] Design direction — current cream/green look is our interpretation; refine toward her taste
+- [x] **Design direction confirmed (2026-07-15)** — Sasha likes the current cream/green look, no
+      change needed
 - [ ] Any **other lead magnets/freebies** beyond the leaky-gut ebook that need landing pages
 - [ ] Whether to *also* cross-post to Substack purely for distribution (optional, not required)
 
@@ -297,18 +302,13 @@ commit messages (`git log`) — summarized here for the running record.
 - [x] **Post-card heights now consistent**: title clamped to 2 lines, description to 3, both with
       matching min-height. Descriptions ranged 29-500 characters, which was producing wildly
       different card heights. All 42 cards now measure exactly 430px.
-- [ ] **Author photo — not found anywhere.** Checked the About page, podcast page, and Sasha's own
-      Wix member profile page (`/profile/sashaelizar/profile`) — all three have empty avatar slots,
-      no photo set. Her Google Drive has plenty of personal photos but nothing labeled as a
-      headshot/profile photo, so didn't guess-pick one. **Needs Sasha to point to or upload a
-      specific photo.**
-- [ ] **Wix content audit found 2 unmigrated pages, need a decision:**
+- [x] **Author photo** — resolved next round, see §15.
+- [x] **Wix content audit found 2 unmigrated pages — decided (2026-07-15): not migrating them.**
       - `/book-online` — a live Wix Bookings page offering a free 15-min consultation
       - `/plans-pricing` — a live pricing page offering "Health Coaching" at $500/month (4 months
         of weekly calls + personalized guidance), with a working "Buy Now" checkout
-      - Both use Wix's built-in booking/payment infrastructure, which has no static-site
-        equivalent — recreating them needs a real decision (e.g. Calendly for booking, Stripe/
-        similar for payment) not just a content copy. Flagged for Sasha, not built yet.
+      - Both used Wix's built-in booking/payment infrastructure, which has no static-site
+        equivalent. Sasha's call: leave these off the new site.
 
 ## 15. Citation link styling, subscribe form layout, author photo (2026-07-14, fourth round)
 
