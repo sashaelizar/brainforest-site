@@ -325,3 +325,46 @@ commit messages (`git log`) — summarized here for the running record.
 - [x] **Author photo done** — Sasha sent one directly in chat. Cropped to a 4:5 professional
       headshot ratio centered on her face (`public/images/author/sasha-elizar.jpg`), added an
       optional `photo` field to the `Author` type, wired into both the author page and About page.
+      (Removed from About page again next round per Sasha — kept on the author page only.)
+
+## 16. Header stacking bug, References polish, real bug in this session's tooling (2026-07-14, fifth round)
+
+- [x] **Real bug found and fixed: category-pill buttons rendered on top of the header on scroll.**
+      Root cause: the global `nav { position: sticky; z-index: 20 }` rule in BaseLayout.astro
+      targeted every `<nav>` tag, not just the header — so it also silently applied to
+      `nav.cat-tabs` (the pill row on `/posts` and category pages) and `nav.catnav`
+      (`CategoryNav.astro`, used on every article page). All three shared the same z-index, so
+      ties resolved by DOM order — the pill navs sit later in the DOM than the header and painted
+      in front of it. Scoped the rule to `nav.site-nav` specifically. Verified with
+      `elementFromPoint` (not screenshots — see below).
+- [x] **References/Resources/Further Reading downsized from ~H1 to standard H2** (was
+      `clamp(30px,5vw,48px)`, now fixed 30px matching the rest of the site's h2s); caret shrunk to
+      match (16px → 11px) and its stray `margin-top: 0.2em` removed, which was the actual cause of
+      it sitting visibly below the heading instead of centered on it.
+- [x] **Citation → reference id integrity fully audited**: every citation's `href="#ref-N"` across
+      all 15 citation-bearing articles matched exactly one reference-list id, no duplicates
+      anywhere on any page. The data layer is clean. Hardened the scroll-timing code regardless
+      (double `requestAnimationFrame` instead of a single forced-reflow read, so the `<details>`
+      expansion has fully painted before scrolling) as a real, defensible improvement — but
+      **could not get a clean live reproduction of "jumps to a random part of the article" this
+      session** (see tooling note below). Ask Sasha for a specific article + citation number next
+      time it happens so it can be pinned down exactly.
+- [x] **Reference-list scroll-margin-top tightened 84px → 76px** (real nav height is 65px; the old
+      84px value was copied from headings and overshot by ~19px, reported as landing "half a line
+      above" the reference).
+- [x] **CTA buttons centered**, own margin removed so spacing before/after now comes from the same
+      paragraph/heading margins used everywhere else in the prose (one normal line break, not the
+      extra gap the button's own `margin: 1.4em 0` was adding on top).
+- [x] **Post-card clamp raised 3 → 7 lines.** Measured the real clamp boundary directly on live
+      cards (comparing `scrollHeight` vs `clientHeight` across all 42): descriptions up to ~270
+      characters fit fully in 7 lines at this card width/font; 276+ starts truncating. Answer to
+      Sasha's question: **closer to 250 than 350.**
+
+**Tooling note:** this session's Browser pane was noticeably unstable — `window.innerWidth`
+intermittently reporting 0, `scrollTo` not taking effect, screenshots not reflecting actual
+rendered state (confirmed by cross-checking against `getBoundingClientRect`/`elementFromPoint`,
+which stayed reliable throughout), and the `computer` tool's native scroll action timing out
+outright. Worked around it by leaning on non-visual DOM assertions and opening fresh tabs when a
+given tab degraded. Real site bugs (the header stacking issue) were still findable and fixable
+this way — but it's why the citation-jump behavioral bug couldn't be conclusively reproduced live
+even though the underlying data and code were both audited clean.
