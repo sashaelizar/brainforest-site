@@ -2,12 +2,12 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { SITE, SOCIAL } from '../site';
 
-// Simple sleek line icons (24x24, stroke-based) representing each therapeutic area.
+// Simple sleek line icons (24x24, stroke-based, outline only -- no fills) representing each area.
 const icons = {
-  brain: '<path d="M12 6.8v2.7M7.3 13.3l3 1.4M16.7 13.3l-3 1.4M12 17.2v-2.7"/><circle cx="12" cy="5" r="1.8" fill="currentColor" stroke="none"/><circle cx="6" cy="12" r="1.8" fill="currentColor" stroke="none"/><circle cx="18" cy="12" r="1.8" fill="currentColor" stroke="none"/><circle cx="12" cy="19" r="1.8" fill="currentColor" stroke="none"/>',
-  gut: '<circle cx="9.5" cy="9.5" r="4" fill="currentColor" stroke="none"/><circle cx="16" cy="8.5" r="2.7" fill="currentColor" stroke="none"/><circle cx="8.5" cy="16.5" r="2.7" fill="currentColor" stroke="none"/><circle cx="16" cy="16" r="3.6" fill="currentColor" stroke="none"/>',
-  shield: '<path d="M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z"/><path d="M9 12l2 2 4-4"/>',
-  leaf: '<path d="M20 4C10 4 4 10 4 18c0 1 0 2 .3 3C13 21 20 14 20 4z"/><path d="M9 15c3-3 6-6 9-9"/>',
+  brain: '<path d="M8.5 4C6.6 4 5 5.6 5 7.5c0 .4.1.8.2 1.1C4 9.3 3.2 10.7 3.2 12.3c0 1.6.9 3 2.2 3.7-.1.3-.1.6-.1 1 0 1.9 1.5 3.5 3.4 3.5.3 0 .6 0 .9-.1.6.9 1.6 1.6 2.9 1.6h.1V6.1C12.6 4.9 10.7 4 8.5 4z"/><path d="M15.5 4c1.9 0 3.5 1.6 3.5 3.5 0 .4-.1.8-.2 1.1 1.2.7 2 2.1 2 3.7 0 1.6-.9 3-2.2 3.7.1.3.1.6.1 1 0 1.9-1.5 3.5-3.4 3.5-.3 0-.6 0-.9-.1-.6.9-1.6 1.6-2.9 1.6h-.1V6.1C11.4 4.9 13.3 4 15.5 4z"/>',
+  microbe: '<ellipse cx="12" cy="12.5" rx="6" ry="4.6" transform="rotate(-18 12 12.5)"/><path d="M6.2 9.3 4 7.6M17.2 8.4l2.3-1.3M6.8 17l-1.7 2.2M17.6 16.2l1.9 1.7M12.5 6.8 12.2 4"/>',
+  immune: '<path d="M12 4.3c-1 0-1.7.8-1.7 1.7 0 .3.1.6.2.8-1.4.3-2.5 1.5-2.5 3 0 .2 0 .4.1.6-1.2.4-2.1 1.5-2.1 2.8 0 1.1.6 2 1.5 2.5-.1.3-.1.5-.1.8 0 1.6 1.3 2.9 2.9 2.9.3 0 .6 0 .8-.1.5.8 1.4 1.4 2.4 1.4 1.6 0 2.9-1.3 2.9-2.9 0-.3 0-.5-.1-.8.9-.5 1.5-1.4 1.5-2.5 0-1.3-.9-2.4-2.1-2.8.1-.2.1-.4.1-.6 0-1.5-1.1-2.7-2.5-3 .1-.2.2-.5.2-.8 0-.9-.8-1.7-1.7-1.7z"/><circle cx="12" cy="13" r="2"/>',
+  apple: '<path d="M12 9c-.9-1.2-2.4-1.8-3.8-1.4-2.1.5-3.5 2.6-3.5 5 0 3.9 2.6 8.2 5.4 8.2.8 0 1.4-.3 2.1-.3s1.3.3 2.1.3c2.8 0 5.4-4.3 5.4-8.2 0-2.2-1.2-4.1-3-4.8-1.2-.5-2.5-.2-3.4.6"/><path d="M12 9V5.3"/><path d="M12 5.3c.9-1 2.3-1.3 3.4-.7"/>',
 };
 
 const areas = [
@@ -20,19 +20,19 @@ const areas = [
   {
     name: 'Gut Health & Microbiome',
     href: '/category/gut-microbiome',
-    icon: icons.gut,
+    icon: icons.microbe,
     copy: 'A wide range of educational articles using peer-reviewed research — including gastrointestinal layer anatomy and the role of gut microbiota in multiple sclerosis.',
   },
   {
     name: 'Immunity, Aging, and Healthspan',
     href: '/category/aging',
-    icon: icons.shield,
+    icon: icons.immune,
     copy: 'A deep dive into the hallmarks of aging, including senescence and mitochondrial dysfunction, and an analysis of natural therapeutic compounds for their ability to slow aging and promote longevity.',
   },
   {
     name: 'Nutrition and Nutraceuticals',
     href: '/category/nutrition',
-    icon: icons.leaf,
+    icon: icons.apple,
     copy: 'Promote general well-being with precision nutrition, and find information about botanical ingredients and dietary mushroom properties.',
   },
 ];
