@@ -8,6 +8,7 @@ import ArticleStats from '../../components/ArticleStats.astro';
 import CommentsList from '../../components/CommentsList.astro';
 import GiscusComments from '../../components/GiscusComments.astro';
 import { fmtDate, SITE, catSlug, authorSlug } from '../../site';
+import { micromark } from 'micromark';
 
 export async function getStaticPaths() {
   const posts = await getCollection('posts');
@@ -15,10 +16,12 @@ export async function getStaticPaths() {
 }
 
 const { post, all } = Astro.props;
-// Body is faithful sanitized HTML from the original Wix DOM — render it directly
-// to preserve headings/ids, the outline jump-nav, ordered-list numbering, and citations.
-const bodyHtml = post.body ?? '';
 const d = post.data;
+// Legacy posts (the 42 exported from Wix): body is already faithful sanitized HTML from the
+// original Wix DOM, rendered directly to preserve headings/ids, the outline jump-nav,
+// ordered-list numbering, and citations. New posts written via the Decap CMS markdown editor
+// (data.markdown === true) are real markdown and need converting to HTML first.
+const bodyHtml = d.markdown ? micromark(post.body ?? '') : (post.body ?? '');
 
 // Related posts: share a category, most recent first, up to 3.
 const related = all
@@ -207,17 +210,23 @@ const jsonLd = {
     /* Numbered section lists: <ol><li><h2>…</h2>…</li></ol> — show the number beside the heading */
     .prose ol > li::marker { color: var(--green); font-weight: 700; font-family: var(--serif); }
     .prose ol > li > h2:first-child,
-    .prose ol > li > h3:first-child { display: inline-block; margin-top: 0; vertical-align: top; }
+    .prose ol > li > h3:first-child { display: inline-block; margin-top: 0; margin-bottom: 0; vertical-align: top; }
     /* Only widen the gap for actual numbered-section items (heading inside the li) - a plain
        numbered/outline list (e.g. a jump-nav list of links) should use the normal .5em list
-       spacing, not this wider one. margin-top gives breathing room before the number, matching
-       the gap every other heading in the article already gets. */
+       spacing, not this wider one. margin-top is sized to one line of normal body text (18px,
+       not the heading's own larger size) to read as a single blank line before the number;
+       no margin-bottom, so the heading sits right against the section text that follows it. */
     .prose ol > li:has(> h2:first-child),
-    .prose ol > li:has(> h3:first-child) { margin-top: 1.6em; margin-bottom: 1.4em; }
+    .prose ol > li:has(> h3:first-child) { margin-top: 2em; margin-bottom: 0; }
     /* The marker (the number itself) otherwise renders at body-text size (18px) next to a
        30px/24px heading, making it look mismatched and small. Match it to its heading. */
     .prose ol > li:has(> h2:first-child)::marker { font-size: 30px; }
     .prose ol > li:has(> h3:first-child)::marker { font-size: 24px; }
+    /* The generic .prose ol/ul rule below gives every list a 1.2em margin-bottom; these
+       single-item "numbered heading" ol wrappers need that zeroed too, or the heading still
+       ends up with residual space under it despite the li/h2 margins above being zero. */
+    .prose ol:has(> li > h2:first-child),
+    .prose ol:has(> li > h3:first-child) { margin-bottom: 0; }
 
     /* Author's in-page Outline / jump-nav */
     .prose h2 + ul a[href^="#"], .prose a[href^="#"] { font-weight: 500; }
@@ -229,6 +238,13 @@ const jsonLd = {
     .prose [id^="pro-gallery-margin-container-"] { display: flex; gap: 14px; flex-wrap: wrap; margin: 1.6em 0; }
     .prose [id^="pro-gallery-margin-container-"] > div { flex: 1 1 240px; }
     .prose [id^="pro-gallery-margin-container-"] img { margin: 0; width: 100%; height: auto; display: block; border-radius: 12px; border: 1px solid var(--line); }
+    /* A second Wix gallery variant ("horizontal scroll") has no grid/wrap behavior on the
+       original site - it's meant to scroll sideways as a filmstrip. Ours had the same
+       plain-stacked-<img> problem as the grid variant above. */
+    .prose [id^="gallery-horizontal-scroll-"] { margin: 1.6em 0; }
+    .prose [id^="gallery-horizontal-scroll-"] > div { display: flex; gap: 14px; overflow-x: auto; padding-bottom: 6px; }
+    .prose [id^="gallery-horizontal-scroll-"] > div > div { flex: 0 0 auto; }
+    .prose [id^="gallery-horizontal-scroll-"] img { margin: 0; width: auto; height: 260px; max-width: none; display: block; border-radius: 12px; border: 1px solid var(--line); }
 
     /* Image captions */
     .prose figure { margin: 1.8em 0; }

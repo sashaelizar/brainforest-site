@@ -14,6 +14,9 @@ const posts = defineCollection({
     hero: z.string().optional().default(''),
     heroCaption: z.string().optional().default(''),
     categories: z.array(z.string()).optional().default([]),
+    // true only for posts written as real markdown via the Decap CMS rich-text editor; the 42
+    // legacy posts exported from Wix are raw HTML and must always keep this false (or absent).
+    markdown: z.boolean().optional().default(false),
   }),
 });
 

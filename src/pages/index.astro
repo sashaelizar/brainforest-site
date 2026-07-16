@@ -15,9 +15,7 @@ const recent = posts.slice(0, 6);
       <p class="eyebrow">Neuroscience · Functional nutrition · Bioenergetics</p>
       <h1>Root cause medicine, translated from the research to your life.</h1>
       <p class="lead">
-        Brainforest Biosciences turns biomedical science — the microbiome, detoxification,
-        the gut-brain axis, aging — into practical ways to feel and function better.
-        Understand the mechanism first. Decide second.
+        Your source for evidence-based biomedical research, with holistic and integrated mindfulness.
       </p>
       <div class="hero-cta">
         <a href="/posts" class="btn">Read the articles</a>
@@ -31,10 +29,13 @@ const recent = posts.slice(0, 6);
     <div class="wrap who-inner">
       <p class="eyebrow">Who we are</p>
       <h2>Scientists and practitioners, on a mission to help you thrive.</h2>
-      <p class="who-copy">We start from the premise that nature is intelligent — full of answers
-        we're only beginning to understand. Our expertise spans neuroscience, functional
-        nutrition, gut health and the microbiome, endocrinology, detoxification, and aging,
-        translated into strategies you can actually use.</p>
+      <p class="who-copy">We translate biomarkers, mechanisms, processes, pathways, and patterns into
+        accessible, actionable steps for energy and vitality, helping more people live enlivened,
+        longer, fuller lives.</p>
+      <p class="who-copy">Through a functional medicine lens, we cover brain, endocrine, and gut
+        health; microbiome; detoxification; and aging, with a special interest in nutrition and
+        nutraceuticals.</p>
+      <a href="/ebook/leaky-gut-causes" class="btn btn-ghost">Check out our latest ebook on gut health →</a>
     </div>
   </section>
 
@@ -85,6 +86,7 @@ const recent = posts.slice(0, 6);
     .who-inner { max-width: 62ch; }
     .who-band h2 { font-size: clamp(28px, 4.2vw, 44px); margin-top: 10px; line-height: 1.2; }
     .who-copy { color: var(--ink-soft); font-size: 18px; line-height: 1.7; margin-top: 20px; }
+    .who-inner .btn { margin-top: 28px; }
     .section-head { max-width: 60ch; margin-bottom: 40px; }
     .section-head h2 { font-size: clamp(28px, 4vw, 42px); margin-top: 10px; }
     .section-head p { color: var(--ink-soft); margin-top: 14px; font-size: 17px; }
@@ -97,6 +99,9 @@ const recent = posts.slice(0, 6);
     .podcast-strip p { color: #C9D3CD; margin-top: 12px; }
     .pod-inner { display: flex; justify-content: space-between; align-items: center; gap: 32px; flex-wrap: wrap; }
     .pod-links { display: flex; gap: 12px; flex-wrap: wrap; }
+    /* The solid Spotify button had no border at all, making it look unfinished next to its
+       outlined Apple/YouTube siblings - give it the same subtle light-on-dark outline. */
+    .pod-links .btn:not(.btn-ghost) { border: 1px solid rgba(255,255,255,0.4); }
     .podcast-strip .btn.light { color: var(--cream); border-color: rgba(255,255,255,0.4); }
     .podcast-strip .btn.light:hover { background: var(--cream); color: var(--ink); }
   </style>

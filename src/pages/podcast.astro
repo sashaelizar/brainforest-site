@@ -30,5 +30,8 @@ import { PODCAST } from '../site';
     .pod .lead + .lead { margin-top: 16px; }
     .pod .sub { font-size: 14px; color: var(--ink-soft); margin: 16px 0 30px; line-height: 1.6; }
     .links { display: flex; gap: 12px; flex-wrap: wrap; }
+    /* Same fix as the homepage podcast strip: the solid Spotify button had no border, unlike
+       its outlined Apple/YouTube siblings. */
+    .links .btn:not(.btn-ghost) { border: 1px solid var(--ink); }
   </style>
 </BaseLayout>

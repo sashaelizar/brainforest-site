@@ -52,17 +52,23 @@ recreating that with **ConvertKit** (chosen 2026-07-09).
         no export existed in the local backup, Sasha needs to pull it from the Wix dashboard herself
 
 ## 3. Analytics (replace her Wix analytics)
-- **Recommendation given 2026-07-15: Umami Cloud** over Plausible. Both are privacy-friendly, tiny
-  script, no cookie banner needed, similar dashboards — Umami Cloud's free tier (100k events/mo)
-  is the deciding factor for a blog at this traffic scale, where Plausible's hosted version is
-  paid-only (~$9/mo minimum; self-hosting free but adds server upkeep Sasha doesn't want). Ruled
-  out: Google Analytics 4 (heavier, needs a cookie-consent banner) and Netlify Analytics
-  (~$9/mo, no real advantage over the free option here).
-- **What's needed:**
-  - [ ] Sasha creates a free Umami Cloud account, adds the site, sets `PUBLIC_ANALYTICS_SRC` +
-        `PUBLIC_ANALYTICS_DOMAIN` in Netlify (placeholder already wired in the code — these two
-        env vars are all it takes to turn tracking on)
-  - [ ] Confirm data is flowing after launch
+- **Decided 2026-07-16: Umami Cloud**, confirmed by Sasha. Over Plausible: both are
+  privacy-friendly, tiny script, no cookie banner needed, similar dashboards — Umami Cloud's free
+  tier (100k events/mo) is the deciding factor for a blog at this traffic scale, where Plausible's
+  hosted version is paid-only (~$9/mo minimum; self-hosting free but adds server upkeep Sasha
+  doesn't want). Ruled out: Google Analytics 4 (heavier, needs a cookie-consent banner) and
+  Netlify Analytics (~$9/mo, no real advantage over the free option here).
+- **What's needed (Sasha, can't be done by the AI — requires creating a third-party account):**
+  - [ ] Create a free account at umami.is (Umami Cloud), add the site
+  - [ ] Copy the tracking script URL + your site's domain from Umami's setup page
+  - [ ] In Netlify → Site settings → Environment variables, set `PUBLIC_ANALYTICS_SRC` (the script
+        URL) and `PUBLIC_ANALYTICS_DOMAIN` (your domain) — the placeholder is already wired in
+        `BaseLayout.astro`, so setting these two vars and redeploying turns tracking on with no
+        further code changes
+  - [ ] Confirm data is flowing in the Umami dashboard after the next deploy
+- Also decided 2026-07-16: this will eventually give a real, better-informed read on how much of
+  the view counter (below) is bot/crawler traffic vs. genuine human visits, once it's live for a
+  while.
 
 ## 8. Comments, likes, and live view counts (raised 2026-07-10)
 
@@ -74,6 +80,16 @@ browser and read off the actual view/comment/like numbers for each — saved to
 displaying that legacy number. Added `netlify/functions/track-view.js`, a Netlify Function using
 **Netlify Blobs** (built into Netlify — no extra account/service) that counts new views going
 forward; the displayed total is legacy + live, added together client-side.
+
+**Bot/AI traffic caveat (raised + decided 2026-07-16):** `track-view.js` counts every hit
+unconditionally — no user-agent check, no dedup, no signal captured beyond a raw increment. That
+means bot/crawler/AI-scraper traffic is indistinguishable from genuine human views in what's
+already been counted, and there's currently no way to filter it retroactively (nothing was
+recorded to filter by). Decided: **keep the view count visible for now** rather than hiding it;
+revisit once Umami (above) has been live a while and gives a real read on how much non-human
+traffic this site actually gets. Not yet built, only discussed: a future improvement would add a
+known-bot-user-agent filter plus one-count-per-visitor-per-day dedup (same localStorage pattern
+the like button already uses) to `track-view.js` — flagged here for later, not requested yet.
 - [x] Legacy views/comments/likes pulled from the live site for all 42 posts (2026-07-10)
 - [x] Stats display built and verified locally (shows the correct legacy numbers, e.g. 409 for
       the leaky-gut-symptoms post, matching the live site exactly)
@@ -149,13 +165,24 @@ Her domain lives at **Bluehost**. To make brainforest.org show the new site:
 ## 7. Publishing workflow (how she adds new posts later)
 - [x] **Decided (2026-07-09): Word document handoff.** Sasha writes in Word with images placed
       exactly where she wants them; her AI converts the doc into the site's format, places images,
-      and shows a preview before publishing. Full steps in `HOW-TO-PUBLISH-ARTICLES.md`.
+      and shows a preview before publishing. Full steps in `HOW-TO-PUBLISH-ARTICLES.md`. Still a
+      valid fallback for anything with unusual layout, but see the 2026-07-16 decision below for
+      the new default.
 - [ ] Run one real article through the pipeline to confirm it feels right end to end
 - [x] **Self-serve editor added (2026-07-14), requested so minor edits don't need an AI session.**
-      Decap CMS at `/admin`, fields matching the post schema. Article body is a raw-text field on
-      purpose (Wix-exported HTML, risk of corruption under a WYSIWYG editor).
-      This is now a second option alongside the Word-doc handoff above: Word/AI for new articles
-      with careful image placement, the editor for quick text-only fixes to existing ones.
+      Decap CMS at `/admin`, fields matching the post schema. At the time, article body was a
+      raw-text field on purpose (Wix-exported HTML, risk of corruption under a WYSIWYG editor).
+- [x] **Decided 2026-07-16: Decap CMS is now the default way to write new articles**, raised
+      because Sasha found the raw-HTML text field "a mess that is unreadable." The body field is
+      now a real `widget: "markdown"` rich-text editor — toolbar for headings, bold/italic,
+      bulleted/numbered lists, links, and image upload, matching the site's actual look rather
+      than showing code. A hidden `markdown` field (true for anything created through `/admin`
+      from now on, explicitly `false` on all 42 legacy posts) tells `[slug].astro` whether to run
+      the body through `micromark` (new markdown posts) or render it as-is (legacy Wix HTML).
+      Verified both paths render correctly. PDF-upload or Google-Doc-share were considered and
+      declined as the default — both require the AI to manually reconstruct formatting each time,
+      slower and less reliable than typing directly into a real-time formatted editor. The Word-doc
+      handoff above remains available for anything with unusual layout needs.
 
 ## Open decisions
 - [x] **Design direction confirmed (2026-07-15)** — Sasha likes the current cream/green look, no

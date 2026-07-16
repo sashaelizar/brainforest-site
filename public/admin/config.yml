@@ -66,9 +66,16 @@ collections:
       - { label: "Original Wix URL (leave as-is, do not edit)", name: "source_url", widget: "string", required: false }
       - label: "Article body"
         name: "body"
-        widget: "text"
+        widget: "markdown"
         hint: >
-          This is raw HTML, not plain markdown — it's exactly how the article was exported from
-          Wix. Edit the text directly (fix typos, swap a sentence, add a paragraph by copying the
-          pattern of an existing one). Avoid using a rich-text/WYSIWYG editor here, since it could
-          reformat the HTML and break the article's layout.
+          For a NEW article: write normally here — use the toolbar for headings, bold/italic,
+          bulleted/numbered lists, links, and images, exactly like a Word/Google Docs editor. For
+          one of the 42 existing legacy articles (imported from Wix): this field holds raw HTML,
+          not markdown, so it will look like a wall of code in this editor — use the "Markdown"
+          / source-view toggle in the toolbar to edit it as plain text instead, the same way the
+          old editor worked. Don't use the rich-text view on a legacy article; it can reformat
+          the HTML and break the page's layout.
+      - label: "Written as markdown (leave on for new articles)"
+        name: "markdown"
+        widget: "hidden"
+        default: true

@@ -55,13 +55,21 @@ DecapBridge needs permission to save your edits back to the repo.
 2. Log in via DecapBridge (Google, Microsoft, or password — whatever you set in Step 3)
 3. You'll see a list of all 42 articles — click one to edit, or **New Article** to start one
 
-**A note on editing article bodies:** the articles were exported from Wix, so the "content" field
-is raw HTML (not plain markdown) to preserve the original formatting exactly. The editor shows it
-as plain text on purpose — edit it like a text file (fix a word, add a paragraph following the
-pattern of the one before it) rather than expecting a Word-style toolbar. This keeps the editor
-from accidentally reformatting the page. New articles you write from scratch can be simpler HTML
-or even plain paragraphs — ask your AI to set the pattern up if you want something lighter for new
-posts.
+**A note on editing article bodies (updated 2026-07-16):** the body field is now a real
+Word/Google Docs-style editor — a toolbar with headings, bold/italic, bulleted and numbered
+lists, links, and image upload. **For a brand new article, just write in it normally.**
+
+The 42 existing articles are the exception: they were exported from Wix as raw HTML (not
+markdown), so opening one of those in the rich-text view will look like a wall of code — that's
+expected, not broken. Use the "Markdown" / source-view toggle in the editor's toolbar to edit
+those as plain text instead, the same way the old plain-text editor worked. Don't switch a
+legacy article to rich-text view and start typing there; it can silently reformat the HTML and
+break the page's layout.
+
+How new vs. legacy is tracked: every article has a hidden `markdown` field. New articles created
+through `/admin` get `markdown: true` automatically, which tells the site to render the body as
+real markdown. The 42 legacy articles are explicitly set to `markdown: false` and always render
+as raw HTML, untouched by this change.
 
 Every save the editor makes creates a real commit to GitHub, so nothing is ever lost — you can
 always see (or undo) the history.
