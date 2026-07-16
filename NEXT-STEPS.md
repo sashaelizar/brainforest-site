@@ -475,3 +475,54 @@ they read right.
 - [x] **Confirmed Netlify auto-deploys on every push** — no manual deploy step needed, this session
       or any future one. Sasha asked directly; verified true given the site picked up the
       DecapBridge config swap and the giscus env vars automatically after each push.
+
+## 19. Website Improvement Suggestions doc — reviewed, plan drafted (2026-07-16)
+
+Sasha found a document titled "Website Improvement Suggestions" in her Downloads — a transcript of
+a conversation with a different AI (not Claude) analyzing brainforest.org and proposing a
+repositioning: from "functional medicine consulting" toward "neuroscience publication/media
+company," with a supplement funnel further down the line. Read and evaluated point by point rather
+than accepted wholesale — verdict below.
+
+**Agreed with, ready to act on once positioning (below) is settled:**
+- [ ] Add evidence-strength badges to more articles — already proven today: the SARS-CoV-2 article
+      has a working "Strength of Evidence" box (symbols for unknown/maybe/probably/potential)
+      replacing plain "Prevention: Maybe" text. Extend to other articles, highest-traffic first.
+- [ ] Add a real, computed credibility stat near the hero (e.g. total references cited across all
+      articles) — not fabricated, actually countable from the existing reference lists.
+- [ ] Add a compact author photo + one-line bio block to the homepage (bio/photo already exist in
+      `site.ts`, just not surfaced there yet).
+- [ ] Tighten the hero headline to be more reader-benefit-focused rather than descriptive of "who
+      we are."
+
+**Declined / lower priority:**
+- Full rebrand to "neuroscience media company," dropping the functional-medicine framing — see the
+  open decision below; this is a real identity choice, not a quick edit, and it currently
+  contradicts the About/homepage copy written earlier today (2026-07-16) at Sasha's own direction.
+- Supplement funnel (in-article product recommendations, "shop" pages) — no store/products/
+  affiliate links exist on the site at all today; this is a new business line with its own
+  disclaimer/FDA considerations (see `/disclaimer`), not a website tweak. Treat as a separate
+  future decision, not bundled into this list.
+- "Put articles on the homepage" — already true (the "Latest" grid already sits right under the
+  hero). Not a real gap.
+- "Organize into topic pillars" — already true (9 working categories + browse-by-topic nav). The
+  doc's specific category names (Sleep, Longevity, etc.) don't match Sasha's current ones; revisit
+  only if she doesn't like the current categories, not because the structure is missing.
+- The doc's second half, where the other AI claims to "recall" an earlier conversation about a
+  Wix→Markdown→Google Drive publishing pipeline — treated skeptically, not as verified history;
+  reads like a plausible-sounding reconstruction from a tool with no real persistent memory across
+  sessions, not confirmed fact.
+
+## Open decisions
+- [x] **Design direction confirmed (2026-07-15)** — Sasha likes the current cream/green look, no
+      change needed
+- [ ] **Brand positioning (raised 2026-07-16, unresolved):** functional-medicine-and-mission-led
+      (what the About/homepage copy says today) vs. neuroscience-publication-led (per §19 above).
+      Everything in §19's "ready to act on" list is gated on this answer.
+- [ ] **Umami analytics activation** (see §3) — Sasha needs to create the free account and set 2
+      Netlify env vars; code side is already wired and waiting.
+- [ ] **Decap CMS markdown editor** (see §7) — built and verified by the AI (a test post rendered
+      correctly through the new pipeline), but Sasha hasn't yet tried writing a real new article
+      through `/admin` herself to confirm the actual editing experience feels right.
+- [ ] Any **other lead magnets/freebies** beyond the leaky-gut ebook that need landing pages
+- [ ] Whether to *also* cross-post to Substack purely for distribution (optional, not required)

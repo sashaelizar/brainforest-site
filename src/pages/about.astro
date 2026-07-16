@@ -2,26 +2,38 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { SITE, SOCIAL } from '../site';
 
+// Simple sleek line icons (24x24, stroke-based) representing each therapeutic area.
+const icons = {
+  brain: '<path d="M12 6.8v2.7M7.3 13.3l3 1.4M16.7 13.3l-3 1.4M12 17.2v-2.7"/><circle cx="12" cy="5" r="1.8" fill="currentColor" stroke="none"/><circle cx="6" cy="12" r="1.8" fill="currentColor" stroke="none"/><circle cx="18" cy="12" r="1.8" fill="currentColor" stroke="none"/><circle cx="12" cy="19" r="1.8" fill="currentColor" stroke="none"/>',
+  gut: '<circle cx="9.5" cy="9.5" r="4" fill="currentColor" stroke="none"/><circle cx="16" cy="8.5" r="2.7" fill="currentColor" stroke="none"/><circle cx="8.5" cy="16.5" r="2.7" fill="currentColor" stroke="none"/><circle cx="16" cy="16" r="3.6" fill="currentColor" stroke="none"/>',
+  shield: '<path d="M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z"/><path d="M9 12l2 2 4-4"/>',
+  leaf: '<path d="M20 4C10 4 4 10 4 18c0 1 0 2 .3 3C13 21 20 14 20 4z"/><path d="M9 15c3-3 6-6 9-9"/>',
+};
+
 const areas = [
   {
     name: 'Neuroscience & Endocrinology',
     href: '/category/neuroscience',
+    icon: icons.brain,
     copy: 'Published topics include psychedelic pharmacology, the cell and molecular mechanisms of pineal gland calcification, and hypothalamic-pituitary signaling of estrogen, progesterone, testosterone, and thyroid hormones.',
   },
   {
     name: 'Gut Health & Microbiome',
     href: '/category/gut-microbiome',
+    icon: icons.gut,
     copy: 'A wide range of educational articles using peer-reviewed research — including gastrointestinal layer anatomy and the role of gut microbiota in multiple sclerosis.',
   },
   {
     name: 'Immunity, Aging, and Healthspan',
     href: '/category/aging',
+    icon: icons.shield,
     copy: 'A deep dive into the hallmarks of aging, including senescence and mitochondrial dysfunction, and an analysis of natural therapeutic compounds for their ability to slow aging and promote longevity.',
   },
   {
-    name: 'Neuroscience & Brain Health',
-    href: '/category/neuroscience',
-    copy: 'Research articles on current trends in neuroscience, summarizing key findings on promoting brain and neuronal health.',
+    name: 'Nutrition and Nutraceuticals',
+    href: '/category/nutrition',
+    icon: icons.leaf,
+    copy: 'Promote general well-being with precision nutrition, and find information about botanical ingredients and dietary mushroom properties.',
   },
 ];
 ---
@@ -29,14 +41,15 @@ const areas = [
   <section class="wrap narrow about">
     <p class="eyebrow">About</p>
     <h1>Brainforest Biosciences</h1>
-    <p class="lead">Your source for evidence-based biomedical research, with holistic and integrated mindfulness.</p>
+    <p class="lead">Evidence-based biomedical research meets healthspan extension.</p>
 
-    <p>Brainforest Biosciences is the work of <strong>{SITE.author}</strong>. We translate biomarkers,
-      mechanisms, processes, pathways, and patterns into accessible, actionable steps for energy
-      and vitality, helping more people live enlivened, longer, fuller lives.</p>
+    <p>With deep expertise spanning neuroscience, aging, and gut health, Brainforest Biosciences
+      pinpoints root causes and translates them into accessible, actionable steps and real-world
+      strategies for functional health.</p>
 
-    <p>Through a functional medicine lens, we cover brain, endocrine, and gut health; microbiome;
-      detoxification; and aging, with a special interest in nutrition and nutraceuticals.</p>
+    <p>With an eye towards lifestyle medicine, outcomes of interest include a regulated nervous
+      system, balanced energy and hormones, efficient immunity, better processing, focus, and
+      memory, and glowing, radiant skin.</p>
 
     <p>Explore the full body of work in the <a href="/posts">articles archive</a>, listen to the
       <a href="/podcast">podcast</a>, or check out our <a href="/ebook/leaky-gut-causes">latest ebook on gut health</a>.</p>
@@ -57,7 +70,10 @@ const areas = [
       <div class="areas-grid">
         {areas.map(a => (
           <a class="area-card" href={a.href}>
-            <h3>{a.name}</h3>
+            <div class="area-title">
+              <svg class="area-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" set:html={a.icon} />
+              <h3>{a.name}</h3>
+            </div>
             <p>{a.copy}</p>
             <span class="area-link">Explore →</span>
           </a>
@@ -81,7 +97,9 @@ const areas = [
     @media (max-width: 700px){ .areas-grid { grid-template-columns: 1fr; } }
     .area-card { display: block; background: var(--cream-2); border: 1px solid var(--line); border-radius: 16px; padding: 26px 28px; text-decoration: none; color: inherit; transition: transform .15s ease, box-shadow .15s ease; }
     .area-card:hover { transform: translateY(-2px); box-shadow: 0 16px 34px -20px rgba(20,33,28,0.4); }
-    .area-card h3 { font-size: 19px; margin-bottom: 10px; color: var(--ink); }
+    .area-title { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+    .area-icon { flex-shrink: 0; width: 26px; height: 26px; color: var(--green); }
+    .area-card h3 { font-size: 23px; line-height: 1.2; color: var(--ink); }
     .area-card p { color: var(--ink-soft); font-size: 14.5px; line-height: 1.6; margin-bottom: 14px; }
     .area-link { font-size: 13px; font-weight: 600; color: var(--green); }
   </style>
