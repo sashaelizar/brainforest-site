@@ -1,7 +1,7 @@
 // Central config recreated from the live brainforest.org / Infinite Emergence site.
 export const SITE = {
   name: 'Brainforest Biosciences',
-  tagline: 'Root cause bioenergetic medicine',
+  tagline: 'Evidence-based research meets healthspan extension',
   author: 'Sasha Elizar, M.S.',
   domain: 'brainforest.org',
 };

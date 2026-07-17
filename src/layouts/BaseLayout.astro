@@ -8,7 +8,7 @@ interface Props {
   jsonLd?: object;         // structured data for this page
 }
 const { title, description, image, type = 'website', jsonLd } = Astro.props;
-const pageTitle = title ? `${title} · ${SITE.name}` : `${SITE.name} — ${SITE.tagline}`;
+const pageTitle = title ? `${title} · ${SITE.name}` : `${SITE.name} | ${SITE.tagline}`;
 const desc = description || SITE.tagline;
 const path = Astro.url.pathname;
 const canonical = new URL(path, Astro.site ?? `https://${SITE.domain}`).href;
