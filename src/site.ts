@@ -47,8 +47,8 @@ export function catSlug(name: string): string {
 
 // Ordered category nav (by how the original site groups them)
 export const CATEGORY_ORDER = [
-  'Neuroscience', 'Gut Microbiome', 'Functional Nutrition', 'Mental Health',
-  'Aging and Lifespan', 'Hormones', 'Immunity', 'Detoxification', 'Environment',
+  'Neuroscience', 'Gut Microbiome', 'Functional Nutrition',
+  'Aging and Lifespan', 'Hormones', 'Immunity', 'Detoxification', 'Mental Health', 'Environment',
 ];
 
 // Writer profiles. Brought back from the original brainforest.org, which linked each byline to a
