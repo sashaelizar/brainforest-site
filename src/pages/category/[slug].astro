@@ -62,7 +62,7 @@ const tabs = CATEGORY_ORDER.filter(c => present.has(c));
     .tab { font-size: 13px; font-weight: 600; padding: 8px 16px; border-radius: 100px; border: 1px solid var(--line); color: var(--ink-soft); text-decoration: none; background: var(--cream-2); transition: all .15s ease; }
     .tab:hover { border-color: var(--green); color: var(--green); }
     .tab.active { background: var(--ink); color: var(--cream); border-color: var(--ink); }
-    .list-band { padding: 40px 0; }
+    .list-band { padding: 16px 0 40px; }
     .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
     @media (max-width: 860px){ .grid { grid-template-columns: repeat(2, 1fr); } }
     @media (max-width: 560px){ .grid { grid-template-columns: 1fr; } }
