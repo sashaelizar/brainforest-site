@@ -10,30 +10,42 @@ Updated 2026-07-16. Trimmed to just what's left — everything already done has 
 
 ## Outstanding
 
-### Point brainforest.org at the new site — in progress, waiting on Netlify
+### Point brainforest.org at the new site — DNS in, waiting on propagation
 
-DNS records are in at Bluehost; nothing left to do but wait for Netlify to finish
-verifying/provisioning the domain.
+Turns out this wasn't just a couple of extra records at Bluehost — Bluehost's nameservers got
+fully swapped for Netlify's own. Bluehost is now just the registrar; **all DNS records (Zoho's
+included) now live inside Netlify's dashboard**, not Bluehost's. (Netlify's DNS screen also moved:
+it's **Projects → DNS** in the left sidebar now, not under a site's own Domain settings.)
 
 1. ~~Add the domain in Netlify~~ done
-2. ~~Add the ALIAS/A + CNAME records at Bluehost~~ done (TTL set to 4 hours)
-3. **Waiting on Netlify** to finish verifying and provisioning — should resolve on its own within
-   a day or so
+2. ~~Point nameservers at Netlify~~ done — confirmed live
+3. **Waiting on final propagation (TTL pending)** — nothing left to configure, just time
 4. Once it's showing live on the real domain, cancel Wix
 
-### Set up sasha@brainforest.org via Zoho — in progress
+### Set up sasha@brainforest.org via Zoho — DNS records in, waiting on propagation
 
-Switched the plan from free Zoho to **Zoho Mail Lite** (~$1/user/month) after confirming Zoho's
-free tier doesn't support IMAP/POP/SMTP, which is required for Gmail to pull the mailbox into
-your existing inbox. Mail Lite unlocks that.
+Went with **Zoho Mail Lite** (10GB, $1.25/user/month billed annually, ≈$15/year) over the
+pricier Workplace tier — Mail Lite covers everything needed (custom-domain email +
+IMAP/POP/SMTP for the Gmail integration); Workplace's extra apps aren't needed for one mailbox.
 
 1. ~~Purchase Zoho Mail Lite~~ done
-2. ~~Back up existing Gsuite mail via Google Takeout~~ done (downloaded as a zip)
-3. Run Zoho's IMAP-based migration tool to pull your Gsuite mail history into the new mailbox
-4. Cut over the MX records at Bluehost from Google's to Zoho's (replace, not add)
-5. Confirm mail is flowing correctly through Zoho
-6. Only then cancel Google Workspace ($12/mo) — keep both running until step 5 is confirmed
-7. Once the mailbox is live, this also fixes the Kit confirmation-email spam issue — the emails
+2. ~~Back up existing Gsuite mail via Google Takeout~~ done (downloaded as a zip — a safety copy,
+   separate from the actual migration in step 5 below)
+3. ~~Create Zoho account~~ done (hit one snag: signing up *with* `sasha@brainforest.org` as the
+   account email failed, since Zoho tried emailing it a confirmation code before any mail routing
+   existed for the domain — fixed by signing up with a personal email first, then adding the
+   domain and creating the mailbox afterward)
+4. ~~Verify domain ownership (TXT record) + add MX records~~ done, both added in Netlify's DNS
+   panel (watch for a "conflicting record" warning if the record-type dropdown defaults to A —
+   switch it to TXT/MX as appropriate and the warning goes away)
+5. **Waiting on DNS propagation (TTL pending)** — once it clears:
+   - Send yourself a test email to `sasha@brainforest.org` to confirm delivery
+   - Run Zoho's IMAP-based Data Migration tool (needs a Google App Password) to pull your Gsuite
+     mail history into the new mailbox — not done yet, separate from the Takeout backup
+   - Set up Gmail's "Check mail from other accounts" (`pop.zoho.com:995`) and "Send mail as"
+     (`smtp.zoho.com:587`) so it stays inside your normal Gmail inbox
+   - Only then cancel Google Workspace ($12/mo)
+6. Once the mailbox is live, this also fixes the Kit confirmation-email spam issue — the emails
    were landing in spam because they were sent "from" a personal Gmail address through Kit,
    which looks like spoofing to Gmail's filters. A verified sender on brainforest.org fixes that.
 

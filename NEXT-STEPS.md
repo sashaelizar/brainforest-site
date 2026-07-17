@@ -566,25 +566,57 @@ started (both still in progress, waiting on external services).
   (618 keyword + 3 wix-demo), not the ~836/900 figure first quoted
 - Final file: `kit-import-ready.csv` on the Desktop, 198 rows, ready for Kit import
 
-**Domain connection (brainforest.org → Netlify) — in progress**
+**Domain connection (brainforest.org → Netlify) — waiting on propagation**
 - Hit a false-alarm "domain already taken" error in Netlify; confirmed this was just a leftover
   attachment from an earlier drag-and-drop test deploy, not a registration/transfer conflict —
   registration stays at Bluehost either way. Sasha found and removed the conflicting site
-- Added the ALIAS/A + CNAME records Netlify requires at Bluehost DNS, set TTL to 4 hours
-- **Waiting on Netlify to finish verifying/provisioning the domain** — nothing left to do but wait
-  for propagation
+- **Important discovery:** the domain didn't just get a couple of extra records added at
+  Bluehost — Bluehost's nameservers were fully swapped for **Netlify's own nameservers**
+  (`dns1-4.p04.nsone.net`), confirmed via `dig NS brainforest.org`. That means Bluehost is now
+  just the registrar; it no longer hosts any live DNS records. **All DNS changes going forward
+  (Zoho's included) have to be made inside Netlify's dashboard, not Bluehost's.**
+- Netlify's current DNS UI lives at the **team** level, not per-site: click **Projects** (top
+  left) → **DNS** in the sidebar → click the domain → **DNS records** → **Add new record**. This
+  moved since the last time either of us had used it, tripped Sasha up once.
+- Site's own A records are already live and resolving (`18.208.88.157`, `98.84.224.111`)
+- **Waiting on final propagation** — TTL pending as of this session, nothing left to configure
+  on this piece, just time
 
-**Email hosting (sasha@brainforest.org) — in progress**
+**Email hosting (sasha@brainforest.org) — DNS records in, waiting on propagation**
 - Ruled out Zoho's free plan: confirmed via Zoho's own pricing page that free tier has no
   POP/IMAP/SMTP access, which Sasha needs for Gmail's "Check mail from other accounts" / "Send
   mail as" so she can keep using her existing Gmail inbox rather than juggling separate apps
-- Decided on **Zoho Mail Lite** (~$1/user/month annual) instead, which unlocks IMAP/POP/SMTP
+- Decided on **Zoho Mail Lite** (10GB/user, $1.25/user/month billed annually ≈ $15/year) over
+  the pricier Workplace tier ($3/user/month) — Mail Lite has everything needed (custom-domain
+  email + IMAP/POP/SMTP); Workplace's extra apps (Docs, chat, more storage) aren't needed for a
+  single mailbox. Went with 10GB over the cheaper 5GB tier ($12/yr) since the whole Gsuite mail
+  history is getting imported and the price gap was trivial (~$3/year)
 - Sasha wants to fully retire Google Workspace ($12/mo) once Zoho is live — not run both
 - Purchased Zoho Mail Lite
-- Backed up existing Gsuite mail via Google Takeout (downloaded as a zip)
-- Still to do: run Zoho's IMAP-based migration tool to pull mail history into the new mailbox,
-  then cut over DNS MX records at Bluehost from Google's to Zoho's, then cancel Google
-  Workspace only after mail is confirmed flowing through Zoho
+- Backed up existing Gsuite mail via Google Takeout (downloaded as a zip, kept as a safety copy —
+  separate from the actual migration, see below)
+- **Signup snag (resolved):** Zoho's signup initially tried sending a confirmation code to
+  `sasha@brainforest.org` itself — impossible to deliver since no MX records existed yet
+  (chicken-and-egg problem). Fixed by restarting signup with Sasha's personal Gmail as the
+  account-holder email, then adding `brainforest.org` as a domain and creating
+  `sasha@brainforest.org` as a mailbox *after* logging in, which uses DNS-based (TXT) domain
+  verification instead of email
+- Domain ownership verified via TXT record added in Netlify's DNS panel (hit one speed bump:
+  Netlify warned about a "potentially conflicting" record because the form defaulted to record
+  type **A**, which would have collided with the site's own A record on the same host — switching
+  the type to **TXT** resolved it with no conflict, since different record types can coexist on
+  the same hostname)
+- `sasha@brainforest.org` mailbox created in Zoho
+- MX records (`mx.zoho.com` / `mx2.zoho.com` / `mx3.zoho.com`, with priorities) added in Netlify's
+  DNS panel the same way
+- **Waiting on DNS propagation (TTL pending)** — once it clears:
+  1. Send a test email to `sasha@brainforest.org` from an outside account to confirm delivery
+  2. Run Zoho's IMAP-based Data Migration tool (needs a Google App Password) to pull the Gsuite
+     mail history into the new mailbox — this is separate from the Takeout backup above and
+     hasn't run yet
+  3. Set up Gmail's "Check mail from other accounts" (`pop.zoho.com:995`) and "Send mail as"
+     (`smtp.zoho.com:587`) so the address stays inside Sasha's normal Gmail inbox
+  4. Only then cancel Google Workspace
 
 **New policy: weekly push cadence**
 - Netlify flagged Sasha's account for using over 75% of its monthly build-minute credit
