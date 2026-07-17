@@ -60,7 +60,17 @@ const ogImage = image ? new URL(image, Astro.site ?? `https://${SITE.domain}`).h
   <nav class="site-nav">
     <div class="wrap nav-inner">
       <a href="/" class="logo">Brainforest<span>&nbsp;Biosciences</span></a>
-      <div class="nav-links">
+      <button
+        type="button"
+        class="nav-burger"
+        id="nav-burger"
+        aria-label="Menu"
+        aria-expanded="false"
+        aria-controls="nav-links"
+      >
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links" id="nav-links">
         {NAV.map(n => (
           <a href={n.href} class={path === n.href ? 'active' : ''}>{n.label}</a>
         ))}
@@ -68,6 +78,27 @@ const ogImage = image ? new URL(image, Astro.site ?? `https://${SITE.domain}`).h
       </div>
     </div>
   </nav>
+
+  <script>
+    const burger = document.getElementById('nav-burger');
+    const navLinks = document.getElementById('nav-links');
+    burger?.addEventListener('click', () => {
+      const open = navLinks?.classList.toggle('open');
+      burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    navLinks?.addEventListener('click', (e) => {
+      if ((e.target as HTMLElement).tagName === 'A') {
+        navLinks.classList.remove('open');
+        burger?.setAttribute('aria-expanded', 'false');
+      }
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && navLinks?.classList.contains('open')) {
+        navLinks.classList.remove('open');
+        burger?.setAttribute('aria-expanded', 'false');
+      }
+    });
+  </script>
 
   <dialog id="nav-subscribe-dialog" class="subscribe-dialog">
     <button type="button" class="dialog-close" aria-label="Close" onclick="this.closest('dialog').close()">&times;</button>
@@ -146,6 +177,27 @@ const ogImage = image ? new URL(image, Astro.site ?? `https://${SITE.domain}`).h
     .nav-links a:hover, .nav-links a.active { color: var(--green); }
     .nav-subscribe-btn { padding: 8px 18px; font-size: 13px; }
     @media (max-width: 720px){ .nav-links { gap: 16px; } .nav-links a { font-size: 13px; } .logo span { display:none; } .nav-subscribe-btn { padding: 7px 14px; } }
+
+    .nav-burger { display: none; flex-direction: column; justify-content: center; gap: 5px; width: 36px; height: 36px; background: none; border: none; cursor: pointer; padding: 0; }
+    .nav-burger span { display: block; width: 22px; height: 2px; background: var(--ink); border-radius: 2px; transition: transform .2s ease, opacity .2s ease; }
+    .nav-burger[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .nav-burger[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+    .nav-burger[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    @media (max-width: 640px){
+      .nav-burger { display: flex; }
+      .nav-links {
+        display: none;
+        position: absolute; top: 64px; left: 0; right: 0;
+        flex-direction: column; align-items: stretch; gap: 4px;
+        background: var(--cream); border-bottom: 1px solid var(--line);
+        padding: 12px 24px 20px; box-shadow: 0 16px 30px -18px rgba(20,33,28,0.35);
+      }
+      .nav-links.open { display: flex; }
+      .nav-links a { font-size: 15px; padding: 10px 4px; border-bottom: 1px solid var(--line); }
+      .nav-subscribe-btn { margin-top: 8px; text-align: center; padding: 12px; font-size: 14px; }
+      .logo span { display: inline; }
+    }
 
     .subscribe-dialog { position: relative; border: 1px solid var(--line); border-radius: 18px; padding: 32px; max-width: 480px; width: calc(100% - 40px); background: var(--cream); color: var(--ink); box-shadow: 0 30px 60px -20px rgba(20,33,28,0.4); }
     .subscribe-dialog::backdrop { background: rgba(20,33,28,0.45); backdrop-filter: blur(2px); }
