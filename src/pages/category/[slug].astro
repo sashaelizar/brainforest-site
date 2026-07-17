@@ -3,7 +3,7 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PostCard from '../../components/PostCard.astro';
 import SubscribeBox from '../../components/SubscribeBox.astro';
-import { catSlug, CATEGORY_ORDER, CATEGORY_ORDER_MOBILE } from '../../site';
+import { catSlug, CATEGORY_ORDER } from '../../site';
 
 export async function getStaticPaths() {
   const posts = await getCollection('posts');
@@ -29,7 +29,6 @@ const present = new Set(allPosts.flatMap(p => p.data.categories));
 const tabs = CATEGORY_ORDER.filter(c => present.has(c)).map(catName => ({
   name: catName,
   count: allPosts.filter(p => p.data.categories.includes(catName)).length,
-  mobileOrder: CATEGORY_ORDER_MOBILE.indexOf(catName) + 1,
 }));
 ---
 <BaseLayout title={name} description={`Articles on ${name} from Brainforest Biosciences.`}>
@@ -38,9 +37,9 @@ const tabs = CATEGORY_ORDER.filter(c => present.has(c)).map(catName => ({
       <p class="eyebrow">Category</p>
       <h1>{name}</h1>
       <nav class="cat-tabs" aria-label="Categories">
-        <a href="/posts" class="tab" style="--mo: 0">All <span class="tab-count">{allPosts.length}</span></a>
+        <a href="/posts" class="tab">All <span class="tab-count">{allPosts.length}</span></a>
         {tabs.map(c => (
-          <a href={`/category/${catSlug(c.name)}`} class={`tab ${c.name === name ? 'active' : ''}`} style={`--mo: ${c.mobileOrder}`}>{c.name} <span class="tab-count">{c.count}</span></a>
+          <a href={`/category/${catSlug(c.name)}`} class={`tab ${c.name === name ? 'active' : ''}`}>{c.name} <span class="tab-count">{c.count}</span></a>
         ))}
       </nav>
     </div>
@@ -68,7 +67,7 @@ const tabs = CATEGORY_ORDER.filter(c => present.has(c)).map(catName => ({
     .tab.active .tab-count { color: var(--ink); background: rgba(255,255,255,0.7); }
     @media (max-width: 640px){
       .cat-tabs { gap: 8px; }
-      .tab { order: var(--mo, 0); padding: 6px 12px; font-size: 12px; }
+      .tab { padding: 6px 12px; font-size: 12px; }
       .tab-count { padding: 1px 5px; font-size: 9.5px; }
     }
     .list-band { padding: 16px 0 40px; }

@@ -51,15 +51,6 @@ export const CATEGORY_ORDER = [
   'Aging and Lifespan', 'Hormones', 'Immunity', 'Detoxification', 'Mental Health', 'Environment',
 ];
 
-// Mobile-only tab order (applied via CSS `order`, desktop DOM order is untouched).
-// Picked to avoid orphaned single-tab rows at narrow widths: All first, then whichever
-// of Gut Microbiome/Functional Nutrition lets everything after it fall into a clean
-// article-count descending sort, then Mental Health + Environment pinned last.
-export const CATEGORY_ORDER_MOBILE = [
-  'Gut Microbiome', 'Neuroscience', 'Functional Nutrition',
-  'Aging and Lifespan', 'Hormones', 'Immunity', 'Detoxification', 'Mental Health', 'Environment',
-];
-
 // Writer profiles. Brought back from the original brainforest.org, which linked each byline to a
 // Wix member-profile page (e.g. /profile/aalfi182/profile). Those pages only ever held a name and
 // a join date - no written bio or photo existed there for Alyssa or Medina, so `bio` is left unset
