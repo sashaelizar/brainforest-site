@@ -4,8 +4,13 @@ import { PODCAST } from '../site';
 ---
 <BaseLayout title="Podcast" description="Mind the Roots — a health and neuroscience podcast.">
   <section class="wrap narrow pod">
-    <p class="eyebrow">Podcast</p>
-    <h1>{PODCAST.name}</h1>
+    <div class="pod-head">
+      <img class="pod-cover" src="/images/podcast/mind-the-roots-cover.jpg" alt="Mind the Roots podcast cover art" width="240" height="240" />
+      <div>
+        <p class="eyebrow">Podcast</p>
+        <h1>{PODCAST.name}</h1>
+      </div>
+    </div>
     <p class="lead">On Mind the Roots, we explore and discuss alternative health practices from a
       scientific and natural perspective. Our mission is to help people understand the mind-body
       connection, as well as the importance of nutrition, lifestyle, and the environment.</p>
@@ -25,7 +30,9 @@ import { PODCAST } from '../site';
   </section>
   <style>
     .pod { padding-top: 72px; padding-bottom: 72px; max-width: 720px; }
-    .pod h1 { font-size: clamp(34px, 6vw, 52px); }
+    .pod-head { display: flex; align-items: center; gap: 24px; }
+    .pod-cover { width: 120px; height: 120px; border-radius: 16px; object-fit: cover; flex: 0 0 auto; box-shadow: 0 16px 34px -18px rgba(20,33,28,0.45); border: 1px solid var(--line); }
+    .pod h1 { font-size: clamp(34px, 6vw, 52px); margin-top: 6px; }
     .pod .lead { font-size: 19px; color: var(--ink-soft); margin: 20px 0 0; line-height: 1.7; }
     .pod .lead + .lead { margin-top: 16px; }
     .pod .sub { font-size: 14px; color: var(--ink-soft); margin: 16px 0 30px; line-height: 1.6; }
@@ -33,5 +40,6 @@ import { PODCAST } from '../site';
     /* Same fix as the homepage podcast strip: the solid Spotify button had no border, unlike
        its outlined Apple/YouTube siblings. */
     .links .btn:not(.btn-ghost) { border: 1px solid var(--ink); }
+    @media (max-width: 560px){ .pod-head { flex-direction: column; align-items: flex-start; gap: 16px; } }
   </style>
 </BaseLayout>
