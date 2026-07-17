@@ -232,7 +232,7 @@ Her domain lives at **Bluehost**. To make brainforest.org show the new site:
       rendering bug unrelated to the code (confirmed via `window.scrollTo()` doing nothing even
       outside any of this feature's code). Structurally everything checks out (scroll-margin-top,
       JS logic) but wants a real look.
-- [ ] `fecal-microbiota-transplants-healthspan` is still missing 2 of its historical Wix comments
+- [x] `fecal-microbiota-transplants-healthspan` is still missing 2 of its historical Wix comments
       (flagged back on 2026-07-10, never retrieved)
 
 ## 12. Link audit, contact form, self-serve editor, live comments (2026-07-14)
@@ -512,6 +512,86 @@ than accepted wholesale — verdict below.
   Wix→Markdown→Google Drive publishing pipeline — treated skeptically, not as verified history;
   reads like a plausible-sounding reconstruction from a tool with no real persistent memory across
   sessions, not confirmed fact.
+
+## 20. Rebrand, real Kit email forms, contacts cleanup round 2, domain + Zoho setup (2026-07-16)
+
+Big day — site rebrand shipped, the subscribe/ebook forms now hit Sasha's real email
+platform, the contacts list got a second cleanup pass, and domain + email hosting work
+started (both still in progress, waiting on external services).
+
+**Rebrand: Infinite Emergence → Brainforest Biosciences**
+- Site name, nav logo, footer, about page, and CMS admin title all updated
+  (`src/site.ts`, `BaseLayout.astro`, `about.astro`, `public/admin/index.html`)
+- Nav logo text got longer with the new name, which broke the mobile nav layout — widened the
+  `@media` breakpoint from 620px to 720px in `BaseLayout.astro` to fix the overflow
+- Replaced the 4 About-page therapeutic-area icons (brain, microbe, immune, apple) with new
+  hand-authored outline-style SVGs to match the rebrand's visual language — verified by
+  rendering each to PNG locally (`qlmanage -t`) since the Browser pane was unreliable today
+- OCR-audited all 284 article images (installed `tesseract` via Homebrew) for leftover old-brand
+  watermarks. Found and cropped 2: the plastic-free-challenge cover (removed
+  `infiniteemergence.com` text strip, 1600×900 → 1600×850) and a pineal-calcification image
+  (removed `@infiniteemergence` Instagram handle, 1080×1080 → 1080×790, symmetric crop to keep
+  content centered)
+
+**Real Kit (ConvertKit) forms wired in, keeping the site's own design**
+- Sasha decided she doesn't like Kit's own embed styling and wanted the site's existing custom
+  form design kept, with Kit only providing the backend
+- Solved with a hidden-iframe submit technique: `<form method="POST" target="iframe-name">` +
+  a `display:none` iframe with that name. A form-to-iframe POST is a real browser navigation,
+  not a script-read request, so it isn't subject to CORS — this avoided needing `fetch()`
+  against Kit's endpoint entirely
+- Updated 3 forms to this pattern, pointing at Sasha's real Kit forms:
+  - `SubscribeBox.astro` (homepage/post-footer subscribe) → Kit form 9693159
+  - `BaseLayout.astro` nav "Subscribe" dialog → same Kit form 9693159
+  - `ebook/leaky-gut-causes.astro` opt-in → Kit form 9693243
+- Removed the old error-state CSS/JS (`.sub-error`, `.nav-sub-error`) since the iframe technique
+  can't detect real success/failure — success message now shows optimistically after a short
+  delay
+- Live-tested end to end: submitted a real signup, confirmed it landed in Kit
+- Kit's confirmation/incentive email arrived in spam on the test — diagnosed as a deliverability
+  issue, not a wiring bug: Sasha was sending "from" her personal Gmail address through a
+  third-party ESP, which reads as a spoofing signal to Gmail's own filters. Fix is a verified
+  sender on a domain she owns (brainforest.org) with proper SPF/DKIM — ties directly into the
+  Zoho email work below
+
+**Contacts CSV — second cleanup pass**
+- Went back through the bot-flagged pool by hand (not just regex) after Sasha asked to minimize
+  false negatives; recovered 82 real-looking contacts from the two "soft" flag categories
+  (mass-bot-flood pattern, gibberish-local-part)
+- Fixed a duplicate (`info@brainforest.org` appeared twice) and confirmed Clarissa Wintz and
+  Amanda Reay are both included (both had been wrongly at risk of exclusion on heuristics alone)
+- Kept excluding: gambling-keyword matches, Wix demo contacts, and a specific 4-identity /
+  9-signup Indian-name cluster with zero engagement, per Sasha's explicit instruction
+- Corrected an earlier miscount to Sasha: it was **621** gambling/demo-keyword exclusions total
+  (618 keyword + 3 wix-demo), not the ~836/900 figure first quoted
+- Final file: `kit-import-ready.csv` on the Desktop, 198 rows, ready for Kit import
+
+**Domain connection (brainforest.org → Netlify) — in progress**
+- Hit a false-alarm "domain already taken" error in Netlify; confirmed this was just a leftover
+  attachment from an earlier drag-and-drop test deploy, not a registration/transfer conflict —
+  registration stays at Bluehost either way. Sasha found and removed the conflicting site
+- Added the ALIAS/A + CNAME records Netlify requires at Bluehost DNS, set TTL to 4 hours
+- **Waiting on Netlify to finish verifying/provisioning the domain** — nothing left to do but wait
+  for propagation
+
+**Email hosting (sasha@brainforest.org) — in progress**
+- Ruled out Zoho's free plan: confirmed via Zoho's own pricing page that free tier has no
+  POP/IMAP/SMTP access, which Sasha needs for Gmail's "Check mail from other accounts" / "Send
+  mail as" so she can keep using her existing Gmail inbox rather than juggling separate apps
+- Decided on **Zoho Mail Lite** (~$1/user/month annual) instead, which unlocks IMAP/POP/SMTP
+- Sasha wants to fully retire Google Workspace ($12/mo) once Zoho is live — not run both
+- Purchased Zoho Mail Lite
+- Backed up existing Gsuite mail via Google Takeout (downloaded as a zip)
+- Still to do: run Zoho's IMAP-based migration tool to pull mail history into the new mailbox,
+  then cut over DNS MX records at Bluehost from Google's to Zoho's, then cancel Google
+  Workspace only after mail is confirmed flowing through Zoho
+
+**New policy: weekly push cadence**
+- Netlify flagged Sasha's account for using over 75% of its monthly build-minute credit
+  allowance, driven by how often pushes were triggering rebuilds
+- Going forward: keep committing locally as normal, but **stop pushing to GitHub after every
+  change** — batch pushes to roughly once a week instead, unless Sasha explicitly asks for a
+  push sooner
 
 ## Open decisions
 - [x] **Design direction confirmed (2026-07-15)** — Sasha likes the current cream/green look, no
