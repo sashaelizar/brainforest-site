@@ -1,9 +1,9 @@
 ---
 // "Stay in the know" — recreated from the subscribe widget on the original brainforest.org site.
-// TODO once ConvertKit is set up: replace the <form> action/method below with the ConvertKit form's
-// own action URL (Sasha will get this from her ConvertKit account — see CONVERTKIT-SETUP.md in the
-// project root). Until then this submits to Netlify Forms so it is fully working and collecting
-// emails today.
+// Submits directly to Sasha's real Kit (ConvertKit) form (id 9693159) rather than Netlify Forms --
+// same site-native look, just a Kit-owned backend. Posts through a hidden iframe (not fetch) so it
+// works regardless of Kit's CORS policy: a plain form-to-iframe submission is a normal browser
+// navigation, not a script-read request, so it's never subject to cross-origin restrictions.
 interface Props { variant?: 'band' | 'compact' }
 const { variant = 'band' } = Astro.props;
 const uid = Math.random().toString(36).slice(2, 9);
@@ -18,40 +18,26 @@ const uid = Math.random().toString(36).slice(2, 9);
       <form
         id={`sub-form-${uid}`}
         class="form"
-        name="stay-in-the-know"
         method="POST"
-        data-netlify="true"
-        netlify-honeypot="bot-field"
+        action="https://app.kit.com/forms/9693159/subscriptions"
+        target={`sub-frame-${uid}`}
       >
-        <input type="hidden" name="form-name" value="stay-in-the-know" />
-        <p hidden><label>Skip: <input name="bot-field" /></label></p>
-        <input name="name" type="text" placeholder="Your name" required aria-label="Name" />
-        <input name="email" type="email" placeholder="Enter your email here" required aria-label="Email address" />
+        <input name="fields[first_name]" type="text" placeholder="Your name" required aria-label="Name" />
+        <input name="email_address" type="email" placeholder="Enter your email here" required aria-label="Email address" />
         <button type="submit" class="btn">Sign Up</button>
       </form>
+      <iframe name={`sub-frame-${uid}`} title="" style="display:none" tabindex="-1" aria-hidden="true"></iframe>
     </div>
-    <div id={`sub-thanks-${uid}`} class="thanks" style="display:none">Thanks for submitting!</div>
-    <p id={`sub-error-${uid}`} class="sub-error" style="display:none">Something went wrong — mind trying again?</p>
+    <div id={`sub-thanks-${uid}`} class="thanks" style="display:none">Thanks for submitting! Check your email to confirm.</div>
   </div>
 </section>
 <script define:vars={{ uid }}>
   const form = document.getElementById(`sub-form-${uid}`);
-  form?.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const body = new URLSearchParams(new FormData(form)).toString();
-    fetch('/', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body,
-    })
-      .then((res) => {
-        if (!res.ok) throw new Error(String(res.status));
-        form.style.display = 'none';
-        document.getElementById(`sub-thanks-${uid}`).style.display = 'block';
-      })
-      .catch(() => {
-        document.getElementById(`sub-error-${uid}`).style.display = 'block';
-      });
+  form?.addEventListener('submit', () => {
+    setTimeout(() => {
+      form.style.display = 'none';
+      document.getElementById(`sub-thanks-${uid}`).style.display = 'block';
+    }, 500);
   });
 </script>
 <style>
@@ -79,6 +65,5 @@ const uid = Math.random().toString(36).slice(2, 9);
   .subscribe input:focus { outline: 2px solid var(--green-bright); }
   .subscribe .btn { padding: 13px 24px; }
   .subscribe .thanks { font-size: 15px; color: var(--green); font-weight: 600; margin-top: 14px; }
-  .subscribe .sub-error { font-size: 14px; color: #b3453a; margin-top: 14px; }
   @media (max-width: 480px){ .subscribe .form { flex-direction: column; } }
 </style>
