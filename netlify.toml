@@ -2,3 +2,7 @@
   command = "npm run build"
   publish = "dist"
   functions = "netlify/functions"
+
+[build.environment]
+  PUBLIC_ANALYTICS_SRC = "https://cloud.umami.is/script.js"
+  PUBLIC_ANALYTICS_WEBSITE_ID = "2a05398c-f105-4309-abe0-ec21112b3d49"

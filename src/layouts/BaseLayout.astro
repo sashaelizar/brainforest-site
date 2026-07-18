@@ -50,10 +50,10 @@ const ogImage = image ? new URL(image, Astro.site ?? `https://${SITE.domain}`).h
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
 
-  <!-- Analytics: privacy-friendly, self-hostable. Enable by setting PUBLIC_ANALYTICS_SRC + PUBLIC_ANALYTICS_DOMAIN.
-       Placeholder wired now; final engine (Plausible/Umami/GA4) is a decision in BUILD-NOTES.md. -->
+  <!-- Umami analytics (privacy-friendly, cookieless). Enable by setting
+       PUBLIC_ANALYTICS_SRC + PUBLIC_ANALYTICS_WEBSITE_ID. -->
   {import.meta.env.PUBLIC_ANALYTICS_SRC && (
-    <script defer data-domain={import.meta.env.PUBLIC_ANALYTICS_DOMAIN} src={import.meta.env.PUBLIC_ANALYTICS_SRC}></script>
+    <script defer data-website-id={import.meta.env.PUBLIC_ANALYTICS_WEBSITE_ID} src={import.meta.env.PUBLIC_ANALYTICS_SRC}></script>
   )}
 </head>
 <body>
