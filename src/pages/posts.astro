@@ -15,7 +15,7 @@ const tabs = CATEGORY_ORDER.filter(c => present.has(c)).map(name => ({
   count: posts.filter(p => p.data.categories.includes(name)).length,
 }));
 ---
-<BaseLayout title="Articles" description="Evidence-based articles on neuroscience, gut health, and functional medicine.">
+<BaseLayout title="Articles" description={`${posts.length} long-form, evidence-based articles on neuroscience, gut health, functional nutrition, and healthy aging.`}>
   <section class="head-band">
     <div class="wrap">
       <p class="eyebrow">The archive</p>
