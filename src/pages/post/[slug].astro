@@ -100,12 +100,18 @@ const jsonLd = {
   </article>
 
   <script>
-    // Bracketed citations like [2] link to their entry in the References list. Since that list
-    // now lives inside a collapsible <details>, the browser's automatic scroll-to-fragment can
-    // fire before the <details> finishes expanding (its layout hasn't settled yet), landing the
-    // page in the wrong spot. Take full manual control: open it, force a synchronous layout
-    // recompute (reading getBoundingClientRect guarantees this, unlike requestAnimationFrame
-    // which can be throttled), then scroll ourselves.
+    // Citation superscripts (e.g. ²) link to their entry in the References list. That list lives
+    // inside a collapsible <details>, so on click we must open it AND wait for the expanded
+    // content to actually lay out & paint before scrolling — otherwise the browser measures the
+    // target while it's still collapsed (zero-height / display:none) and lands in a random spot.
+    // We only defer (double rAF, which guarantees a post-layout paint) when we actually had to
+    // open the details; if it's already open we scroll immediately.
+    const NAV_OFFSET = 80; // sticky nav (64px) + a little breathing room
+    const scrollToRef = (target: HTMLElement, href: string) => {
+      const y = target.getBoundingClientRect().top + window.scrollY - NAV_OFFSET;
+      window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
+      history.pushState(null, '', href);
+    };
     document.addEventListener('click', (e) => {
       const link = (e.target as HTMLElement)?.closest('a[href^="#ref-"]') as HTMLAnchorElement | null;
       if (!link) return;
@@ -114,10 +120,13 @@ const jsonLd = {
       if (!target) return;
       e.preventDefault();
       const details = target.closest('details');
-      if (details && !details.open) details.open = true;
-      target.getBoundingClientRect(); // force layout to recompute now that details is open
-      target.scrollIntoView({ block: 'start' });
-      history.pushState(null, '', href);
+      if (details && !details.open) {
+        details.open = true;
+        // let the newly-revealed content lay out & paint before measuring
+        requestAnimationFrame(() => requestAnimationFrame(() => scrollToRef(target, href)));
+      } else {
+        scrollToRef(target, href);
+      }
     });
   </script>
 
