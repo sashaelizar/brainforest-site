@@ -7,6 +7,7 @@ description: "Biomaterials could solve many of the problems of traditional plast
 source_url: https://www.brainforest.org/post/biodegradable-bioplastics
 readTime: "13 min read"
 hero: "/images/biodegradable-bioplastics/00_cover_0fae9a7f4d08.jpg"
+heroCaption: "Dutch designers Eric Klarenbeek and Maartje Dros have developed a bioplastic made from algae. (Source: Dezeen)"
 categories: ["Environment"]
 markdown: false
 ---
